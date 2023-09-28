@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+
+        {% block stylesheets %}
+
+            
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        {% endblock %}
+{% block body %}
+<div id="flex">
+
+
+<div class="containermenu" id="flexcontainermenu">
+    <span style="color:white; margin-top:10px; margin-left:10px;">
+    connecté sur le compte de : {{nomUtilisateur}}  </span>
+
+    <div id="divrecherche">
+        <form id="formrecherche">
+           <span style="color:white"> Rechercher une commande :</span>
+        <input type="text" id="myInput" onkeyup="myFunction()">
+        <button type="submit"><i class="fa fa-times"></i></button>
+        </form>
+        <center><a href='PasserCommande'  class='buttonClassVote'>Passer commande</a></center>
+
+
+    </div>
+    </div>
+<div id="DivAgregation">
+
+<table class="styled-table">
+              
+                <tr id="Sticky">
+                    <td>facture n°</td>
+                    <td>Client</td>
+                    <td>Date de livraison</td>
+                    <td>total Articles</td>
+                    <td>Action</td>
+    </tr>
+
+              
+              <tbody id="myTable">
+
+                       {%  for facture in Factures %}  
+                        <tr class="trInfosFacture">
+                            <td>{{facture.id}}</td>
+                            <td>{{facture.Client.nomClient}}</td>
+                            <td>{{facture.date |date('d/m/Y')}}</td>
+
+                            <td>
+                            {% set qteTotalArticles = 0 %}
+
+                            {% for article in facture.Articles %}
+                            {% set qteTotalArticles = qteTotalArticles + article.qte %}
+                            {% endfor %}
+                            {{qteTotalArticles}}
+                            
+                            </td>
+                             <td><a onclick="checker()" class="buttonClass" href="/CommandeSuppr?CommandeSuppr={{facture.id}}">Supprimer<a><a class="buttonClass2" href="/ConsulterCommande?idCommande={{facture.id}}">Modifier<a><a class="buttonClass2" href="/Facture?idCommande={{facture.id}}">Facture<a>
+                             
+                            
+                           
+                            
+                            
+                            
+
+
+                        </tr>
+
+
+                       {% endfor %}       
+
+                                
+
+              </tbody>
+
+              
+
+            </table>
+</div>
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
+<script>
+    function checker(){
+        console.log('test');
+        var result = confirm('Cette commande sera supprimé, êtes vous sur ?');
+        if(result == false){
+            event.preventDefault();
+        }
+    }
+</script>
+{% endblock body %}
