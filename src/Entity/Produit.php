@@ -20,12 +20,12 @@ class Produit
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+    * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nomProduit;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(name="prix_unitaire",type="float")
      */
     private $prixUnitaire;
 
@@ -162,17 +162,4 @@ class Produit
 
         return $this;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

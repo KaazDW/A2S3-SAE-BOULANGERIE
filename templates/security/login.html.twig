@@ -8,7 +8,7 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400);
 
 /* fontawesome */
-@import url(http://weloveiconfonts.com/api/?family=fontawesome);
+@import url(https://weloveiconfonts.com/api/?family=fontawesome);
 [class*="fontawesome-"]:before {
   font-family: 'FontAwesome', sans-serif;
 }
@@ -115,7 +115,7 @@ form {
     </div>
     <div class="form-item">
       <label for="password"></label>
-      <input type="password" name="password" required="required" placeholder="Mot de passe"></input>
+      <input type="password" name="mdp" required="required" placeholder="Mot de passe"></input>
       <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
