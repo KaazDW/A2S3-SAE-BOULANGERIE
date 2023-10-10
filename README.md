@@ -1,7 +1,7 @@
 # PTUTBoulanger
 
 # Réponses de la prof
-##2
+## 2
  Le Moulin (bâtiment classé) est la propriété de la commune, qui est propriétaire de l'éco-musée intérieur (vieux outils, machines etc.). Un éco-musée c'est un musée qui représente des activités d'autrefois : ici meunerie, tournerie, battage du blé.
 
 Le boulanger Benoit bénéficie ici d'un contrat de "mise à disponibilité" du lieu pour son activité de meunerie / boulangerie, et il doit assurer en contre partie les visites du musée et payer un loyer.
@@ -15,7 +15,7 @@ Donc ce que les clients pourront réserver via le site, c'est :
 
 Il existe aussi des visites en autonomie à un tarif réduit : pas besoin de réserver.
 
-#1
+## 1
 
 - Site client actuel : https://moulindepontdesvents.fr/ -> c'est une version développée par un ami consultant avec ODOO, un ERP CRM open-source (https://www.odoo.com/fr_FR). Vous pouvez vous en inspirer ! Le boulanger n'est pas satisfait de cette version, qui ne répond pas son CDC initial (joint).
 Si vous faites mieux, il prendra votre site.
