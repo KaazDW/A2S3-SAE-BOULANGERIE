@@ -6,11 +6,12 @@ use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  */
-class Utilisateur
+class Utilisateur implements PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -35,7 +36,7 @@ class Utilisateur
     private $email;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, name="num_Tel")
      */
     private $numTel;
 
@@ -68,7 +69,7 @@ class Utilisateur
 
     public function __construct(){
         $this->factures = new ArrayCollection();
-        $this->adresse = new ArrayCollection();
+        $this->produits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -151,12 +152,12 @@ class Utilisateur
         /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getMdp(): string
+    public function getPassword(): string
     {
         return $this->mdp;
     }
 
-    public function setMdp(string $mdp): self
+    public function setPassword(string $mdp): self
     {
         $this->mdp = $mdp;
 

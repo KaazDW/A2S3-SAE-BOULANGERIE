@@ -31,7 +31,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 
-        $user->setMdp($newHashedPassword);
+        $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
     }
