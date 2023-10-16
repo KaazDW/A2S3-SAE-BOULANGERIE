@@ -1,0 +1,28 @@
+// BASE SASS FILE - init sass content
+
+// Font Import here
+
+*{
+  margin: 0;
+  padding: 0;
+  ul{
+    list-style: none;
+  }
+  a{
+    text-decoration: none;
+  }
+}
+
+:root{
+  --color-primary: white;
+  --color-secondary: white;
+  --color-ternary: white;
+  --color-quaternary: white;
+
+  --color-black: black;
+  --color-white: white;
+  --color-darkgrey: white;
+
+}
+
+//@import "pages/homepage";
