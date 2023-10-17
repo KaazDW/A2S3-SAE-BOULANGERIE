@@ -57,7 +57,7 @@ class UsersAuthenticator extends AbstractLoginFormAuthenticator
 
         if (in_array('ROLE_ADMIN', $userRoles, true)) {
             // Redirect to the PRODUITS route for users with ROLE_ADMIN
-            return new RedirectResponse($this->urlGenerator->generate('Accueil'));
+            return new RedirectResponse($this->urlGenerator->generate('adminAccueil'));
         } elseif (in_array('ROLE_USER', $userRoles, true)) {
             // Redirect to the panier page for users with ROLE_USER
             return new RedirectResponse($this->urlGenerator->generate('panierpage'));

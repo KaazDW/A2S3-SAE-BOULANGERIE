@@ -20,7 +20,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-
+/**
+ * @Route("/admin")
+ */
 class Controller extends AbstractController
 {
     
@@ -262,7 +264,7 @@ class Controller extends AbstractController
     
     }
     /**
-     * @Route("/Clients",name="Clients")
+     * @Route("/Clients",name="adminClients")
      */
     public function Clients(){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -297,7 +299,7 @@ class Controller extends AbstractController
 
     }
     /**
-     * @Route("/Accueil",name="Accueil")
+     * @Route("/Accueil",name="adminAccueil")
      */
     public function Accueil(){
 
@@ -577,7 +579,7 @@ public function NouveauClient(Request $request){
 
     );}
     /**
-     * @Route("/Produits",name="Produits")
+     * @Route("/Produits",name="adminProduits")
      */
     public function Produits(){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -624,7 +626,7 @@ public function NouveauClient(Request $request){
     }
 
     /**
-     * @Route("/Commandes",name="Agregations des commandes")
+     * @Route("/Commandes",name="adminCommandes")
      */
     public function CommandesAgregation(){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -716,7 +718,7 @@ public function NouveauClient(Request $request){
 
 
     /**
-     * @Route("/AgregationIngredients",name="AgregationIngredients")
+     * @Route("/AgregationIngredients",name="adminAgregationIngredients")
      */
     public function AgregationIngredients(){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -817,7 +819,7 @@ public function NouveauClient(Request $request){
 
 
     /**
-     * @Route("/Ingredients", name="ingredientspage")
+     * @Route("/Ingredients", name="adminIngredients")
      */
     public function ingredient(): Response
     {

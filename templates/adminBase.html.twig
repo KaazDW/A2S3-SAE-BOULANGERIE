@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./Style.min.css">
+    <link rel="stylesheet" href="{{ asset('Style.min.css') }}">
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     {# Run `composer require symfony/webpack-encore-bundle`
@@ -21,20 +22,20 @@
 <header>
     <nav id="navbar">
         <ul>
-            <li><a {% if selected == 1 %} style="background-color: #009879;" {% endif %}    href="Accueil">Accueil</a></li>
+            <li><a {% if selected == 1 %} style="background-color: #009879;" {% endif %} href="{{ path('adminAccueil') }}">Accueil</a></li>
             <li class="dropDown">
                 <div id="dpCONTENT">
 
-                    <a style="  text-align: left;" href="Commandes">Agregation par produit</a>
-                    <a style="  text-align: left;" href="AgregationIngredients">Agregation par ingrédient</a>
+                    <a style="  text-align: left;" href="{{ path('adminCommandes') }}">Agregation par produit</a>
+                    <a style="  text-align: left;" href="{{ path('adminAgregationIngredients') }}">Agregation par ingrédient</a>
                 </div>
-                <a {% if selected == 2 %} style="background-color: #009879;" {% endif %}    href="Commandes">Agregation</a>
+                <a {% if selected == 2 %} style="background-color: #009879;" {% endif %}    href="{{ path('adminCommandes') }}">Agregation</a>
             </li>
 
 
-            <li><a {% if selected == 3 %} style="background-color: #009879;" {% endif %}     href="Produits">Produits</a></li>
-            <li><a {% if selected == 5 %} style="background-color: #009879;" {% endif %}     href="Ingredients">Ingredients</a></li>
-            <li><a {% if selected == 4 %} style="background-color: #009879;" {% endif %}     href="Clients">Clients</a></li>
+            <li><a {% if selected == 3 %} style="background-color: #009879;" {% endif %}     href="{{ path('adminProduits') }}">Produits</a></li>
+            <li><a {% if selected == 5 %} style="background-color: #009879;" {% endif %}     href="{{ path('adminIngredients') }}">Ingredients</a></li>
+            <li><a {% if selected == 4 %} style="background-color: #009879;" {% endif %}     href="{{ path('adminClients') }}">Clients</a></li>
 
             <li id="profilDD" style="float:right; cursor:pointer;">
                 <div id="dropDownUsr">
