@@ -25,6 +25,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Controller extends AbstractController
 {
+    /**
+     * @Route("/",name="redirectRoot")
+     */
+    public function RedirectRoot(){
+        return $this->redirectToRoute('homepage');
+    }
     
     /**
      * @Route("/Facture",name="Facture") 
@@ -618,12 +624,7 @@ public function NouveauClient(Request $request){
 
     }
 
-    /**
-     * @Route("/",name="redirectRoot")
-     */
-    public function RedirectRoot(){
-        return $this->redirectToRoute('homepage');
-    }
+
 
     /**
      * @Route("/Commandes",name="adminCommandes")

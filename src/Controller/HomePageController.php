@@ -10,6 +10,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class HomePageController extends AbstractController
 {
+    /**
+     * @Route("/",name="redirectRoot")
+     */
+    public function RedirectRoot(){
+        return $this->redirectToRoute('homepage');
+    }
 
     /**
      * @Route("/homepage", name="homepage")
