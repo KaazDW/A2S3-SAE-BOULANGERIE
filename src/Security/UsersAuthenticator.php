@@ -42,18 +42,31 @@ class UsersAuthenticator extends AbstractLoginFormAuthenticator
                 new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
             ]
         );
+        // Retrieve the user object from the token
+        $user = $this->userProvider->loadUserByIdentifier($email);
+
+        // Add a role attribute to the user's passport based on their role
+        $passport->addAttribute('role', $user->getRoles());
+
+        return $passport;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
-        }
+        $userRoles = $token->getRoleNames();
 
-        // For example:
-        //return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        return new RedirectResponse('Accueil');
+        if (in_array('ROLE_ADMIN', $userRoles, true)) {
+            // Redirect to the PRODUITS route for users with ROLE_ADMIN
+            return new RedirectResponse($this->urlGenerator->generate('Produits'));
+        } elseif (in_array('ROLE_USER', $userRoles, true)) {
+            // Redirect to the panier page for users with ROLE_USER
+            return new RedirectResponse($this->urlGenerator->generate('panier'));
+        } else {
+            // Handle other cases or fallback
+            return new RedirectResponse($this->urlGenerator->generate('erreur'));
+        }
     }
+
 
     protected function getLoginUrl(Request $request): string
     {

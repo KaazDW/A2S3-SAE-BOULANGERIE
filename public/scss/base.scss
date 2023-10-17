@@ -23,6 +23,55 @@
   --color-white: white;
   --color-darkgrey: white;
 
+  --color-test: #EDE1D5;
+  --color-testt: #DBCFC3;
+
+}
+
+body{
+  background-color: var(--color-test);
+  header{
+    height: 80px;
+    border: 0.1rem solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    .logo {
+        img{
+          max-width: 80%;
+        }
+    }
+    nav{
+      ul{
+        list-style: none;
+        display: flex;
+        padding: 0;
+        li{
+          margin-right: 30px;
+          a{
+            color:black;
+          }
+        }
+      }
+    }
+  }
+  footer{
+    height: 150px;
+    border: 0.1rem solid black;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+}
+
+.btn-square {
+  background-color: var(--color-testt);
+  color: black;
+  padding: 10px 20px;
+  border: 0.1rem solid black;
+  border-radius: 2px;
+  cursor: pointer;
 }
 
 //@import "pages/homepage";

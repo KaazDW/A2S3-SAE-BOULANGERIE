@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('scss/pages/homepage.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="main">
+        <div class="left-content">
+            <h1>Moulin de Pont des vents</h1>
+            <button class="btn-square">Shop our product</button>
+        </div>
+        <div class="right-content">
+            <img src="{{ asset('images/logo/logo_moulin.png') }}" alt="Logo du moulin">
+        </div>
+    </div>
+{% endblock body %}

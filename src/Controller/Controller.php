@@ -26,7 +26,7 @@ class Controller extends AbstractController
     
     /**
      * @Route("/Facture",name="Facture") 
-     */
+·     */
     public function Facture(Request $request){ // fonction executé lors de la requete du client
         $repositoryFacture = $this->getDoctrine()->getRepository(Facture::class);
         // on récupère le "repository" de la classe facture
@@ -39,7 +39,7 @@ class Controller extends AbstractController
     );
     }
     
- /**
+    /**
      * @Route("/ClientSuppr",name="ClientSuppr")
      */
     public function ClientSuppr(Request $request){
@@ -138,9 +138,8 @@ class Controller extends AbstractController
     
                     $repositoryCategorie = $this->getDoctrine()->getRepository(Categorie::class);
                     $Categorie = $repositoryCategorie->findOneBy(['id'=>$idCategorieArticle]);  
-                    $Commande->addArticle($article);
-                    $article->setProduit($Produit);
-                    $article->setQte($qteArticle);
+
+
                     $article->setCategorie($Categorie);
                     echo "Calcul : ".$article->getQte()."x".($article->getCategorie()->getPoids() / 1000)."x".$article->getProduit()->getPrixUnitaire();
                     $total = $article->getQte() * ($article->getCategorie()->getPoids() / 1000) * $article->getProduit()->getPrixUnitaire();
@@ -621,11 +620,8 @@ public function NouveauClient(Request $request){
      * @Route("/",name="redirectRoot")
      */
     public function RedirectRoot(){
-
-        return $this->redirectToRoute('Accueil');
+        return $this->redirectToRoute('homepage');
     }
-    
-    
 
     /**
      * @Route("/Commandes",name="Agregations des commandes")
