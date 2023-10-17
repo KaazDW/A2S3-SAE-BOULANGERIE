@@ -57,6 +57,7 @@ class HomePageController extends AbstractController
      */
     public function PanierPage()
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('Client/panier.html.twig');
     }
 
