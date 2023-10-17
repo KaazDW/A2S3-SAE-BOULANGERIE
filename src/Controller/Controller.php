@@ -335,7 +335,6 @@ class Controller extends AbstractController
         $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
         $Categories = $repositoryCategories->findAll();
 
-            
         return $this->render('Pages/AccueilAdmin.html.twig',[
                 'Factures'=>$Factures,
                 'Clients'=>$Clients,
@@ -344,6 +343,7 @@ class Controller extends AbstractController
                 'Categories'=>$Categories,
                 'nomUtilisateur'=>$username,
                 'selected'=>1,
+
                 
         ]
 
@@ -816,7 +816,16 @@ public function NouveauClient(Request $request){
     }
 
 
-    
+    /**
+     * @Route("/Ingredients", name="ingredientspage")
+     */
+    public function ingredient(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('Pages/Ingredients.html.twig',[
+            'selected'=>5,
+            ]);
+    }
     
 
  

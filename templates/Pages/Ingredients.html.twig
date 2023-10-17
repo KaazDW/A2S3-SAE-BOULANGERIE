@@ -1,0 +1,24 @@
+{% extends 'adminBase.html.twig' %}
+     {% block stylesheets %}
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <meta charset="UTF-8">
+         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     {% endblock %}
+{% block body %}
+    <div id="flex">
+        <div class="containermenu" id="flexcontainermenu">
+        <span style="color:white; margin-top:10px; margin-left:10px;">connecté sur le compte de : </span>
+            <div id="divrecherche">
+                <form id="formrecherche">
+                    <span style="color:white"> Rechercher un ingredient :</span>
+                    <input type="text" id="myInput" onkeyup="myFunction()">
+                    <button type="submit"><i class="fa fa-times"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h2>Ingredients Page by Pauline : Pour reparer l'erreur rien de coder dedans (tout à faire)</h2>
+    </div>
+
+{% endblock body %}
