@@ -29,6 +29,12 @@ class SecurityController extends AbstractController
     /**
      * @Route("/logout", name="app_logout")
      */
-    public function logout(){}
+    public function logout(Request $request)
+    {
+        // Effectuer les opérations de déconnexion ici (par exemple, invalidation de la session).
+        dd('logout called');
+        return redirect('/'); // Redirige vers la page d'accueil (racine).
+        dd('logout called 222');
+    }
 
 }
