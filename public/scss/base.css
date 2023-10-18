@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+* ul {
+  list-style: none;
+}
+* a {
+  text-decoration: none;
+}
+
+:root {
+  --color-primary: white;
+  --color-secondary: white;
+  --color-ternary: white;
+  --color-quaternary: white;
+  --color-black: black;
+  --color-white: white;
+  --color-darkgrey: white;
+}
+
+/*# sourceMappingURL=base.css.map */
