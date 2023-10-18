@@ -19,10 +19,8 @@
 </head>
 <body>
 <header>
-    <div class="logo">
-        <img src="{{ asset('images/logo/logo-shop.png') }}" alt="Image du shop">
-    </div>
-    <nav>
+
+    <img src="{{ asset('images/logo/logo-shop.png') }}" class="nav-logo" alt="Logo alternatif de la boulangerie">
         <ul>
             <li><a href="{{ path('homepage') }}">Accueil</a></li>
             <li><a href="{{ path('produitpage') }}">Produit</a></li>
@@ -30,37 +28,41 @@
             <li><a href="{{ path('ecomuseepage') }}">Eco-musée</a></li>
             <li><a href="{{ path('evenementpage') }}">Evenement</a></li>
             {% if app.user %}
-                <li><a href="{{ path('informationprofilpage') }}">Informations</a></li>
-                <li><a href="{{ path('historiqueprofilpage') }}">Historique</a></li>
-                <li><a href="logout" class="btn-square">Déconnexion</a></li>
+                {# If connected #}
+{#                <li><a href="{{ path('informationprofilpage') }}">Informations</a></li>#}
+{#                <li><a href="{{ path('historiqueprofilpage') }}">Historique</a></li>#}
+                <li><a href="logout" class="btn">Déconnexion</a></li>
             {% else %}
-                <li><a href="login" class="btn-square">Connexion</a></li>
+                {# If NOT connected #}
+                <li><a href="login" class="btn">Connexion</a></li>
             {% endif %}
         </ul>
-    </nav>
 </header>
-{% block body %}
+<main>
+    {% block body %}
 
-{% endblock %}
-<footer>
-    <div class="info">
-        <div>
+    {% endblock %}
+</main>
 
-        </div>
+{#<footer>#}
+{#    <div class="info">#}
+{#        <div>#}
 
-    </div>
-    <div class="page">
-        <ul>
-            <li><a href="{{ path('homepage') }}">Accueil</a></li>
-            <li><a href="{{ path('produitpage') }}">Produit</a></li>
-            <li><a href="{{ path('contactpage') }}">Contact/A propos</a></li>
-            <li><a href="{{ path('ecomuseepage') }}">Eco-musée</a></li>
-            <li><a href="{{ path('evenementpage') }}">Evenement</a></li>
-            <li><a href="login">Connexion</a></li>
-        </ul>
-    </div>
-    <p>© 2023 Boulangerie Moulin de Pont des vents. Tous droits réservés Réalisé avec ♥ par la best team SAE </p>
-</footer>
+{#        </div>#}
+
+{#    </div>#}
+{#    <div class="page">#}
+{#        <ul>#}
+{#            <li><a href="{{ path('homepage') }}">Accueil</a></li>#}
+{#            <li><a href="{{ path('produitpage') }}">Produit</a></li>#}
+{#            <li><a href="{{ path('contactpage') }}">Contact/A propos</a></li>#}
+{#            <li><a href="{{ path('ecomuseepage') }}">Eco-musée</a></li>#}
+{#            <li><a href="{{ path('evenementpage') }}">Evenement</a></li>#}
+{#            <li><a href="login">Connexion</a></li>#}
+{#        </ul>#}
+{#    </div>#}
+{#    <p>© 2023 Boulangerie Moulin de Pont des vents. Tous droits réservés Réalisé avec ♥ par la best team SAE </p>#}
+{#</footer>#}
 </body>
 </html>
 
