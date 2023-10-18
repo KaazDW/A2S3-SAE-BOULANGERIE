@@ -764,10 +764,6 @@ public function NouveauClient(Request $request){
                 $newProduits[] = $produit;
             }
             
-            
-            
-            
-            
         }
         $dateSelectionne = new \DateTime('NOW');
         if(isset($_GET['Date'])){

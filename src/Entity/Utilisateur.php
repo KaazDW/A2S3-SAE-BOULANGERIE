@@ -7,18 +7,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  */
-class Utilisateur implements PasswordAuthenticatedUserInterface
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+/**
+ * @ORM\Id
+ * @ORM\GeneratedValue(strategy="AUTO")
+ * @ORM\Column(name="id_utilisateur", type="integer")
+ */
+private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -36,12 +37,12 @@ class Utilisateur implements PasswordAuthenticatedUserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string", nullable=true, name="num_Tel")
+     * @ORM\Column(type="string", nullable=true, name="telephone")
      */
     private $numTel;
 
     /**
-     * @ORM\Column(type="string", length=255, options={"default": "user"})
+     * @ORM\Column(type="string", length=255, name="type", options={"default": "user"})
      */
     private $typeUtilisateur = 'user';
 
@@ -181,4 +182,28 @@ class Utilisateur implements PasswordAuthenticatedUserInterface
         return $this->produits;
     }
 
+
+        public function getRoles()
+    {
+        return [$this->typeUtilisateur];
+    }
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function getUserIdentifier()
+{
+    return $this->email;
+}
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+    }
 }
