@@ -15,9 +15,10 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
+use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class UsersAuthenticator extends AbstractLoginFormAuthenticator
+class UsersAuthenticator extends AbstractLoginFormAuthenticator implements LogoutSuccessHandlerInterface
 {
     use TargetPathTrait;
 
@@ -49,17 +50,34 @@ class UsersAuthenticator extends AbstractLoginFormAuthenticator
                 new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
             ]
         );
+        // Retrieve the user object from the token
+        $user = $this->userProvider->loadUserByIdentifier($email);
+
+        // Add a role attribute to the user's passport based on their role
+        $passport->addAttribute('role', $user->getRoles());
+
+        return $passport;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
-        }
+        $userRoles = $token->getRoleNames();
 
-        // For example:
-        //return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        return new RedirectResponse('Accueil');
+        if (in_array('ROLE_ADMIN', $userRoles, true)) {
+            // Redirect to the PRODUITS route for users with ROLE_ADMIN
+            return new RedirectResponse($this->urlGenerator->generate('adminAccueil'));
+        } elseif (in_array('ROLE_USER', $userRoles, true)) {
+            // Redirect to the panier page for users with ROLE_USER
+            return new RedirectResponse($this->urlGenerator->generate('panierpage'));
+        } else {
+            // Handle other cases or fallback
+            return new RedirectResponse($this->urlGenerator->generate('erreur'));
+        }
+    }
+
+    public function onLogoutSuccess(Request $request): Response
+    {
+        return new RedirectResponse($this->urlGenerator->generate('homepage'));
     }
 
     protected function getLoginUrl(Request $request): string

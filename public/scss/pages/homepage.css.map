@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"version":3,"sourceRoot":"","sources":[],"names":[],"mappings":"","file":"homepage.css"}
+=======
+{"version":3,"sourceRoot":"","sources":["homepage.scss"],"names":[],"mappings":";AACE;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EAEA;EACA;EACA;;AACA;EACE;EACA;EACA;;AAEF;EACE;EACA;EACA;;AACA;EACE;EACA","file":"homepage.css"}
+>>>>>>> client

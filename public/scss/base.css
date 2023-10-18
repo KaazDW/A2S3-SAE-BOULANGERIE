@@ -17,6 +17,53 @@
   --color-black: black;
   --color-white: white;
   --color-darkgrey: white;
+<<<<<<< HEAD
+=======
+  --color-test: #EDE1D5;
+  --color-testt: #DBCFC3;
+}
+
+body {
+  background-color: var(--color-test);
+}
+body header {
+  height: 80px;
+  border: 0.1rem solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+body header .logo img {
+  max-width: 80%;
+}
+body header nav ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+}
+body header nav ul li {
+  margin-right: 30px;
+}
+body header nav ul li a {
+  color: black;
+}
+body footer {
+  height: 150px;
+  border: 0.1rem solid black;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.btn-square {
+  background-color: var(--color-testt);
+  color: black;
+  padding: 10px 20px;
+  border: 0.1rem solid black;
+  border-radius: 2px;
+  cursor: pointer;
+>>>>>>> client
 }
 
 /*# sourceMappingURL=base.css.map */

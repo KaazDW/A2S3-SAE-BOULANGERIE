@@ -20,13 +20,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-
+/**
+ * @Route("/admin")
+ */
 class Controller extends AbstractController
 {
-    
     /**
      * @Route("/Facture",name="Facture") 
-     */
+·     */
     public function Facture(Request $request){ // fonction executé lors de la requete du client
         $repositoryFacture = $this->getDoctrine()->getRepository(Facture::class);
         // on récupère le "repository" de la classe facture
@@ -39,7 +40,7 @@ class Controller extends AbstractController
     );
     }
     
- /**
+    /**
      * @Route("/ClientSuppr",name="ClientSuppr")
      */
     public function ClientSuppr(Request $request){
@@ -138,9 +139,8 @@ class Controller extends AbstractController
     
                     $repositoryCategorie = $this->getDoctrine()->getRepository(Categorie::class);
                     $Categorie = $repositoryCategorie->findOneBy(['id'=>$idCategorieArticle]);  
-                    $Commande->addArticle($article);
-                    $article->setProduit($Produit);
-                    $article->setQte($qteArticle);
+
+
                     $article->setCategorie($Categorie);
                     echo "Calcul : ".$article->getQte()."x".($article->getCategorie()->getPoids() / 1000)."x".$article->getProduit()->getPrixUnitaire();
                     $total = $article->getQte() * ($article->getCategorie()->getPoids() / 1000) * $article->getProduit()->getPrixUnitaire();
@@ -263,7 +263,7 @@ class Controller extends AbstractController
     
     }
     /**
-     * @Route("/Clients",name="Clients")
+     * @Route("/Clients",name="adminClients")
      */
     public function Clients(){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -298,7 +298,7 @@ class Controller extends AbstractController
 
     }
     /**
-     * @Route("/Accueil",name="Accueil")
+     * @Route("/Accueil",name="adminAccueil")
      */
     public function Accueil(){
 
@@ -336,7 +336,6 @@ class Controller extends AbstractController
         $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
         $Categories = $repositoryCategories->findAll();
 
-            
         return $this->render('Pages/AccueilAdmin.html.twig',[
                 'Factures'=>$Factures,
                 'Clients'=>$Clients,
@@ -345,6 +344,7 @@ class Controller extends AbstractController
                 'Categories'=>$Categories,
                 'nomUtilisateur'=>$username,
                 'selected'=>1,
+
                 
         ]
 
@@ -578,7 +578,7 @@ public function NouveauClient(Request $request){
 
     );}
     /**
-     * @Route("/Produits",name="Produits")
+     * @Route("/Produits",name="adminProduits")
      */
     public function Produits(){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -617,18 +617,10 @@ public function NouveauClient(Request $request){
 
     }
 
-    /**
-     * @Route("/",name="redirectRoot")
-     */
-    public function RedirectRoot(){
 
-        return $this->redirectToRoute('Accueil');
-    }
-    
-    
 
     /**
-     * @Route("/Commandes",name="Agregations des commandes")
+     * @Route("/Commandes",name="adminCommandes")
      */
     public function CommandesAgregation(){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -720,7 +712,7 @@ public function NouveauClient(Request $request){
 
 
     /**
-     * @Route("/AgregationIngredients",name="AgregationIngredients")
+     * @Route("/AgregationIngredients",name="adminAgregationIngredients")
      */
     public function AgregationIngredients(){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -816,7 +808,16 @@ public function NouveauClient(Request $request){
     }
 
 
-    
+    /**
+     * @Route("/Ingredients", name="adminIngredients")
+     */
+    public function ingredient(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('Pages/Ingredients.html.twig',[
+            'selected'=>5,
+            ]);
+    }
     
 
  
