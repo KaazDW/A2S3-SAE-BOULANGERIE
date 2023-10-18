@@ -14,9 +14,10 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
+use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class UsersAuthenticator extends AbstractLoginFormAuthenticator
+class UsersAuthenticator extends AbstractLoginFormAuthenticator implements LogoutSuccessHandlerInterface
 {
     use TargetPathTrait;
 
@@ -67,6 +68,10 @@ class UsersAuthenticator extends AbstractLoginFormAuthenticator
         }
     }
 
+    public function onLogoutSuccess(Request $request): Response
+    {
+        return new RedirectResponse($this->urlGenerator->generate('homepage'));
+    }
 
     protected function getLoginUrl(Request $request): string
     {

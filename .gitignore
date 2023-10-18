@@ -19,7 +19,3 @@
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
-###Pauline
-composer.json
-composer.lock
-./.idea

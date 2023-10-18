@@ -23,7 +23,7 @@ security:
             custom_authenticator: App\Security\UsersAuthenticator
             logout:
                 path: app_logout
-                target: /
+                target: homepage
                 #target: app_login
 
             # activate different ways to authenticate

@@ -26,13 +26,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Controller extends AbstractController
 {
     /**
-     * @Route("/",name="redirectRoot")
-     */
-    public function RedirectRoot(){
-        return $this->redirectToRoute('homepage');
-    }
-    
-    /**
      * @Route("/Facture",name="Facture") 
 ·     */
     public function Facture(Request $request){ // fonction executé lors de la requete du client
