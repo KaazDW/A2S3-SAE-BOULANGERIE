@@ -3,4 +3,13 @@
     <h1>Produit Page</h1>
     <p>Cette page est la page produit </p><br>
     <p>bbbbbbnnnnnnnnnnnnn</p><br><p>bbbbbbnnnnnnnnnnnnn</p>
+
+    {% for produit in Produits %}
+        <tr>
+            <td>{{ produit.nom }}</td>
+            <td>{{ produit.prixunitaire }} €</td>
+            {# plus tard ajouter les ingredients dans un autre td #}
+        </tr>
+    {% endfor %}
+
 {% endblock body %}

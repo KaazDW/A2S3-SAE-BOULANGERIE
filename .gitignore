@@ -20,3 +20,4 @@
 ###> phpunit/phpunit ###
 ###< phpunit/phpunit ###
 
+composer.lock

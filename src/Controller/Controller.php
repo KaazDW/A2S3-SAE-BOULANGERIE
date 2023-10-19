@@ -577,45 +577,45 @@ public function NouveauClient(Request $request){
         ]
 
     );}
-    /**
-     * @Route("/Produits",name="adminProduits")
-     */
-    public function Produits(){
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+    // /**
+    //  * @Route("/Produits",name="adminProduits")
+    //  */
+    // public function Produits(){
+    //     $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $userObject=$this->getUser();
-        $username = $userObject->getUsername();
-        $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
-        $Produits = $repositoryProduits->findAll();
+    //     $userObject=$this->getUser();
+    //     $username = $userObject->getUsername();
+    //     $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+    //     $Produits = $repositoryProduits->findAll();
 
-        $repositoryArticles = $this->getDoctrine()->getRepository(Article::class);
-        $Articles = $repositoryArticles->findAll();       
+    //     $repositoryArticles = $this->getDoctrine()->getRepository(Article::class);
+    //     $Articles = $repositoryArticles->findAll();       
 
-        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
-        $Clients = $repositoryClients->findAll();   
+    //     $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+    //     $Clients = $repositoryClients->findAll();   
 
-        $repositoryFactures = $this->getDoctrine()->getRepository(Facture::class);
-        $Factures = $repositoryFactures->findAll();
+    //     $repositoryFactures = $this->getDoctrine()->getRepository(Facture::class);
+    //     $Factures = $repositoryFactures->findAll();
 
-        $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
-        $Categories = $repositoryCategories->findAll();
+    //     $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
+    //     $Categories = $repositoryCategories->findAll();
 
 
-        return $this->render('Pages/Produits.html.twig',[
-                'Factures'=>$Factures,
-                'Clients'=>$Clients,
-                'Articles'=>$Articles,
-                'Produits'=>$Produits,
-                'Categories'=>$Categories,
-                'nomUtilisateur'=>$username,
-                'selected'=>3,
+    //     return $this->render('Pages/Produits.html.twig',[
+    //             'Factures'=>$Factures,
+    //             'Clients'=>$Clients,
+    //             'Articles'=>$Articles,
+    //             'Produits'=>$Produits,
+    //             'Categories'=>$Categories,
+    //             'nomUtilisateur'=>$username,
+    //             'selected'=>3,
                 
-        ]
+    //     ]
 
-    );
+    // );
 
 
-    }
+    // }
 
 
 
@@ -819,7 +819,20 @@ public function NouveauClient(Request $request){
             ]);
     }
     
+    /**
+     * @Route("/Produits",name="Produits")
+     */
+    public function showProduits() : Response{
+        //page uniquement pour Admin
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
- 
+        // Récupére tous les produits depuis la base de données
+        $produits = $this->getDoctrine()->getRepository(Produit::class)->findAll();
+
+
+        return $this->render('Pages/Admin/Produits.html.twig', [
+            'Produits' => $produits,
+        ]);
+    }
 
 }

@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-
+use App\Entity\Produit;
 
 class HomePageController extends AbstractController
 {
@@ -55,7 +55,11 @@ class HomePageController extends AbstractController
      */
     public function ProduitPage(): Response
     {
-        return $this->render('Client/produit.html.twig');
+        $produits = $this->getDoctrine()->getRepository(Produit::class)->findAll();
+
+        return $this->render('Client/produit.html.twig', [
+            'Produits' => $produits,
+        ]);
     }
 
     /**

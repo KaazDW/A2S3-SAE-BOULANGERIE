@@ -15,17 +15,17 @@ class Produit
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id_produit", type="integer")
      */
     private $id;
 
     /**
     * @ORM\Column(name="nom", type="string", length=255)
      */
-    private $nomProduit;
+    private $nom;
 
     /**
-     * @ORM\Column(name="prix_unitaire",type="float")
+     * @ORM\Column(name="prix",type="float")
      */
     private $prixUnitaire;
 
@@ -34,21 +34,21 @@ class Produit
      */
     private $Articles;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="produits")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $categorie;
+    // /**
+    //  * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="produits")
+    //  * @ORM\JoinColumn(nullable=true)
+    //  */
+    // private $categorie;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $QteEnStock;
+    // /**
+    //  * @ORM\Column(type="integer", nullable=true)
+    //  */
+    // private $QteEnStock;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $kgPateParKg;
+    // /**
+    //  * @ORM\Column(type="float", nullable=true)
+    //  */
+    // private $kgPateParKg;
 
 
 
@@ -73,14 +73,14 @@ class Produit
         return $this->id;
     }
 
-    public function getNomProduit(): ?string
+    public function getNom(): ?string
     {
-        return $this->nomProduit;
+        return $this->nom;
     }
 
-    public function setNomProduit(string $nomProduit): self
+    public function setNom(string $nomProduit): self
     {
-        $this->nomProduit = $nomProduit;
+        $this->nom = $nomProduit;
 
         return $this;
     }
