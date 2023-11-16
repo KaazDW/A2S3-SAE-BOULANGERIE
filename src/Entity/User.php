@@ -6,6 +6,8 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -18,11 +20,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
     #[ORM\Column]
     private array $roles = [];
+
+    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'users')]
+    private Collection $produits;
+
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
+
+public function __construct() {
+    $this->produits = new ArrayCollection();
+}
+
     #[ORM\Column]
     private ?string $prenom = null;
     #[ORM\Column]
@@ -144,5 +155,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * @return Collection<int, Produit>
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
 
+    public function addProduit(Produit $produit): static
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): static
+    {
+        if ($this->produits->removeElement($produit)) {
+            $produit->removeUser($this);
+        }
+        return $this;
+    }
 }
