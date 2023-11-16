@@ -829,9 +829,13 @@ public function NouveauClient(Request $request){
         // Récupére tous les produits depuis la base de données
         $produits = $this->getDoctrine()->getRepository(Produit::class)->findAll();
 
+        $ingredients = $this->getDoctrine()->getRepository(Ingredient::class)->findAll();
+
 
         return $this->render('Pages/Admin/Produits.html.twig', [
             'Produits' => $produits,
+            'Ingredients' => $ingredients,
+
         ]);
     }
 

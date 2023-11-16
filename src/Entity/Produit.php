@@ -14,7 +14,7 @@ class Produit
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="id_produit", type="integer")
      */
     private $id;
@@ -30,42 +30,22 @@ class Produit
     private $prixUnitaire;
 
     /**
-     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="produit", orphanRemoval=true)
-     */
-    private $Articles;
-
-    // /**
-    //  * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="produits")
-    //  * @ORM\JoinColumn(nullable=true)
-    //  */
-    // private $categorie;
-
-    // /**
-    //  * @ORM\Column(type="integer", nullable=true)
-    //  */
-    // private $QteEnStock;
-
-    // /**
-    //  * @ORM\Column(type="float", nullable=true)
-    //  */
-    // private $kgPateParKg;
-
-
-
-
-
-
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
+    private $QteEnStock;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Ingredient::class, inversedBy="produits")
+     * @ORM\JoinTable(name="produit_ingredient",
+     *      joinColumns={@ORM\JoinColumn(name="id_produit", referencedColumnName="id_produit")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="id_ingredient", referencedColumnName="id_ingredient")}
+     * )
+     */
+    private $ingredients;
 
     public function __construct()
     {
-        $this->Articles = new ArrayCollection();
-        
-        
+        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,48 +77,6 @@ class Produit
         return $this;
     }
 
-    /**
-     * @return Collection|Article[]
-     */
-    public function getArticles(): Collection
-    {
-        return $this->Articles;
-    }
-
-    public function addArticle(Article $article): self
-    {
-        if (!$this->Articles->contains($article)) {
-            $this->Articles[] = $article;
-            $article->setProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeArticle(Article $article): self
-    {
-        if ($this->Articles->removeElement($article)) {
-            // set the owning side to null (unless already changed)
-            if ($article->getProduit() === $this) {
-                $article->setProduit(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getCategorie(): ?Categorie
-    {
-        return $this->categorie;
-    }
-
-    public function setCategorie(?Categorie $categorie): self
-    {
-        $this->categorie = $categorie;
-
-        return $this;
-    }
-
     public function getQteEnStock(): ?int
     {
         return $this->QteEnStock;
@@ -151,15 +89,31 @@ class Produit
         return $this;
     }
 
-    public function getKgPateParKg(): ?float
+        /**
+     * @return Collection|Ingredient[]
+     */
+    public function getIngredients(): Collection
     {
-        return $this->kgPateParKg;
+        return $this->ingredients;
     }
 
-    public function setKgPateParKg(?float $kgPateParKg): self
+    public function addIngredient(Ingredient $ingredient): self
     {
-        $this->kgPateParKg = $kgPateParKg;
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients[] = $ingredient;
+            $ingredient->addProduit($this);
+        }
 
         return $this;
     }
+
+    public function removeIngredient(Ingredient $ingredient): self
+    {
+        if ($this->ingredients->removeElement($ingredient)) {
+            $ingredient->removeProduit($this);
+        }
+
+        return $this;
+    }
+
 }

@@ -37,10 +37,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Client::class, inversedBy="user", cascade={"persist", "remove"})
-     */
-    private $Client;
 
     public function getId(): ?int
     {
@@ -134,15 +130,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getClient(): ?Client
-    {
-        return $this->Client;
-    }
-
-    public function setClient(?Client $Client): self
-    {
-        $this->Client = $Client;
-
-        return $this;
-    }
+    
 }

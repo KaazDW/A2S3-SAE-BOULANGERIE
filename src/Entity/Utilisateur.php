@@ -57,22 +57,6 @@ private $id;
      */
     private $mdp;
 
-
-    /**
-     * @ORM\OneToMany(targetEntity=Facture::class, mappedBy="utilisateur")
-     */
-    private $factures;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Produit::class, mappedBy="utilisateurs")
-     */
-    private $produits;
-
-    public function __construct(){
-        $this->factures = new ArrayCollection();
-        $this->produits = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -164,24 +148,6 @@ private $id;
 
         return $this;
     }
-
-
-    /**
-     * @return Collection|Facture[]
-     */
-    public function getFactures(): Collection
-    {
-        return $this->factures;
-    }
-
-    /**
-     * @return Collection|Produit[]
-     */
-    public function getProduits(): Collection
-    {
-        return $this->produits;
-    }
-
 
         public function getRoles()
     {

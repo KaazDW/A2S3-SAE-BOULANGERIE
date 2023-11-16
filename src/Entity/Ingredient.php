@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass=IngredientRepository::class)
@@ -12,60 +14,36 @@ class Ingredient
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="id_ingredient", type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="stock_kg", type="float", scale=2)
      */
-    private $qte;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=TypeIngredient::class, inversedBy="Ingredients")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $typeIngredient;
+    private $stockKg;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
-
+    
     /**
-     * @ORM\ManyToOne(targetEntity=IngredientsCateg::class, inversedBy="Ingredients")
+     * @ORM\ManyToMany(targetEntity=Produit::class, mappedBy="ingredients")
      */
-    private $ingredientsCateg;
+    private $produits;
+
+    public function __construct()
+    {
+        $this->produits = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getQte(): ?int
-    {
-        return $this->qte;
-    }
-
-    public function setQte(int $qte): self
-    {
-        $this->qte = $qte;
-
-        return $this;
-    }
-
-    public function getTypeIngredient(): ?TypeIngredient
-    {
-        return $this->typeIngredient;
-    }
-
-    public function setTypeIngredient(?TypeIngredient $typeIngredient): self
-    {
-        $this->typeIngredient = $typeIngredient;
-
-        return $this;
-    }
 
     public function getNom(): ?string
     {
@@ -79,15 +57,42 @@ class Ingredient
         return $this;
     }
 
-    public function getIngredientsCateg(): ?IngredientsCateg
+    public function getStockKg(): ?float
     {
-        return $this->ingredientsCateg;
+        return $this->stockKg;
     }
 
-    public function setIngredientsCateg(?IngredientsCateg $ingredientsCateg): self
+    public function setStockKg(float $stockKg): self
     {
-        $this->ingredientsCateg = $ingredientsCateg;
+        $this->stockKg = $stockKg;
 
+        return $this;
+    }
+
+        /**
+     * @return Collection|Produit[]
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produit $produit): self
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits[] = $produit;
+            $produit->addIngredient($this);
+        }
+    
+        return $this;
+    }
+    
+    public function removeProduit(Produit $produit): self
+    {
+        if ($this->produits->removeElement($produit)) {
+            $produit->removeIngredient($this);
+        }
+    
         return $this;
     }
 }
