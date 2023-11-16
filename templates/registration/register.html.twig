@@ -11,16 +11,22 @@
 </head>
 
 {% block body %}
-
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    {{ form(registrationForm) }}
-{#    {{ form_errors(registrationForm) }}#}
-{#    <label class="mt-4" for="inputEmail">{{ form_row(registrationForm.email) }}</label>#}
+    <form method="post" action="{{ path('app_register') }}">
+        {{ form_start(registrationForm) }}
 
-{#    {{ form_row(registrationForm.plainPassword) }}#}
-{#    {{ form_row(registrationForm.agreeTerms) }}#}
+        {# Afficher les champs individuellement dans l'ordre souhaité #}
+        {{ form_row(registrationForm.prenom) }}
+        {{ form_row(registrationForm.nom) }}
+        {{ form_row(registrationForm.num_tel) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword) }}
+        {{ form_row(registrationForm.adresse) }}
+        {{ form_row(registrationForm.agreeTerms) }}
 
-    <button type="submit" class="btn btn-outline-dark" >Register</button>
-    {{ form_end(registrationForm) }}
-    </div>
+        {# Bouton de soumission du formulaire #}
+        <button type="submit" class="btn btn-outline-dark">Register</button>
+
+        {{ form_end(registrationForm) }}
+    </form>
 {% endblock %}
