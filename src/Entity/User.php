@@ -16,10 +16,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
-
     #[ORM\Column]
     private array $roles = [];
 
@@ -36,6 +34,14 @@ public function __construct() {
     $this->produits = new ArrayCollection();
 }
 
+    #[ORM\Column]
+    private ?string $prenom = null;
+    #[ORM\Column]
+    private ?string $nom = null;
+    #[ORM\Column]
+    private ?string $num_tel = null;
+    #[ORM\Column]
+    private ?string $adresse=null;
     public function getId(): ?int
     {
         return $this->id;
@@ -96,6 +102,49 @@ public function __construct() {
 
         return $this;
     }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(?string $prenom): void
+    {
+        $this->prenom = $prenom;
+    }
+
+    public function getNumTel(): ?string
+    {
+        return $this->num_tel;
+    }
+
+    public function setNumTel(?string $num_tel): void
+    {
+        $this->num_tel = $num_tel;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?string $adresse): void
+    {
+        $this->adresse = $adresse;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(?string $nom): void
+    {
+        $this->nom = $nom;
+    }
+
+
+
 
     /**
      * @see UserInterface
