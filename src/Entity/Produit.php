@@ -24,9 +24,13 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Recette::class)]
     private Collection $ingredients;
 
+    #[ORM\ManyToMany(mappedBy: 'produits', targetEntity: User::class )]
+    private Collection $users;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,6 +89,33 @@ class Produit
             }
         }
 
+        return $this;
+    }
+
+        /**
+     * @return Collection<int, User>
+     */
+    public function getProduits(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeProduit($this);
+        }
+    
         return $this;
     }
 }
