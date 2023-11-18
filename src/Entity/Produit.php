@@ -27,10 +27,14 @@ class Produit
     #[ORM\ManyToMany(mappedBy: 'produits', targetEntity: User::class )]
     private Collection $users;
 
+    #[ORM\OneToMany(mappedBy: 'idProduit', targetEntity: FactureProduit::class)]
+    private Collection $factures;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->factures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,6 +120,36 @@ class Produit
             $user->removeProduit($this);
         }
     
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FactureProduit>
+     */
+    public function getFactures(): Collection
+    {
+        return $this->factures;
+    }
+
+    public function addFacture(FactureProduit $factureProduit): static
+    {
+        if (!$this->factures->contains($factureProduit)) {
+            $this->factures->add($factureProduit);
+            $factureProduit->setIdProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFacture(FactureProduit $factureProduit): static
+    {
+        if ($this->factures->removeElement($factureProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($factureProduit->getIdProduit() === $this) {
+                $factureProduit->setIdProduit(null);
+            }
+        }
+
         return $this;
     }
 }
