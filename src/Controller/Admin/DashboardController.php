@@ -43,18 +43,18 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('A3S5 SAE BOULANGERIE');
+            ->setTitle('Administration moulin du pont du vent');
     }
 
     public function configureMenuItems(): iterable
     {
         return [
-            MenuItem::linkToCrud('Users', 'fas fa-list', User::class),
+            MenuItem::linkToCrud('Utilisateurs', 'fas fa-list', User::class),
             MenuItem::linkToCrud('Ingredients', 'fas fa-list', Ingredient::class),
             MenuItem::linkToCrud('Produits', 'fas fa-list', Produit::class),
-            MenuItem::linkToCrud('Evenements', 'fas fa-list', Evenement::class),
             MenuItem::linkToCrud('Recettes', 'fas fa-list', Recette::class),
             MenuItem::linkToCrud('Factures', 'fas fa-list', Facture::class),
+            MenuItem::linkToCrud('Événements', 'fas fa-list', Evenement::class),
     ];
     }
 }
