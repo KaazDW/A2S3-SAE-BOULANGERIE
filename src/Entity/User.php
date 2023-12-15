@@ -32,6 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 public function __construct() {
     $this->produits = new ArrayCollection();
+    $this->paniers = new ArrayCollection();
 }
 
     #[ORM\Column]
@@ -42,6 +43,9 @@ public function __construct() {
     private ?string $num_tel = null;
     #[ORM\Column]
     private ?string $adresse=null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Panier::class, orphanRemoval: true)]
+    private Collection $paniers;
     public function getId(): ?int
     {
         return $this->id;
@@ -178,6 +182,36 @@ public function __construct() {
         if ($this->produits->removeElement($produit)) {
             $produit->removeUser($this);
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Panier>
+     */
+    public function getPaniers(): Collection
+    {
+        return $this->paniers;
+    }
+
+    public function addPanier(Panier $panier): static
+    {
+        if (!$this->paniers->contains($panier)) {
+            $this->paniers->add($panier);
+            $panier->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanier(Panier $panier): static
+    {
+        if ($this->paniers->removeElement($panier)) {
+            // set the owning side to null (unless already changed)
+            if ($panier->getUser() === $this) {
+                $panier->setUser(null);
+            }
+        }
+
         return $this;
     }
 }

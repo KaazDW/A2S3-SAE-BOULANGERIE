@@ -1,23 +1,37 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Log in!{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+
+<body class="bg-light">
 {% block body %}
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mt-5">
             <div class="col-md-6">
-                <form method="post" class="mt-5">
+                <form method="post" class="bg-white p-4 rounded shadow-sm">
                     {% if error %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
-
                     {% if app.user %}
                         <div class="mb-3">
                             You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
                         </div>
                     {% endif %}
 
-                    <h1 class="h3 mb-3 font-weight-normal">Veuillez vous connecter</h1>
+                    <h1 class="h3 mb-4 font-weight-normal text-center">Veuillez vous connecter</h1>
                     <div class="form-group">
                         <label for="inputEmail">Email</label>
                         <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
@@ -29,11 +43,17 @@
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                    <button class="btn btn-lg btn-primary mt-3" type="submit">
+                    <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">
                         Sign in
                     </button>
                 </form>
             </div>
         </div>
+        <p class="text-center mt-3">
+            <a href="{{ path('app_register') }}">Créer un compte</a>
+        </p>
     </div>
 {% endblock %}
+</body>
+
+</html>
