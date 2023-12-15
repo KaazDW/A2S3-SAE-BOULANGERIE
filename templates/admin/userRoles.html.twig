@@ -1,0 +1,9 @@
+{% extends '@EasyAdmin/default/field/text.html.twig' %}
+
+{% block field %}
+    {% if value is iterable and value|length > 0 %}
+        {{ value|join(', ') }}
+    {% else %}
+        Aucun rôle défini
+    {% endif %}
+{% endblock %}
