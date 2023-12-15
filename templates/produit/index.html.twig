@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pont des vents produits{% endblock %}
+
+{% block body %}
+    <div id="content">
+    <table class="table table-striped" style="margin-left:2em;">
+        <thead>
+            <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Prix Unitaire</th>
+            <th scope="col">Ingredients</th>
+            <th scope="col">Quantité de l'ingrédients (en g)</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            {% set Ingredients = produit.Ingredients %}
+            <tr>
+                <td>{{ produit.nom }}</td>
+                <td>{{ produit.prixUnitaire }}€</td>
+                <td>
+                    {% for ingredient in Ingredients %}
+                        <p>{{ingredient.name}}</p>
+                    {% endfor %}
+                </td>
+                <td></td>
+                </tr>
+
+            
+
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

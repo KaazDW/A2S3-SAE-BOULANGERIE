@@ -7,6 +7,7 @@ use App\Entity\Evenement;
 use App\Entity\Produit;
 use App\Entity\Recette;
 use App\Entity\Facture;
+use App\Entity\Panier;
 
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -55,6 +56,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Recettes', 'fas fa-list', Recette::class),
             MenuItem::linkToCrud('Factures', 'fas fa-list', Facture::class),
             MenuItem::linkToCrud('Événements', 'fas fa-list', Evenement::class),
+            MenuItem::linkToCrud('Panier', 'fas fa-list', Panier::class),
     ];
     }
 }
