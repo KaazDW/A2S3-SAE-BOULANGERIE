@@ -5,6 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="616c3817-1b80-4eb9-ab75-c8914666bd3a" name="Changes" comment="">
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/A2S3-SAE-BOULANGERIE.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/A2S3-SAE-BOULANGERIE.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/phpspec.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/phpspec.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+=======
       <change afterPath="$PROJECT_DIR$/src/Controller/AccueilController.php" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/accueil.html.twig" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/pages/accueil.html.twig" afterDir="false" />
@@ -17,6 +25,7 @@
       <change beforePath="$PROJECT_DIR$/src/Security/LoginFormAuthenticator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Security/LoginFormAuthenticator.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/registration/register.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/registration/register.html.twig" afterDir="false" />
+>>>>>>> 01dd64789b71b06fa1a1e0184d91b19688628da9
       <change beforePath="$PROJECT_DIR$/templates/security/login.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/security/login.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -181,6 +190,9 @@
       <path value="$PROJECT_DIR$/vendor/symfony/doctrine-messenger" />
       <path value="$PROJECT_DIR$/vendor/symfony/messenger" />
       <path value="$PROJECT_DIR$/vendor/masterminds/html5" />
+      <path value="$PROJECT_DIR$/vendor/easycorp/easyadmin-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/uid" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-uuid" />
     </include_path>
   </component>
   <component name="ProblemsViewState">
@@ -254,6 +266,7 @@
       <workItem from="1697560828203" duration="16949000" />
       <workItem from="1697652604856" duration="1517000" />
       <workItem from="1700121922734" duration="9063000" />
+      <workItem from="1702629357821" duration="915000" />
     </task>
     <servers />
   </component>
