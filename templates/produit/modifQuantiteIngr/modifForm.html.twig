@@ -1,0 +1,6 @@
+<form style="display: flex; justify-content: space-between; align-items: center;" hx-post="{{ path('modifierQuantite', {'idRecette': idRecette, 'quantite': quantite}) }}" hx-target="this" hx-swap="outerHTML">
+<input type="number" name="quantite" value="{{quantite}}" min="1">
+  <div style="margin-left: auto;">
+    <button type="submit" class="btn btn-success">Valider</button>
+  </div>
+</form>
