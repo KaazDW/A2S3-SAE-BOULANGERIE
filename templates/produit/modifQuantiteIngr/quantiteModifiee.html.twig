@@ -1,6 +1,15 @@
-<div hx-target="this" hx-swap="outerHTML" style="display: flex; justify-content: space-between; align-items: center;">
-    <p id="recette_{{ idRecette }}">{{ quantite }}</p>
-    <div  style="margin-left: auto;">
-        <button type="button" class="btn btn-primary" hx-get="{{ path('modifierQuantite', {'idRecette': idRecette, 'quantite': quantite}) }}">Modifier</button>
+
+
+<div hx-target="this" hx-swap="outerHTML" style="display: flex; align-items: center;">
+    <div style="flex: 1;">
+        <p>{{ recette.ingredient.nom }}</p>
+    </div>
+    <div style="width: 50px; margin: 0 10px;">/</div>
+    <div style="flex: 1;">
+        <p id="recette_{{ recette.id }}">{{ recette.quantite }}</p>
+    </div>
+    <div class="changements" style="margin-left: auto; display: flex; align-items: center;">
+        <img src="{{ asset('icons/croix.svg') }}" alt="modifier" onclick="modifierElement()" style="margin-right: 10px;">
+        <button type="button" class="btn btn-primary" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}">Modifier</button>
     </div>
 </div>

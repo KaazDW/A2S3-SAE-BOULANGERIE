@@ -1,0 +1,40 @@
+    {% set Ingredients = produit.Ingredients %}
+    <form method="post" action="">
+        <td style="vertical-align:center">
+            <input type="text" name="nomProduit" value="{{ produit.nom }}" required>
+        </td>
+        <td>{{ produit.prixUnitaire }}€</td>
+        <td>
+            {% for recette in Ingredients %}
+                {% set ingredient = recette.ingredient %}
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <p>{{ ingredient.nom }}</p>
+                    <div style="margin-left: auto;">
+                        <img src="{{ asset('icons/croix.svg') }}" alt="modifier" onclick="modifierElement()">
+                    </div>
+                </div>
+            {% endfor %}
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <button class="btn btn-success">+</button>
+            </div>
+        </td>
+        <td>
+            {% for recette in Ingredients %}
+                {% set ingredient = recette.ingredient %}
+                <div hx-target="this" hx-swap="outerHTML" style="display: flex; justify-content: space-between; align-items: center;">
+                    <p id="recette_{{ recette.id }}">{{ recette.quantite }}</p>
+                    {# <div  style="margin-left: auto;">
+                        <button type="button" class="btn btn-primary" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}">Modifier</button>
+                    </div> #}
+                </div>
+            {% endfor %}
+        </td>
+        <td class="text-center">
+            <button type="button" class="btn btn-danger">
+                <img src="{{ asset('icons/poubelle.svg') }}" alt="supprimer" >
+            </button>
+            <div  style="margin-left: auto;">
+                <button type="submit">Valider</button>
+            </div>
+        </td>
+    </form>

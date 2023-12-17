@@ -10,15 +10,17 @@ use App\Repository\RecetteRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Recette;
+use App\Entity\Produit;
+use App\Entity\Ingredient;
+
 
 class ProduitController extends AbstractController
 {
     #[Route('/produit', name: 'produits')]
-    public function index(ProduitRepository $produitRepository): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
         //Recupere l'ensemble des produits
-        $produits = $produitRepository->findAll();
-
+        $produits = $entityManager->getRepository(Produit::class)->findAll();
         return $this->render('produit/index.html.twig', [
             'produits' => $produits,
         ]);
@@ -26,12 +28,14 @@ class ProduitController extends AbstractController
 
     // PEUT ETRE MODIFIER IDRECETTE ET IDINGREDIENT POUR NE PRENDRE QUE L'ID DE LA RECETTE
     #[Route('/produit/modifQuantiteIngr/{idRecette}/{quantite}', name: 'modifierQuantite', methods: ['GET', 'POST'])]
-    public function majQuantiteIngredient(RecetteRepository $recetteRepository, EntityManagerInterface $entityManager, Request $request, $idRecette, $quantite): Response
+    public function majQuantiteIngredient(EntityManagerInterface $entityManager, Request $request, $idRecette, $quantite): Response
     {
         //SI METHODE GET RENVOIE LE FORMULAIRE POUR MODIFIER LA QUANTITE DE L'INGREDIENT
         if ($request->isMethod('GET')){
+            $recette = $entityManager->getRepository(Recette::class)->find($idRecette);
+
             return $this->render('produit/modifQuantiteIngr/modifForm.html.twig', [
-                'idRecette' => $idRecette,
+                'recette' => $recette,
                 'quantite' => $quantite,
             ]);
         }
@@ -47,23 +51,64 @@ class ProduitController extends AbstractController
             $entityManager->flush();
 
             return $this->render('produit/modifQuantiteIngr/quantiteModifiee.html.twig', [
-                'idRecette' => $idRecette,
+                'recette' => $recette,
                 'quantite' => $nouvelleQuantite,
             ]);
         }
     }
 
-    #[Route('/produit/test2', name: 'test2', methods: ['GET', 'PUT'])]
-    public function test2(ProduitRepository $produitRepository, Request $request): Response
+    // PEUT ETRE MODIFIER IDRECETTE ET IDINGREDIENT POUR NE PRENDRE QUE L'ID DE LA RECETTE
+    #[Route('/produit/modifProduit/{idProduit}', name: 'modifProduit', methods: ['GET', 'POST'])]
+    public function majProduit(EntityManagerInterface $entityManager, Request $request, $idProduit): Response
     {
-        // Recupere l'ensemble des produits
-        $produits = $produitRepository->findAll();
-    
-        if ($request->isMethod('PUT')) {
-            // Logique de traitement pour la requête PUT
-            // Cela pourrait inclure la mise à jour de la base de données, etc.
+        $produit = $entityManager->getRepository(Produit::class)->find($idProduit);
+        return $this->render('produit/modifProduit/modifProduitForm.html.twig', [
+            'produit' => $produit,
+        ]);
+    }
+
+
+    #[Route('/produit/ajouterIngredient/{idProduit}', name: 'ajouterIngredient', methods: ['GET', 'POST'])]
+    public function ajouterIngredient(EntityManagerInterface $entityManager, Request $request, $idProduit): Response
+    {
+        // SI METHODE GET RENVOIE LE FORMULAIRE POUR AJOUTER L'INGREDIENT
+        if ($request->isMethod('GET')){
+
+            //recupere le produit avec l'id donné en param
+            $produit = $entityManager->getRepository(Produit::class)->find($idProduit);
+            //recupere l'ensemble des ingredients
+            $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
+
+            return $this->render('produit/ajouterIngredient/ajouterIngredientForm.html.twig', [
+                'produit' => $produit,
+                'ingredients' => $ingredients,
+            ]);
         }
-    
-        return $this->render('produit/modifQuantiteIngr/test2.html.twig');
+
+        // SI METHODE POST CREER L'INGREDIENT
+        elseif ($request->isMethod('POST')) {
+
+            $quantite = $request->request->get('quantite'); //recupere la quantite
+            $ingredientChoisi = $request->request->get('ingredient'); // recupere l'id de l'ingredient
+            $ingredient = $entityManager->getRepository(Ingredient::class)->find($ingredientChoisi); // recupere l'ingredient grâce à son id
+            $produit = $entityManager->getRepository(Produit::class)->find($idProduit); // recupere le produit avec son id
+
+            // Creer le lien entre le produit et l'ingredient (et sa quantite) en ajoutant une recette
+            $recette = new Recette();
+            $recette->setIngredient($ingredient);
+            $recette->setProduit($produit);
+            $recette->setQuantite($quantite);
+
+            // mets a jour la bdd
+            $entityManager->persist($recette);
+            $entityManager->flush();
+
+            return $this->render('produit/ajouterIngredient/ingredientAjoute.html.twig', [
+                'produit' => $produit,
+                'ingredient' => $ingredient,
+
+            ]);
+        }
+        
     }
 }

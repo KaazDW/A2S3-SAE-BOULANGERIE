@@ -6,44 +6,42 @@
     {# bouton qui active la modal d'ajout #}
     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAjoutRecette">Ajouter<img src="{{ asset('icons/poubelle.svg') }}" alt="ajouter" ></button>
 
-    <div id="content" style="margin:1em;">
+    <div id="content" style="margin-right:10%; margin-left:10%;">
     <table class="table table-striped table-bordered table-hover" id="produitTable">
         <thead>
             <tr>
-            <th scope="col" class="text-center">Nom</th>
-            <th scope="col" class="text-center">Prix Unitaire</th>
-            <th scope="col" class="text-center">Ingredients</th>
-            <th scope="col" class="text-center">Quantité de l'ingrédients (en grammes)</th>
+            <th scope="col" class="text-center col-2">Nom</th>
+            <th scope="col" class="text-center col -1">Prix Unitaire</th>
+            <th scope="col" class="text-center col-5">Ingredients / Quantité de l'ingrédients (en grammes)</th>
             <th></th>
             </tr>
         </thead>
         <tbody>
         {% for produit in produits %}
             {% set Ingredients = produit.Ingredients %}
-            <tr>
+            <tr style="vertical-align:middle;" id="produit{{produit.id}}">
                 <td style="vertical-align:center">{{ produit.nom }}</td>
                 <td>{{ produit.prixUnitaire }}€</td>
                 <td>
                     {% for recette in Ingredients %}
                         {% set ingredient = recette.ingredient %}
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <p>{{ ingredient.nom }}</p>
-                            <div style="margin-left: auto;">
-                                <img src="{{ asset('icons/croix.svg') }}" alt="modifier" onclick="modifierElement()">
+                        <div hx-target="this" hx-swap="outerHTML" style="display: flex; align-items: center;">
+                            <div style="flex: 1;">
+                                <p>{{ ingredient.nom }}</p>
                             </div>
-                        </div>
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for recette in Ingredients %}
-                        {% set ingredient = recette.ingredient %}
-                        <div hx-target="this" hx-swap="outerHTML" style="display: flex; justify-content: space-between; align-items: center;">
-                            <p id="recette_{{ recette.id }}">{{ recette.quantite }}</p>
-                            <div  style="margin-left: auto;">
+                            <div style="width: 50px; margin: 0 10px;">/</div>
+                            <div style="flex: 1;">
+                                <p id="recette_{{ recette.id }}">{{ recette.quantite }}</p>
+                            </div>
+                            <div class="changements" style="margin-left: auto; display: flex; align-items: center;">
+                                <img src="{{ asset('icons/croix.svg') }}" alt="modifier" onclick="modifierElement()" style="margin-right: 10px;">
                                 <button type="button" class="btn btn-primary" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}">Modifier</button>
                             </div>
                         </div>
                     {% endfor %}
+                    <div style="display: flex; justify-content: center; align-items: center;" hx-target="this" hx-swap="outerHTML">
+                        <button class="btn btn-success" hx-get="{{ path('ajouterIngredient', {'idProduit': produit.id}) }}">+</button>
+                    </div>
                 </td>
                 <td class="text-center">
                     <button type="button" class="btn btn-danger">
@@ -51,9 +49,6 @@
                     </button>
                 </td>
             </tr>
-
-            
-
         {% endfor %}
         </tbody>
     </table>
