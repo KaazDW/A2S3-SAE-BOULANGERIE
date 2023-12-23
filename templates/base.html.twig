@@ -3,6 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <script src="{{ asset('Tooltiper/tooltiper.js') }}"></script>
+        <link rel="stylesheet" href="{{ asset('Tooltiper/tooltiper.css') }}">
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
@@ -12,7 +14,6 @@
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
             <script src="{{ asset('js/bibliotheques/htmx/htmx.min.js') }}"></script>
-
         {% endblock %}
     </head>
     <body>
@@ -22,10 +23,10 @@
                     <a href="{{ path('admin') }}">Admin</a>
                 </li>
                 <li>
-                    <a href="{{ path('app_logout') }}"><i class="bi bi-door-open-fill"></i>Deconnexion</a>
+                    <a href="{{ path('app_logout') }}" class="tooltip-container" data-tooltip="Test de tooltip !">Deconnexion</a>
                 </li>
                 <li>
-                    <a href="{{ path('produits') }}"><i class="bi bi-door-open-fill"></i>Produits</a>
+                    <a href="{{ path('produits') }}">Produits</a>
                 </li>
             </ul>
         </header>
