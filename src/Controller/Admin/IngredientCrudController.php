@@ -26,6 +26,6 @@ class IngredientCrudController extends AbstractCrudController
         ->setLabel('Quantité en stock (en kilos)');
 
         yield NumberField::new('min_stock')
-            ->setLabel('Quantité minimale en stock');
+            ->setLabel('Quantité limite du stock avant alerte');
     }
 }
