@@ -19,7 +19,7 @@
         <tbody>
         {% for produit in produits %}
             {% set Ingredients = produit.Ingredients %}
-            <tr style="vertical-align:middle;" id="produit{{produit.id}}">
+            <tr class="produit-row-{{ produit.id }} style="vertical-align:middle;" id="produit{{produit.id}}">
                 <td style="vertical-align:center">{{ produit.nom }}</td>
                 <td>{{ produit.prixUnitaire }}€</td>
                 <td>
@@ -31,10 +31,12 @@
                             </div>
                             <div style="width: 50px; margin: 0 10px;">/</div>
                             <div style="flex: 1;">
-                                <p id="recette_{{ recette.id }}">{{ recette.quantite }}</p>
+                                {# <p id="recette_{{ recette.id }}">{{ recette.quantite }}</p> #}
+                                <p>{{ recette.quantite }}</p>
+
                             </div>
                             <div class="changements" style="margin-left: auto; display: flex; align-items: center;">
-                                <img src="{{ asset('icons/croix.svg') }}" alt="modifier" onclick="modifierElement()" style="margin-right: 10px;">
+                                <img src="/icons/croix.svg" alt="supprimer" hx-delete="{{ path('supprimerIngredient', {'idRecette': recette.id}) }}" style="margin-right: 10px;">
                                 <button type="button" class="btn btn-primary" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}">Modifier</button>
                             </div>
                         </div>
@@ -44,8 +46,8 @@
                     </div>
                 </td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-danger">
-                        <img src="{{ asset('icons/poubelle.svg') }}" alt="supprimer" >
+                    <button type="button" class="btn btn-danger" hx-delete="{{ path('supprimerProduit', {'idProduit': produit.id}) }}" hx-target=".produit-row-{{ produit.id }}">
+                        <img src="{{ asset('icons/poubelle.svg') }}" alt="supprimer">
                     </button>
                 </td>
             </tr>
@@ -53,14 +55,6 @@
         </tbody>
     </table>
 
-    {# <div hx-target="this" hx-swap="outerHTML">
-    <div><label>First Name</label>: Joe</div>
-    <div><label>Last Name</label>: Blow</div>
-    <div><label>Email</label>: joe@blow.com</div>
-    <button hx-get="{{path('test')}}" class="btn btn-primary">
-    Click To Edit
-    </button>
-    </div> #}
 
     <!-- Modal pour l'ajout -->
     <div class="modal fade" id="modalAjoutRecette" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
