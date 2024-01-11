@@ -5,6 +5,8 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <script src="{{ asset('Tooltiper/tooltiper.js') }}"></script>
         <link rel="stylesheet" href="{{ asset('Tooltiper/tooltiper.css') }}">
+        <link rel="stylesheet" href="{{ asset('style/css/base.css') }}">
+        <script src="https://kit.fontawesome.com/98657ff299.js" crossorigin="anonymous"></script>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
@@ -18,17 +20,24 @@
     </head>
     <body>
         <header>
-            <ul class="nav">
-                <li>
-                    <a href="{{ path('admin') }}">Admin</a>
-                </li>
-                <li>
-                    <a href="{{ path('app_logout') }}" class="tooltip-container" data-tooltip="Test de tooltip !">Deconnexion</a>
-                </li>
-                <li>
-                    <a href="{{ path('produits') }}">Produits</a>
-                </li>
-            </ul>
+            <div class="nav">
+                <div class="title">
+                    {# TODO: mettre logo moulin #}
+                    <img src="/images/logo_moulin.png" alt="Logo MDPDV">
+                    <h3>Le Moulin du Pont des Vents</h3>
+                </div>
+                <ul>
+                    <li>
+                        <a href="{{ path('admin') }}">Admin</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('produits') }}">Produits</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_logout') }}" class="tooltip-container" data-tooltip="Se déconnecter"><i class="fa-solid fa-right-from-bracket"></i></a>
+                    </li>
+                </ul>
+            </div>
         </header>
         <main>
             {% block body %}
