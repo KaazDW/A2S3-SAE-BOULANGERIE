@@ -30,14 +30,12 @@
                                 <p>{{ ingredient.nom }}</p>
                             </div>
                             <div style="width: 50px; margin: 0 10px;">/</div>
-                            <div style="flex: 1;">
-                                {# <p id="recette_{{ recette.id }}">{{ recette.quantite }}</p> #}
-                                <p>{{ recette.quantite }}</p>
+                            <div style="flex: 1; margin-right:1em;">
+                                <p style="cursor:pointer;" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}">{{ recette.quantite }}</p>
 
                             </div>
                             <div class="changements" style="margin-left: auto; display: flex; align-items: center;">
-                                <img src="/icons/croix.svg" alt="supprimer" hx-delete="{{ path('supprimerIngredient', {'idRecette': recette.id}) }}" style="margin-right: 10px;">
-                                <button type="button" class="btn btn-primary" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}">Modifier</button>
+                                <img src="/icons/croix.svg" alt="supprimer" hx-delete="{{ path('supprimerIngredient', {'idRecette': recette.id}) }}" style="margin-right: 10px; cursor:pointer;">
                             </div>
                         </div>
                     {% endfor %}
