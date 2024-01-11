@@ -34,6 +34,9 @@
                         <a href="{{ path('produits') }}">Produits</a>
                     </li>
                     <li>
+                        <a href="{{ path('alert_stock') }}" onclick="openModal()">alert Stock</a>
+                    </li>
+                    <li>
                         <a href="{{ path('app_logout') }}" class="tooltip-container" data-tooltip="Se déconnecter"><i class="fa-solid fa-right-from-bracket"></i></a>
                     </li>
                 </ul>
@@ -41,6 +44,9 @@
         </header>
         <main>
             {% block body %}
+            {% endblock %}
+
+            {% block javascripts %}
             {% endblock %}
         </main>
     </body>

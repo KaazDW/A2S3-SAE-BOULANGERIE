@@ -16,8 +16,9 @@ class Facture
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idUser = null;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'factures')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    private ?User $user = null;
 
     #[ORM\Column]
     private ?float $montant = null;
@@ -25,7 +26,7 @@ class Facture
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\OneToMany(mappedBy: 'idFacture', targetEntity: FactureProduit::class)]
+    #[ORM\OneToMany(mappedBy: 'facture', targetEntity: FactureProduit::class)]
     private Collection $produits;
 
     public function __construct()
@@ -86,7 +87,7 @@ class Facture
     {
         if (!$this->produits->contains($factureProduit)) {
             $this->produits->add($factureProduit);
-            $factureProduit->setIdFacture($this);
+            $factureProduit->setId($this);
         }
 
         return $this;
@@ -96,11 +97,23 @@ class Facture
     {
         if ($this->produits->removeElement($factureProduit)) {
             // set the owning side to null (unless already changed)
-            if ($factureProduit->getIdFacture() === $this) {
-                $factureProduit->setIdFacture(null);
+            if ($factureProduit->getId() === $this) {
+                $factureProduit->setId(null);
             }
         }
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
+    }
+
+
 }

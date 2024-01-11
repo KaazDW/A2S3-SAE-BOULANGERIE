@@ -14,11 +14,12 @@ class FactureProduit
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'factureProduits')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Produit $idProduit = null;
+    #[ORM\JoinColumn(name: 'id_produit', referencedColumnName: 'id', nullable: false)]
+    private ?Produit $produit = null;
 
-    #[ORM\ManyToOne(inversedBy: 'factureProduits')]
-    private ?Facture $idFacture = null;
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    #[ORM\JoinColumn(name: 'id_facture', referencedColumnName: 'id', nullable: false)]
+    private ?Facture $facture = null;
 
     #[ORM\Column]
     private ?int $quantite = null;
@@ -28,28 +29,45 @@ class FactureProduit
         return $this->id;
     }
 
-    public function getIdProduit(): ?Produit
+    public function setId(?int $id): void
     {
-        return $this->idProduit;
+        $this->id = $id;
     }
 
-    public function setIdProduit(?Produit $idProduit): static
-    {
-        $this->idProduit = $idProduit;
+//    /**
+//     * @param int|null $id
+//     * @param Produit|null $produit
+//     * @param Facture|null $facture
+//     * @param int|null $quantite
+//     */
+//    public function __construct(?int $id, ?Produit $produit, ?Facture $facture, ?int $quantite)
+//    {
+//        $this->id = $id;
+//        $this->produit = $produit;
+//        $this->facture = $facture;
+//        $this->quantite = $quantite;
+//    }
 
-        return $this;
+
+
+    public function getProduit(): ?Produit
+    {
+        return $this->produit;
     }
 
-    public function getIdFacture(): ?Facture
+    public function setProduit(?Produit $produit): void
     {
-        return $this->idFacture;
+        $this->produit = $produit;
     }
 
-    public function setIdFacture(?Facture $idFacture): static
+    public function getFacture(): ?Facture
     {
-        $this->idFacture = $idFacture;
+        return $this->facture;
+    }
 
-        return $this;
+    public function setFacture(?Facture $facture): void
+    {
+        $this->facture = $facture;
     }
 
     public function getQuantite(): ?int
@@ -57,10 +75,17 @@ class FactureProduit
         return $this->quantite;
     }
 
-    public function setQuantite(int $quantite): static
+    public function setQuantite(?int $quantite): void
     {
         $this->quantite = $quantite;
-
-        return $this;
     }
+
+    // Ajout de méthodes pour récupérer le nom de l'ingrédient et la quantité
+    public function getNomProduit(): ?string
+    {
+        // Vérifier si l'association Produit est définie
+        return $this->produit ? $this->produit->getNom() : null;
+    }
+
+
 }

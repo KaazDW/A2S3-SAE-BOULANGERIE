@@ -33,6 +33,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 public function __construct() {
     $this->produits = new ArrayCollection();
     $this->paniers = new ArrayCollection();
+    $this->factures = new ArrayCollection();
+
 }
 
     #[ORM\Column]
@@ -43,6 +45,8 @@ public function __construct() {
     private ?string $num_tel = null;
     #[ORM\Column]
     private ?string $adresse=null;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Facture::class)]
+    private Collection $factures;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Panier::class, orphanRemoval: true)]
     private Collection $paniers;
@@ -145,6 +149,16 @@ public function __construct() {
     public function setNom(?string $nom): void
     {
         $this->nom = $nom;
+    }
+
+    public function getFactures(): Collection
+    {
+        return $this->factures;
+    }
+
+    public function setFactures(Collection $factures): void
+    {
+        $this->factures = $factures;
     }
 
 

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Factures{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Liste des Factures</h1>
+
+        {% if factures is empty %}
+            <p>Aucune facture n'a été trouvée.</p>
+        {% else %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Nom Prenom</th>
+                    <th>Produit Quantité</th>
+                    <th>Montant</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for facture in factures %}
+                    <tr>
+                        <td>{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</td>
+                        <td>
+                            {% for factureProduit in facture.produits %}
+                                {{ factureProduit.quantite }} - {{ factureProduit.produit.nom }} <br/>
+                                {% if not loop.last %}{% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{{ facture.montant|number_format(2, ',', ' ') }}</td>
+                        <td>{{ facture.date ? facture.date|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

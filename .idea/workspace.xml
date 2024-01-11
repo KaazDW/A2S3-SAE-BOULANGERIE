@@ -5,11 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="616c3817-1b80-4eb9-ab75-c8914666bd3a" name="Changes" comment="">
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/phpspec.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/phpspec.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Facture.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Facture.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/FactureProduit.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/FactureProduit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/FactureRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/FactureRepository.php" afterDir="false" />
+=======
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/style/css/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/style/css/base.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/style/css/base.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/public/style/css/base.css.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/style/scss/base.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/style/scss/base.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+>>>>>>> 333d4da707911cc99c6b55898e9f33ece9bfea21
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +206,11 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+<<<<<<< HEAD
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jeanf/Documents/Github/A3S5-SAE-Boulangerie&quot;,
+=======
     &quot;last_opened_file_path&quot;: &quot;C:/Users/jeanf/Documents/Github/Spotify-StatisticsTracker&quot;,
+>>>>>>> 333d4da707911cc99c6b55898e9f33ece9bfea21
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -248,11 +263,16 @@
       <workItem from="1700121922734" duration="9063000" />
       <workItem from="1703269988610" duration="1575000" />
       <workItem from="1703271650182" duration="1190000" />
+<<<<<<< HEAD
+      <workItem from="1703322891505" duration="856000" />
+      <workItem from="1704960045934" duration="6691000" />
+=======
       <workItem from="1703322891505" duration="4708000" />
       <workItem from="1703362000431" duration="2604000" />
       <workItem from="1703593342508" duration="2430000" />
       <workItem from="1704909625067" duration="618000" />
       <workItem from="1704959660257" duration="3110000" />
+>>>>>>> 333d4da707911cc99c6b55898e9f33ece9bfea21
     </task>
     <servers />
   </component>

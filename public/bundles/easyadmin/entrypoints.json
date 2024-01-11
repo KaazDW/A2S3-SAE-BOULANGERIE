@@ -2,16 +2,16 @@
   "entrypoints": {
     "app": {
       "css": [
-        "/app.8a77f38a.css",
-        "/app.8a77f38a.rtl.css"
+        "/app.fa78b25b.css",
+        "/app.fa78b25b.rtl.css"
       ],
       "js": [
-        "/app.00a7b690.js"
+        "/app.084bcbe0.js"
       ]
     },
     "form": {
       "js": [
-        "/form.5e2c4e01.js"
+        "/form.645e16a6.js"
       ]
     },
     "page-layout": {
@@ -31,8 +31,8 @@
     },
     "field-code-editor": {
       "css": [
-        "/field-code-editor.09574d54.css",
-        "/field-code-editor.09574d54.rtl.css"
+        "/field-code-editor.78ccdb00.css",
+        "/field-code-editor.78ccdb00.rtl.css"
       ],
       "js": [
         "/field-code-editor.6507533d.js"

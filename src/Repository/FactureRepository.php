@@ -21,6 +21,17 @@ class FactureRepository extends ServiceEntityRepository
         parent::__construct($registry, Facture::class);
     }
 
+    public function findAllWithUserDetailsAndProducts()
+    {
+        return $this->createQueryBuilder('f')
+            ->leftJoin('f.user', 'u')
+            ->addSelect('u')
+            ->leftJoin('f.produits', 'fp')
+            ->addSelect('fp')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Facture[] Returns an array of Facture objects
 //     */

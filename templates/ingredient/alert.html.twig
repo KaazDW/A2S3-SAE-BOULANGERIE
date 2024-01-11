@@ -1,0 +1,15 @@
+{% block body %}
+    {% if alertIngredients is not empty %}
+        <div class="alert alert-danger">
+            <p>Stock alert!</p>
+            <ul>
+                {% for ingredient in alertIngredients %}
+                    <li>{{ ingredient.nom }} has reached the minimum stock level.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <p>No stock alerts.</p>
+    {% endif %}
+{% endblock %}
+

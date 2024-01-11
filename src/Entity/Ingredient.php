@@ -21,6 +21,9 @@ class Ingredient
     #[ORM\Column]
     private ?float $stock = null;
 
+    #[ORM\Column(nullable:true)]
+    private ?float $min_stock = null;
+
     #[ORM\OneToMany(mappedBy: 'ingredient', targetEntity: Recette::class)]
     private Collection $produits;
 
@@ -54,6 +57,18 @@ class Ingredient
     public function setStock(float $stock): static
     {
         $this->stock = $stock;
+
+        return $this;
+    }
+
+    public function getMinStock(): ?float
+    {
+        return $this->min_stock;
+    }
+
+    public function setMinStock(float $min_stock): static
+    {
+        $this->min_stock = $min_stock;
 
         return $this;
     }
