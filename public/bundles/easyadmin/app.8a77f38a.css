@@ -1,23 +1,4 @@
 @charset "UTF-8";
-
-.btn{
-    border-radius: 50px !important;
-    background-color: #333 !important;
-    padding: 7px 17px !important;
-    border: none !important;
-    color: white !important;
-    margin: 10px;
-}
-.active .page-link{
-    border-radius: 50px !important;
-    background-color: #333 !important;
-    padding: 7px 17px !important;
-    border: none !important;
-    color: white !important;
-    margin: 0 7px !important;
-}
-
-
 /*!
  * Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)

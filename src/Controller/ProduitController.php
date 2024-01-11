@@ -12,17 +12,40 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Recette;
 use App\Entity\Produit;
 use App\Entity\Ingredient;
-
+use App\Form\ProduitFormType;
 
 class ProduitController extends AbstractController
 {
     #[Route('/produit', name: 'produits')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
+        //  FORMULAIRE D'AJOUT DE PRODUIT POUR L'INTERIEUR DE LA MODAL
+
+        // Crée une nouvelle instance de l'entité Produit
+        $produit = new Produit();
+
+        // Crée le formulaire en utilisant ProduitFormType et l'entité Produit
+        $form = $this->createForm(ProduitFormType::class, $produit);
+
+        // Traite la demande
+        $form->handleRequest($request);
+
+        // Vérifie si le formulaire a été soumis et est valide
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Sauvegarde le produit en base de données
+            $entityManager->persist($produit);
+            $entityManager->flush();
+
+            // Redirige l'utilisateur vers une autre page, par exemple, la liste des produits
+            return $this->redirectToRoute('produits');
+        }
+
         //Recupere l'ensemble des produits
         $produits = $entityManager->getRepository(Produit::class)->findAll();
         return $this->render('produit/index.html.twig', [
             'produits' => $produits,
+            'form' => $form->createView(),
+
         ]);
     }
 
