@@ -62,12 +62,12 @@ header div.nav div.title img {
   height: 35px;
   margin-right: 15px;
 }
-header div.nav ul {
+header div.nav ul.link {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
-header div.nav ul li {
+header div.nav ul.link li {
   margin: 0 15px;
 }
 
