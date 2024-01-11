@@ -4,7 +4,7 @@
 
 {% block body %}
     {# bouton qui active la modal d'ajout #}
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAjoutRecette">Ajouter<img src="{{ asset('icons/poubelle.svg') }}" alt="ajouter" ></button>
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAjoutRecette">Ajouter</button>
 
     <div id="content" style="margin-right:10%; margin-left:10%;">
     <table class="table table-striped table-bordered table-hover" id="produitTable">
@@ -19,7 +19,7 @@
         <tbody>
         {% for produit in produits %}
             {% set Ingredients = produit.Ingredients %}
-            <tr class="produit-row-{{ produit.id }} style="vertical-align:middle;" id="produit{{produit.id}}">
+            <tr class="produit-row-{{ produit.id }}"  style="vertical-align:middle;" id="produit{{produit.id}}">
                 <td style="vertical-align:center">{{ produit.nom }}</td>
                 <td>{{ produit.prixUnitaire }}€</td>
                 <td>
@@ -58,21 +58,37 @@
 
     <!-- Modal pour l'ajout -->
     <div class="modal fade" id="modalAjoutRecette" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ajouter un produit</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ajouter un produit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h2>Créer sa recette</h2>   
+                
+                {# Affichage du formulaire #}
+                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                
+                <div class="mb-3">
+                    {{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form_row(form.prixUnitaire, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="mb-3 btn btn-primary">
+                    {{ form_end(form) }}
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-primary">Ajouter </button>
+            </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <h2>Créer sa recette</h2>    
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-            <button type="button" class="btn btn-primary">Ajouter </button>
-        </div>
-        </div>
-    </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -92,4 +108,9 @@
     });
 });
     </script>
+    <style>
+        #produit_form_Ajouter {
+            color: white !important;
+        }
+    </style>
 {% endblock %}
