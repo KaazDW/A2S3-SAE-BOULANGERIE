@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Account;
 use App\Entity\Ingredient;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,8 +20,7 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    #[Route('/alert-stock', name: 'alert_stock')]
-    public function checkStockAlert(EntityManagerInterface $entityManager): Response
+    public function stockAlert(EntityManagerInterface $entityManager): Response
     {
         $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
 
@@ -32,8 +33,7 @@ class IngredientController extends AbstractController
                 $alertIngredients[] = $ingredient;
             }
         }
-
-        return $this->render('ingredient/alert.html.twig', [
+        return $this->render('components/stock.html.twig', [
             'alertIngredients' => $alertIngredients,
         ]);
     }

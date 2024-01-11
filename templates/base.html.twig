@@ -34,22 +34,14 @@
                         <a href="{{ path('produits') }}">Produits</a>
                     </li>
                     <li>
-                        <a href="{{ path('alert_stock') }}">alert Stock</a>
-                    <li>
                         <a href="{{ path('app_facture') }}">Factures</a>
                     </li>
                     <li class="tooltip-style-modal-container">
                         <a class="redround" ><i id="alertButton" style="padding: 5px;" class="fa-solid fa-bell"></i></a>
                         <div class="tooltip-style-modal" id="alertModal">
-                            <div>
-                                <b>Liste des alerts :</b>
-                                <ul>
-                                    <li>test</li>
-                                    <li>test</li>
-                                    <li>test</li>
-                                    <li>test</li>
-                                </ul>
-                            </div>
+                            {{ render(controller(
+                                'App\\Controller\\IngredientController::stockAlert'
+                            )) }}
                         </div>
                     </li>
                     <li>
