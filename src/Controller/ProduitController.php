@@ -156,7 +156,7 @@ class ProduitController extends AbstractController
     }
 
     #[Route('/produit/supprimerProduit/{idProduit}', name: 'supprimerProduit')]
-    public function supprimerProduit(EntityManagerInterface $entityManager, $idProduit)
+    public function supprimerProduit(EntityManagerInterface $entityManager, $idProduit, RecetteRepository $recetteRepository)
     {
         // Récupère le produit en BDD
         $produit = $entityManager->getRepository(Produit::class)->find($idProduit);
@@ -166,6 +166,13 @@ class ProduitController extends AbstractController
             return new Response('Produit non trouvée.', Response::HTTP_NOT_FOUND);
         }
 
+        // Récupère les recettes associées au produit via le RecetteRepository
+        $recettes = $recetteRepository->findBy(['produit' => $produit]);
+
+        // Supprime chaque recette associée
+        foreach ($recettes as $recette) {
+            $entityManager->remove($recette);
+        }
         // Supprime le produit de la base de données
         $entityManager->remove($produit);
         $entityManager->flush();
