@@ -25,7 +25,10 @@ class IngredientController extends AbstractController
 
         $alertIngredients = [];
         foreach ($ingredients as $ingredient) {
-            if ($ingredient->getStock() === $ingredient->getMinStock()) {
+            $stock = $ingredient->getStock();
+            $minStock = $ingredient->getMinStock();
+
+            if ($stock === $minStock || $stock < $minStock) {
                 $alertIngredients[] = $ingredient;
             }
         }
