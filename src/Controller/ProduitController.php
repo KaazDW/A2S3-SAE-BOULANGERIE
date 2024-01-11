@@ -106,9 +106,47 @@ class ProduitController extends AbstractController
             return $this->render('produit/ajouterIngredient/ingredientAjoute.html.twig', [
                 'produit' => $produit,
                 'ingredient' => $ingredient,
-
+                'recette' => $recette
             ]);
         }
         
+    }
+
+
+    #[Route('/produit/supprimerIngredient/{idRecette}', name: 'supprimerIngredient')]
+    public function supprimerIngredient(EntityManagerInterface $entityManager, $idRecette)
+    {
+        //recupere la recette en bdd
+        $recette = $entityManager->getRepository(Recette::class)->find($idRecette);
+        
+
+        if (!$recette) {
+            // Gére le cas où la recette n'est pas trouvée
+            return new Response('Recette non trouvée.', Response::HTTP_NOT_FOUND);
+        }
+
+        // Supprime la recette de la base de données
+        $entityManager->remove($recette);
+        $entityManager->flush();
+
+        return new Response();
+    }
+
+    #[Route('/produit/supprimerProduit/{idProduit}', name: 'supprimerProduit')]
+    public function supprimerProduit(EntityManagerInterface $entityManager, $idProduit)
+    {
+        // Récupère le produit en BDD
+        $produit = $entityManager->getRepository(Produit::class)->find($idProduit);
+
+        if (!$produit) {
+            // Gérer le cas où le produit n'est pas trouvé
+            return new Response('Produit non trouvée.', Response::HTTP_NOT_FOUND);
+        }
+
+        // Supprime le produit de la base de données
+        $entityManager->remove($produit);
+        $entityManager->flush();
+
+        return new Response();
     }
 }

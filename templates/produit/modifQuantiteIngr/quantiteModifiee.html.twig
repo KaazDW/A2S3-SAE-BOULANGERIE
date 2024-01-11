@@ -9,7 +9,7 @@
         <p id="recette_{{ recette.id }}">{{ recette.quantite }}</p>
     </div>
     <div class="changements" style="margin-left: auto; display: flex; align-items: center;">
-        <img src="{{ asset('icons/croix.svg') }}" alt="modifier" onclick="modifierElement()" style="margin-right: 10px;">
+        <img src="/icons/croix.svg" alt="supprimer" hx-delete="{{ path('supprimerIngredient', {'idRecette': recette.id}) }}" style="margin-right: 10px;">
         <button type="button" class="btn btn-primary" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}">Modifier</button>
     </div>
 </div>
