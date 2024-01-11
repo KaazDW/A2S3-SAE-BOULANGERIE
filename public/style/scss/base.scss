@@ -1,0 +1,51 @@
+// BASE SASS FILE - fichier sass d'initialisation du style globale
+
+// Google Fonts Imports : Poppins + League Spartan
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+// Initialisation
+*{
+  margin: 0;
+  padding: 0;
+  //color: var(--color-black);
+  ul{list-style: none;}
+  a{text-decoration: none; color: black;}
+  button:hover{cursor: pointer;}
+  button{background-color: transparent; border: none;}
+
+  //border: 1px solid red;
+}
+
+// Définition des variables
+:root{
+  --color-black: #222;
+  --color-white: white;
+  --color-lightgrey: #323232;
+
+  --font-title: 'League Spartan', sans-serif;
+  --font-content: 'Poppins', sans-serif;
+}
+
+// Couleur custom de selection
+::selection {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+// Pour l'animation au chargement du DOM
+body.loaded {
+  opacity: 1;
+}
+
+// Style définition principale
+body {
+  background-color: var(--color-primary);
+  font-family: var(--font-content) !important;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+
+  // Pour l'animation au chargement du DOM
+  //opacity: 0;
+  //transition: opacity 1s ease-in-out;
+}
