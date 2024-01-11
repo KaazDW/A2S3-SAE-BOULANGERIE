@@ -89,6 +89,10 @@ header div.nav ul li {
   transform: translate(50%, -50%);
 }
 
+#alertButton:hover {
+  cursor: pointer;
+}
+
 .tooltip-style-modal-container {
   position: relative;
 }
