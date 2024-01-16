@@ -21,15 +21,16 @@ class FactureRepository extends ServiceEntityRepository
         parent::__construct($registry, Facture::class);
     }
 
-    public function findAllWithUserDetailsAndProducts()
+    public function findAllWithUserDetailsAndProducts($selectedDate)
     {
-        return $this->createQueryBuilder('f')
+        $queryBuilder = $this->createQueryBuilder('f')
             ->leftJoin('f.user', 'u')
-            ->addSelect('u')
-            ->leftJoin('f.produits', 'fp')
-            ->addSelect('fp')
-            ->getQuery()
-            ->getResult();
+            ->leftJoin('f.produits', 'p')
+            ->where('f.date = :selectedDate')
+            ->setParameter('selectedDate', $selectedDate)
+            ->getQuery();
+
+        return $queryBuilder->getResult();
     }
 
 //    /**

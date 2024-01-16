@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
+use App\Form\FactureFilterType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,13 +20,19 @@ class FactureController extends AbstractController
 {
 
     #[Route('/facture', name: 'app_facture')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // R�cup�rer toutes les factures avec les d�tails de l'utilisateur et les produits
-        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts();
+        $form = $this->createForm(FactureFilterType::class);
+        $form->handleRequest($request);
+
+        $selectedDate = $form->get('selectedDate')->getData();
+
+        // Récupérer toutes les factures avec les détails de l'utilisateur et les produits
+        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
 
         return $this->render('facture/index.html.twig', [
             'factures' => $factures,
+            'form' => $form->createView(),
         ]);
     }
 
