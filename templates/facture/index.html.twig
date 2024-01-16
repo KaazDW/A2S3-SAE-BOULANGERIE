@@ -6,6 +6,11 @@
     <div class="container">
         <h1>Liste des Factures</h1>
 
+        {# Afficher le formulaire #}
+        {{ form_start(form) }}
+        {{ form_row(form.selectedDate) }}
+        {{ form_end(form) }}
+
         {% if factures is empty %}
             <p>Aucune facture n'a été trouvée.</p>
         {% else %}
@@ -15,7 +20,7 @@
                     <th>Nom Prenom</th>
                     <th>Produit Quantité</th>
                     <th>Montant</th>
-                    <th>Date</th>
+                    <th>Date de livraison</th>
                     <th>Télécharger</th>
                 </tr>
                 </thead>
