@@ -13,7 +13,7 @@ class FactureFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('selectedDate', DateType::class, [
+            ->add('dateReservation', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
             ]);

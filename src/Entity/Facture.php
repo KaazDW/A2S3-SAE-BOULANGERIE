@@ -24,8 +24,10 @@ class Facture
     private ?float $montant = null;
 
     #[ORM\Column(type: "date")]
-    private ?\DateTimeInterface $date = null;
+    private ?\DateTimeInterface $dateReservation = null;
 
+    #[ORM\Column(type: "datetime")]
+    private ?\DateTimeInterface $dateAchat = null;
     #[ORM\OneToMany(mappedBy: 'facture', targetEntity: FactureProduit::class)]
     private Collection $produits;
 
@@ -63,14 +65,26 @@ class Facture
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDateAchat(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->dateAchat;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDateAchat(?\DateTimeInterface $dateAchat): self
     {
-        $this->date = $date;
+        $this->dateAchat = $dateAchat;
+
+        return $this;
+    }
+
+    public function getDateReservation(): ?\DateTimeInterface
+    {
+        return $this->dateReservation;
+    }
+
+    public function setDateReservation(?\DateTimeInterface $dateReservation): self
+    {
+        $this->dateReservation = $dateReservation;
 
         return $this;
     }

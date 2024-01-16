@@ -8,8 +8,9 @@
 
         {# Afficher le formulaire #}
         {{ form_start(form) }}
-        {{ form_row(form.selectedDate) }}
+        {{ form_row(form.dateReservation) }}
         {{ form_end(form) }}
+        <button class="btn btn-primary" id="submit-form-btn">Valider</button>
 
         {% if factures is empty %}
             <p>Aucune facture n'a été trouvée.</p>
@@ -35,7 +36,7 @@
                             {% endfor %}
                         </td>
                         <td>{{ facture.montant|number_format(2, ',', ' ') }}</td>
-                        <td>{{ facture.date ? facture.date|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
                         <td>
                             <a href="{{ path('visualiser_facture', {'id': facture.id}) }}" class="btn btn-primary">Voir</a>
                             <a href="{{ path('telecharger_facture', {'id': facture.id}) }}" class="btn btn-primary">Télécharger</a>
@@ -46,4 +47,6 @@
             </table>
         {% endif %}
     </div>
+
+
 {% endblock %}

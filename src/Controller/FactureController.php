@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Produit;
 use App\Form\FactureFilterType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,14 +19,30 @@ use TCPDF;
 
 class FactureController extends AbstractController
 {
-
     #[Route('/facture', name: 'app_facture')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(FactureFilterType::class);
         $form->handleRequest($request);
 
-        $selectedDate = $form->get('selectedDate')->getData();
+        $dateReservation = $form->get('dateReservation')->getData();
+
+        // Convertir la date au format 'Y-m-d' si elle n'est pas vide
+        if ($dateReservation) {
+            $dateReservation = DateTime::createFromFormat('d/m/Y', $dateReservation)->format('Y-m-d');
+        }
+
+        $selectedDate = [
+            'type' => 'dateReservation',
+            'value' => $dateReservation,
+        ];
+
+//        $date = DateTime::createFromFormat('d/m/Y', '01/01/2024')->format('Y-m-d');
+//
+//        $selectedDate = [
+//            'type' => 'dateReservation',
+//            'value' => $date,
+//        ];
 
         // Récupérer toutes les factures avec les détails de l'utilisateur et les produits
         $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);

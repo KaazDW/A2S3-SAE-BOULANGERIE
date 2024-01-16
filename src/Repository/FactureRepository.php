@@ -25,12 +25,19 @@ class FactureRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('f')
             ->leftJoin('f.user', 'u')
-            ->leftJoin('f.produits', 'p')
-            ->where('f.date = :selectedDate')
-            ->setParameter('selectedDate', $selectedDate)
-            ->getQuery();
+            ->leftJoin('f.produits', 'p');
 
-        return $queryBuilder->getResult();
+        if ($selectedDate['type'] === 'dateAchat') {
+            $queryBuilder
+                ->where('f.dateAchat = :selectedDate')
+                ->setParameter('selectedDate', $selectedDate['value']);
+        } elseif ($selectedDate['type'] === 'dateReservation') {
+            $queryBuilder
+                ->where('f.dateReservation = :selectedDate')
+                ->setParameter('selectedDate', $selectedDate['value']);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 
 //    /**
