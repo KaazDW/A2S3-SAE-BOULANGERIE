@@ -21,3 +21,4 @@
 ###< symfony/phpunit-bridge ###
 .env
 .idea
+/public/bundles/
