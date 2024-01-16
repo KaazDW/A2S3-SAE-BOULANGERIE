@@ -1,117 +1,131 @@
 {% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyIx7meW6pXaPhMlT2TbAB6ZfH6O99mJK9" crossorigin="anonymous">
+    <!-- Ajoutez d'autres fichiers CSS personnalisés si nécessaire -->
     <link rel="stylesheet" href="{{ asset('style/css/pages/facture.css') }}">
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
 {% endblock %}
 
+
 {% block body %}
-    <div id="ContainerFacture" style='font-size:12px;color: #333333;background-color:#FFFFFF;'>
-        <table id="aImprimer" align='center' border='0' cellpadding='0' cellspacing='0' style='margin:auto;height:842px; width:595px;font-size:12px;'>
-            <tr>
-                <td valign='top'>
-                    <table>
-                        <tr id="test">
-                            <td>
-                                <div class="logo" style="height: 20mm;width: 100%;">
-                                    <img src="/images/logo_moulin.png" alt="Logo MDPDV" style="height: 20mm;width: 20mm;">
-                                </div>
-                                <div>
-                                    <h1>FACTURE</h1>
-                                </div><br />
-                            </td>
-                        </tr>
-                    </table>
-                    Destinataire: <br/><br/>
-                    <table>
+    <table>
+        <tr>
+            <td>
+                <div>
+                    <h1>FACTURE</h1>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;">
+                    <img src="/images/logo_moulin.png" alt="Logo MDPDV" style="height: 30mm; width: 30mm;">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div >
+                    Nom Prénom du boulanger<br/>
+                    [Adresse de la boulangerie] <br/>
+                    Tél: [Téléphone]<br/>
+                    N° de siret: [....]<br/>
+                    <br/><br/><br /><br/>
+                </div>
+            </td>
+            <td>
+                <div >
+                    {{facture.user.nom }} {{facture.user.prenom}}<br/>
+                    {{facture.user.adresse}}<br/>
+                    {{facture.user.getNumTel()}}<br/>
+                    {{facture.user.email}}<br />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    Facture N°  {{facture.id}}  <br>
+                    Date de livraison : {{facture.date|date("d/m/Y")}}  <br>
+                    Date de la commande : a rajouter  <br><br/><br/>
+                </div>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <!-- Tableau imbriqué -->
+                <table>
+                    <thead>
                         <tr>
-                            <td valign='top' width='35%' style='font-size:12px;'> <strong >{{facture.user.nom }}</strong><br />
-                                {{facture.user.prenom}}<br/>
-                                {{facture.user.adresse}}<br/>
-                                {{facture.user.email}}<br/><br/><br /><br />
-                            </td>
-                            <td valign='top' width='35%'>
-                            </td>
-                            <td valign='top' width='30%' style='font-size:12px;'>Date de livraison: {{facture.date|date("d/m/Y")}}<br/>
-                                <br/>
-                            </td>
+                            <th>Désignation</th>
+                            <th>Quantité</th>
+                            <th>Prix unitaire</th>
+                            <th>Total</th>
                         </tr>
-                    </table>
-                    <table width='100%' height='100' cellspacing='0' cellpadding='0'>
-                        <tr>
-                            <td><div align='center' style='font-size: 14px;font-weight: bold;'>Facture N°  {{facture.id}} </div><br></td>
-                        </tr>
-                    </table>
-                    <table width='100%' cellspacing='0' cellpadding='2' border='1' bordercolor='#CCCCCC'>
-                         <tr>
-                            <td width='35%' bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Désignation </strong></td>
-                            <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Quantité</strong></td>
-                            <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Prix</strong></td>
-                            <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Total</strong></td>
-                        </tr>
-                        {% for factureProduit in facture.produits %}
-                        <tr style="display:none;"><td colspan="*"><tr>
-
-                            <td valign='top' style='font-size:12px;'>{{factureProduit.produit.nom}}</td>
-                            <td valign='top' style='font-size:12px;'>{{factureProduit.produit.nom}} ({{article.Categorie.poids /1000}}kg)</td>
-                            <td valign='top' style='font-size:12px;'>{{factureProduit.quantite}} </td>
-                            <td valign='top' style='font-size:12px;'>{{ facture.montant|number_format(2, ',', ' ') }}€/kg</td>
-                            <td valign='top' style='font-size:12px;'>{{article.total}}€</td>
-
-                        </tr>
-                        {% endfor %}
-                        {% for factureProduit in facture.produits %}
-                            {% if factureProduit.produit.Categorie is defined %}
-                            <tr style="display:none;">
-                                <td valign='top' style='font-size:12px;'>{{ factureProduit.produit.nom }} ({{ factureProduit.produit.Categorie.poids / 1000 }}kg)</td>
-                                <td valign='top' style='font-size:12px;'>{{ factureProduit.quantite }} </td>
-                                <td valign='top' style='font-size:12px;'>{{ factureProduit.produit.prixUnitaire }}€/kg</td>
-                                <td valign='top' style='font-size:12px;'>{{ factureProduit.total }}€</td>
+                    </thead>
+                    <tbody>
+                    {% for factureProduit in facture.produits %}
+                      <tr>
+                                <td>{{ factureProduit.produit.nom }}</td>
+                                <td>{{ factureProduit.quantite }} </td>
+                                <td>{{ factureProduit.produit.prixUnitaire }}€</td>
+                                <td>{{ factureProduit.quantite * factureProduit.produit.prixUnitaire }}€ </td>
                             </tr>
-                        {% else %}
-                            <p>La clé 'cols' n'est pas définie dans le tableau.</p>
-                        {% endif %}
-                        {% endfor %}
-                    </table>
-                    <table width='100%' cellspacing='0' cellpadding='2' border='0'>
-                        <tr>
-                            <td style='font-size:12px;width:50%;'><strong> </strong></td>
-                            <td>
-                                <table width='100%' cellspacing='0' cellpadding='2' border='0'>
-                                    {% if facture is defined and facture.montant is defined %}
-                                        <tr>
-                                            <td align='right' style='font-size:12px;' >Total</td>
-                                            <td  align='right' style='font-size:12px;'>{{ facture.montant }}€</td>
-                                        </tr>
-                                        <tr>
-                                            <td  align='right' style='font-size:12px;'><b>Total TTC</b></td>
-                                            <td  align='right' style='font-size:12px;'><b>{{ facture.montant }}€</b></td>
-                                        </tr>
-                                    {% else %}
-                                        {# Gérer le cas où 'facture' ou 'facture.montant' n'est pas défini, par exemple en affichant un message d'erreur ou en prenant une autre action #}
-                                        <tr>
-                                            <td colspan="2">La propriété 'montant' n'est pas définie dans le tableau.</td>
-                                        </tr>
-                                    {% endif %}
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                    <table width='100%' height='50'><tr><td style='font-size:12px;text-align:justify;'>TVA non applicable, article 293B du code général des impôts</td></tr></table>
-                    <table  width='100%' cellspacing='0' cellpadding='2'>
-                        <tr>
-                            <td width='33%' style='border-top:double medium #CCCCCC;font-size:12px;' valign='top' ><b>Boulanger</b><br/>
-                                <br/>
-
-                            </td>
-                            <td width='33%' style='border-top:double medium #CCCCCC; font-size:12px;' align='center' valign='top'>
-                                [Adresse de la boulangerie] <br/>
-                                Tél: [Téléphone]<br/>
-                            </td>
-
-                            <td valign='top' width='34%' style='border-top:double medium #CCCCCC;font-size:12px;' align='right'>[Nom de la banque]<br/> [Compte bancaire (IBAN)]  <br/><br/>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Fin du tableau imbriqué -->
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <!-- Tableau imbriqué -->
+                <table>
+                    <tr>
+                        <td>TOTAL NET</td>
+                        <td>{{ facture.montant }}€</td>
+                    </tr>
+                    <tr>
+                        <td>TVA</td>
+                        <td>20,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Total TTC en €</td>
+                        <td>{{ facture.montant + (facture.montant * 0.20) | round(2) }}€</td>
+                    </tr>
+                </table>
+                <!-- Fin du tableau imbriqué -->
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <p>La loi n°92/1442 du 31 décembre 1992 nous fait l'obligation de vous indiquer que le non-respect des conditions de paiement entraine des intérêts de
+                retard suivant modalités et taux défini par la loi. Une indemnité forfaitaire de 40€ sera due pour frais de recouvrement en cas de retard de paiement.
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">Colonne 1 et Colonne 2, Ligne 2</td>
+        </tr>
+    </table>
 {% endblock body %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-fzxlYUn8D00rbzgAtNdTqF8FdXp1Wu9wvA8dql3lYu9uks5vYJL5s1BmmsbdTFT2" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyIx7meW6pXaPhMlT2TbAB6ZfH6O99mJK9" crossorigin="anonymous"></script>
+{% endblock %}

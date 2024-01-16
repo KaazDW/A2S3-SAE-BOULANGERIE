@@ -90,6 +90,44 @@ class ProduitController extends AbstractController
         ]);
     }
 
+    #[Route('/produit/majPrixProduit/{idProduit}', name: 'majPrixProduit')]
+    public function majPrixProduit(EntityManagerInterface $entityManager, Request $request, $idProduit): Response
+    {
+
+        //SI METHODE GET RENVOIE LE FORMULAIRE POUR MODIFIER LA QUANTITE DU PRODUIT
+        if ($request->isMethod('GET')){
+            // RECUPERE LE PRODUIT ET SON PRIX ACTUEL
+            $produit = $entityManager->getRepository(Produit::class)->find($idProduit);
+            return $this->render('produit/modifProduit/majPrixProduit.html.twig', [
+                'produit' => $produit,
+            ]);
+        }
+
+        // SI METHODE POST MODIFIE LE PRIX UNITAIRE DU PRODUIT ET METS A JOUR LA DIV
+        elseif ($request->isMethod('POST')) {
+            //recupere le nouveaux prix
+            $nouveauPrix = $request->request->get('prix');
+
+            // RECUPERE LE PRODUIT ET METS A JOUR SON PRIX
+            $produit = $entityManager->getRepository(Produit::class)->find($idProduit);
+            $produit->setPrixUnitaire($nouveauPrix);
+            $entityManager->flush();
+
+            return $this->render('produit/modifProduit/prixModifie.html.twig', [
+                'produit' => $produit,
+            ]);
+        }
+
+
+        $produit = $entityManager->getRepository(Produit::class)->find($idProduit);
+        return $this->render('produit/modifProduit/majPrixProduit.html.twig', [
+            'produit' => $produit,
+        ]);
+
+
+
+
+    }
 
     #[Route('/produit/ajouterIngredient/{idProduit}', name: 'ajouterIngredient', methods: ['GET', 'POST'])]
     public function ajouterIngredient(EntityManagerInterface $entityManager, Request $request, $idProduit): Response
