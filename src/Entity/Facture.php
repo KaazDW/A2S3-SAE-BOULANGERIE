@@ -23,7 +23,7 @@ class Facture
     #[ORM\Column]
     private ?float $montant = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: "date")]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\OneToMany(mappedBy: 'facture', targetEntity: FactureProduit::class)]
