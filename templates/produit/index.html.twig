@@ -75,15 +75,12 @@
                 <div class="mb-3">
                     {{ form_row(form.prixUnitaire, {'attr': {'class': 'form-control'}}) }}
                 </div>
-
-                <div class="mb-3 btn btn-primary">
-                    {{ form_end(form) }}
-                </div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                <button type="button" class="btn btn-primary">Ajouter </button>
+                    <div class="btn btn-primary">
+                    {{ form_end(form) }}
+                </div>
             </div>
             </div>
         </div>
