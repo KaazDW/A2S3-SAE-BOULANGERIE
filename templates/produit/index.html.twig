@@ -26,7 +26,7 @@
             <tr class="produit-row-{{ produit.id }}"  style="vertical-align:middle;" id="produit{{produit.id}}">
                 <td style="vertical-align:center">{{ produit.nom }}</td>
                 <td>
-                    <p  style="cursor:pointer;" hx-get="{{ path('modifPrixProduit', {'idProduit': produit.id}) }}" hx-trigger="click">
+                    <p style="cursor:pointer;" hx-target="this" hx-get="{{ path('majPrixProduit', {'idProduit': produit.id}) }}" hx-trigger="click" hx-swap="outerHTML">
                         {{ produit.prixUnitaire }}€
                     </p>
                 </td>

@@ -1,0 +1,12 @@
+<form style="display: flex; justify-content: space-between; align-items: center;" 
+      hx-post="{{ path('majPrixProduit', {'idProduit': produit.id}) }}" 
+      hx-target="this" hx-swap="outerHTML"
+      hx-trigger="submit">
+
+  <input type="number" id="prix" name="prix" step="0.01" value="{{ produit.prixUnitaire }}" required>
+  <div style="margin-left: auto;">
+    <button type="submit" class="btn btn-success">Valider</button>
+  </div>
+
+</form>
+
