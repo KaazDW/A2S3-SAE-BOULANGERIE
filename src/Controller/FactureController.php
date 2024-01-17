@@ -32,17 +32,17 @@ class FactureController extends AbstractController
             $dateReservation = DateTime::createFromFormat('d/m/Y', $dateReservation)->format('Y-m-d');
         }
 
-        $selectedDate = [
-            'type' => 'dateReservation',
-            'value' => $dateReservation,
-        ];
-
-//        $date = DateTime::createFromFormat('d/m/Y', '01/01/2024')->format('Y-m-d');
-//
 //        $selectedDate = [
 //            'type' => 'dateReservation',
-//            'value' => $date,
+//            'value' => $dateReservation,
 //        ];
+
+        $date = DateTime::createFromFormat('d/m/Y', '01/01/2024')->format('Y-m-d');
+
+        $selectedDate = [
+            'type' => 'dateReservation',
+            'value' => $date,
+        ];
 
         // Récupérer toutes les factures avec les détails de l'utilisateur et les produits
         $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
