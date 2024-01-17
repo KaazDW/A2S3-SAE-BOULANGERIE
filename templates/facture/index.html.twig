@@ -18,6 +18,7 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th>Selectionner</th>
                     <th>Nom Prenom</th>
                     <th>Produit Quantité</th>
                     <th>Montant</th>
@@ -28,6 +29,13 @@
                 <tbody>
                 {% for facture in factures %}
                     <tr>
+                        <td class="selection-checkbox">
+                            <label>
+                                <input type="checkbox" class="facture-checkbox" data-facture-id="{{ facture.id }}" data-quantite="{{ facture.produits[0].quantite }}" data-nom-produit="{{ facture.produits[0].produit.nom }}">
+                            </label>
+                        </td>
+
+
                         <td>{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</td>
                         <td>
                             {% for factureProduit in facture.produits %}
@@ -47,6 +55,82 @@
             </table>
         {% endif %}
     </div>
+    <br><br><br>
+    <div>
+        <h2>Factures Selectionnées :</h2>
+        <div id="factures-selectionnees">
+        </div>
+    </div>
 
 
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var selectedFactures = [];
+
+            // Fonction pour mettre à jour l'affichage des sélections
+            function updateSelectionDisplay() {
+                var displayContent = '';
+
+                if (selectedFactures.length === 0) {
+                    displayContent = 'Aucune facture sélectionnée.';
+                } else {
+                    selectedFactures.forEach(function(facture) {
+                        displayContent += "Facture ID: " + facture.id +
+                            ", Quantité: " + facture.quantite +
+                            ", Produit: " + facture.nomProduit + "<br>";
+                    });
+                }
+
+                $('#factures-selectionnees').html(displayContent);
+            }
+
+
+            // Gérer la sélection des factures
+            $('.facture-checkbox').change(function() {
+                var factureId = $(this).data('facture-id');
+                var quantite = $(this).data('quantite');
+                var nomProduit = $(this).data('nom-produit');
+
+                if ($(this).prop('checked')) {
+                    selectedFactures.push({
+                        id: factureId,
+                        quantite: quantite,
+                        nomProduit: nomProduit
+                    });
+                } else {
+                    selectedFactures = selectedFactures.filter(function(facture) {
+                        return facture.id !== factureId;
+                    });
+                }
+
+                // Mettre à jour l'affichage des sélections
+                updateSelectionDisplay();
+            });
+
+            // Gérer le bouton de validation
+            $('#submit-form-btn').click(function() {
+                // Ajoutez votre logique ici pour traiter les factures sélectionnées
+                console.log("Factures sélectionnées : ", selectedFactures);
+
+                // Si vous souhaitez envoyer les sélections au backend, vous pouvez utiliser une requête AJAX
+                // $.ajax({
+                //     url: '/traiter_selections',
+                //     method: 'POST',
+                //     data: { selectedFactures: selectedFactures },
+                //     success: function(response) {
+                //         // Traitement réussi
+                //     },
+                //     error: function(error) {
+                //         // Gestion des erreurs
+                //     }
+                // });
+            });
+        });
+    </script>
 {% endblock %}
