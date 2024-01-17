@@ -38,12 +38,9 @@
                         <a href="{{ path('app_facture') }}">Factures</a>
                     </li>
                     <li class="tooltip-style-modal-container">
-                        <a class="redround" ><i id="alertButton" style="padding: 5px;" class="fa-solid fa-bell"></i></a>
-                        <div class="tooltip-style-modal" id="alertModal">
-                            {{ render(controller(
-                                'App\\Controller\\IngredientController::stockAlert'
-                            )) }}
-                        </div>
+                        {{ render(controller(
+                            'App\\Controller\\IngredientController::stockAlert'
+                        )) }}
                     </li>
                     <li>
                         <a href="{{ path('app_logout') }}" class="tooltip-container" data-tooltip="Se déconnecter"><i class="fa-solid fa-right-from-bracket"></i></a>
@@ -58,26 +55,5 @@
             {% block javascripts %}
             {% endblock %}
         </main>
-        <script>
-
-            alertButton = document.getElementById('alertButton');
-            alertModal = document.getElementById('alertModal');
-            document.addEventListener('click', function (event) {
-                if (event.target == alertButton) {
-                    if(alertModal.style.display == 'block'){
-                        alertModal.style.display = 'none';
-                    } else {
-                        alertModal.style.display = 'block';
-                    }
-                    return;
-                }
-                if (alertModal.contains(event.target)) {
-                    return;
-                }
-                alertModal.style.display = 'none';
-            });
-        </script>
-
     </body>
-
 </html>

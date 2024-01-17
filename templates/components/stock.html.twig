@@ -1,12 +1,43 @@
+{# Verifie la présence d'une alert pour afficher la pastille de notification sur l'icone#}
 {% if alertIngredients is not empty %}
-<div class="alert alert-danger">
-    <p>Stock alert!</p>
-    <ul>
-        {% for ingredient in alertIngredients %}
-        <li>{{ ingredient.nom }} has reached the minimum stock level.</li><br/>
-        {% endfor %}
-    </ul>
-</div>
+    <a class="redround" ><i id="alertButton" style="padding: 5px;" class="fa-solid fa-bell"></i></a>
 {% else %}
-<p>No stock alerts.</p>
+    <a><i id="alertButton" style="padding: 5px;" class="fa-solid fa-bell"></i></a>
 {% endif %}
+{# Verifie la présence d'une ou plusieurs alerte afin de les afficher dans un modale spécifique#}
+<div class="tooltip-style-modal" id="alertModal">
+    {% if alertIngredients is not empty %}
+        <div class="alert alert-danger">
+            <b>Alert de stock !</b>
+            <ul>
+                {% for ingredient in alertIngredients %}
+                <li style="display: flex; align-items:center"><i class="fa-solid fa-triangle-exclamation" style="margin-right: 15px;"></i>{{ ingredient.nom }} à atteint sa quantité minimale dans le stock !</li><br/>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <p>Aucune alerte de Stock.</p>
+    {% endif %}
+</div>
+<script>
+    // Script Javascript du Modal de Notifications
+    alertButton = document.getElementById('alertButton');
+    alertModal = document.getElementById('alertModal');
+    // Verifie le click sur la page
+    document.addEventListener('click', function (event) {
+        // Verifie la position du click
+        // Si celui-ci est bien sur notre bouton alors afficher le modal, sinon : le caché
+        if (event.target == alertButton) {
+            if(alertModal.style.display == 'block'){
+                alertModal.style.display = 'none';
+            } else {
+                alertModal.style.display = 'block';
+            }
+            return;
+        }
+        if (alertModal.contains(event.target)) {
+            return;
+        }
+        alertModal.style.display = 'none';
+    });
+</script>
