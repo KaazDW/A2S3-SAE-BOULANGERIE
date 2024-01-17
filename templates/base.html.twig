@@ -29,13 +29,13 @@
                 </a>
                 <ul class="link">
                     <li>
-                        <a href="{{ path('admin') }}">Admin</a>
+                        <a href="{{ path('admin') }}" class="tooltip-container" data-tooltip="Accéder à l'interface d'administration">Admin</a>
                     </li>
                     <li>
-                        <a href="{{ path('produits') }}">Produits</a>
+                        <a href="{{ path('produits') }}" class="tooltip-container" data-tooltip="[...]">Produits</a>
                     </li>
                     <li>
-                        <a href="{{ path('app_facture') }}">Factures</a>
+                        <a href="{{ path('app_facture') }}" class="tooltip-container" data-tooltip="[...]">Factures</a>
                     </li>
                     <li class="tooltip-style-modal-container">
                         {{ render(controller(
