@@ -106,7 +106,7 @@ class FactureController extends AbstractController
     {
         $pdf = new TCPDF();
         $pdf->AddPage();
-        $pdf->writeHTML($this->renderView('facture/Facture.html.twig', ['facture' => $facture]));
+        $pdf->writeHTML($this->renderView('facture/facture.html.twig', ['facture' => $facture]));
 
         return $pdf->Output('Facture_' . $facture->getId() . '.pdf', 'S');
     }
@@ -130,5 +130,12 @@ class FactureController extends AbstractController
             return $response;
         }
 
+    #[Route('/création_commande', name: 'commande')]
+    public function passerCommande( EntityManagerInterface $entityManager): Response
+    {
+        return $this->render('facture/commande.html.twig', [
+
+        ]);
+    }
 
 }

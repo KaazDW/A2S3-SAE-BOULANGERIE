@@ -12,97 +12,87 @@
         {{ form_end(form) }}
 
         <div class="listeFactures" hx-target="this" hx-swap="outerHTML">
-            {# {% include 'facture/factureParDate.html.twig' %} #}
+             {% include 'facture/factureParDate.html.twig' %}
         </div>
 
     </div>
+{% endblock %}
 
-    <script>
-        function validerFormulaire() {
-            var dateValue = document.getElementById('{{ form.dateReservation.vars.id }}').value;
-            console.log(dateValue);
-
-            // Effectuer une requête AJAX
-            fetch('/factures/' + dateValue, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                    // Vous pouvez ajouter d'autres en-têtes si nécessaire
-                },
-                // body: ... // Vous pouvez inclure un corps si nécessaire
-            })
-            .then(response => response.text())
-            .then(data => {
-                // Mettre à jour le contenu de la div avec la réponse
-                document.querySelector('.listeFactures').innerHTML = data;
-            })
-            .catch(error => console.error('Erreur lors de la requête:', error));
-        }
-    </script>
-
+{% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function() {
+
+        <script>
             var selectedFactures = [];
 
             // Fonction pour mettre à jour l'affichage des sélections
             function updateSelectionDisplay() {
-                var displayContent = '';
+            var displayContent = '';
 
-                if (selectedFactures.length === 0) {
-                    displayContent = 'Aucune facture sélectionnée.';
-                } else {
-                    selectedFactures.forEach(function(facture) {
-                        displayContent += "Facture ID: " + facture.id +
-                            ", Quantité: " + facture.quantite +
-                            ", Produit: " + facture.nomProduit + "<br>";
-                    });
-                }
+            if (selectedFactures.length === 0) {
+            displayContent = 'Aucune facture sélectionnée.';
+        } else {
+            selectedFactures.forEach(function(facture) {
+            displayContent += "Facture ID: " + facture.id +
+            ", Quantité: " + facture.quantite +
+            ", Produit: " + facture.nomProduit + "<br>";
+        });
+        }
 
-                $('#factures-selectionnees').html(displayContent);
-            }
-
-
-            // Gérer la sélection des factures
-            $('.facture-checkbox').change(function() {
-                var factureId = $(this).data('facture-id');
-                var quantite = $(this).data('quantite');
-                var nomProduit = $(this).data('nom-produit');
-
-                if ($(this).prop('checked')) {
-                    selectedFactures.push({
-                        id: factureId,
-                        quantite: quantite,
-                        nomProduit: nomProduit
-                    });
-                } else {
-                    selectedFactures = selectedFactures.filter(function(facture) {
-                        return facture.id !== factureId;
-                    });
-                }
-
-                // Mettre à jour l'affichage des sélections
-                updateSelectionDisplay();
-            });
-
-            // Gérer le bouton de validation
+            $('#factures-selectionnees').html(displayContent);
+        }
+            /// Ajouter un gestionnaire d'événements aux checkboxes
+            //$('.facture-checkbox').change(function() {
+            //    handleFactureSelection(this);
+            //});
+            // Ajouter un gestionnaire d'événements au bouton de validation
             $('#submit-form-btn').click(function() {
                 // Ajoutez votre logique ici pour traiter les factures sélectionnées
                 console.log("Factures sélectionnées : ", selectedFactures);
 
-                // Si vous souhaitez envoyer les sélections au backend, vous pouvez utiliser une requête AJAX
-                // $.ajax({
-                //     url: '/traiter_selections',
-                //     method: 'POST',
-                //     data: { selectedFactures: selectedFactures },
-                //     success: function(response) {
-                //         // Traitement réussi
-                //     },
-                //     error: function(error) {
-                //         // Gestion des erreurs
-                //     }
-                // });
             });
+// Fonction pour gérer la sélection des factures
+            function handleFactureSelection(checkbox) {
+            console.log(checkbox);
+            var factureId = $(checkbox).data('facture-id');
+            var quantite = $(checkbox).data('quantite');
+            var nomProduit = $(checkbox).data('nom-produit');
+            if ($(checkbox).prop('checked')) {
+            selectedFactures.push({
+            id: factureId,
+            quantite: quantite,
+            nomProduit: nomProduit
         });
+        } else {
+            selectedFactures = selectedFactures.filter(function(facture) {
+            return facture.id !== factureId;
+        });
+        }
+
+            // Mettre à jour l'affichage des sélections
+            updateSelectionDisplay();
+        }
     </script>
+    <script>
+        function validerFormulaire() {
+            // RECUPERE LA VALEUR DE LA DATE
+            var dateValue = document.getElementById('{{ form.dateReservation.vars.id }}').value;
+
+            // Effectue une requête AJAX
+            fetch('/factures/' + dateValue, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(response => response.text())
+                .then(data => {
+                    // Mets à jour le contenu de la div listeFactures avec la réponse
+                    document.querySelector('.listeFactures').innerHTML = data;
+                })
+                .catch(error => console.error('Erreur lors de la requête:', error));
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 {% endblock %}

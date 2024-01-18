@@ -4,6 +4,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th>Selectionner</th>
             <th>Nom Prenom</th>
             <th>Produit Quantité</th>
             <th>Montant</th>
@@ -14,6 +15,11 @@
         <tbody>
         {% for facture in factures %}
             <tr>
+                <td class="selection-checkbox">
+                    <label>
+                        <input onchange="handleFactureSelection(this)" type="checkbox" class="facture-checkbox" data-facture-id="{{ facture.id }}" data-quantite="{{ facture.produits[0].quantite }}" data-nom-produit="{{ facture.produits[0].produit.nom }}">
+                    </label>
+                </td>
                 <td>{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</td>
                 <td>
                     {% for factureProduit in facture.produits %}
@@ -31,4 +37,11 @@
         {% endfor %}
         </tbody>
     </table>
+    <br><br><br>
+    <div>
+        <h2>Factures Selectionnées :</h2>
+        <div id="factures-selectionnees">
+        </div>
+    </div>
 {% endif %}
+
