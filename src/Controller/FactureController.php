@@ -52,6 +52,29 @@ class FactureController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    #[Route('/factures/{date}', name: 'getFacturesParDate')]
+    public function getFacturesParDate(string $date, EntityManagerInterface $entityManager): Response {
+        // Modifiez le format pour correspondre à "année-jour-mois"
+        $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+    
+        if ($dateObj === false) {
+            // Gérez le cas où la conversion échoue
+            return new Response('Format de date invalide.', Response::HTTP_BAD_REQUEST);
+        }
+    
+        $formattedDate = $dateObj->format('Y-m-d');
+
+        $selectedDate = [
+            'type' => 'dateReservation',
+            'value' => $formattedDate,
+        ];
+
+        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
+    
+        return $this->render('facture/factureParDate.html.twig', [
+            'factures' => $factures,
+        ]);
+    }
 
     #[Route('/visualiser_facture/{id}', name: 'visualiser_facture')]
     public function visualiserFacture(int $id, EntityManagerInterface $entityManager): Response
@@ -83,7 +106,7 @@ class FactureController extends AbstractController
     {
         $pdf = new TCPDF();
         $pdf->AddPage();
-        $pdf->writeHTML($this->renderView('facture/Facture.html.twig', ['facture' => $facture]));
+        $pdf->writeHTML($this->renderView('facture/facture.html.twig', ['facture' => $facture]));
 
         return $pdf->Output('Facture_' . $facture->getId() . '.pdf', 'S');
     }
@@ -107,5 +130,12 @@ class FactureController extends AbstractController
             return $response;
         }
 
+    #[Route('/création_commande', name: 'commande')]
+    public function passerCommande( EntityManagerInterface $entityManager): Response
+    {
+        return $this->render('facture/commande.html.twig', [
+
+        ]);
+    }
 
 }
