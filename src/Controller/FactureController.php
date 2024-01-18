@@ -33,11 +33,6 @@ class FactureController extends AbstractController
             $dateReservation = DateTime::createFromFormat('d/m/Y', $dateReservation)->format('Y-m-d');
         }
 
-//        $selectedDate = [
-//            'type' => 'dateReservation',
-//            'value' => $dateReservation,
-//        ];
-
         $date = DateTime::createFromFormat('d/m/Y', '01/01/2024')->format('Y-m-d');
 
         $selectedDate = [
@@ -46,7 +41,7 @@ class FactureController extends AbstractController
         ];
 
         // Récupérer toutes les factures avec les détails de l'utilisateur et les produits
-        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
+        $factures = $entityManager->getRepository(Facture::class)->findAllFromDate($selectedDate);
 
         return $this->render('facture/index.html.twig', [
             'factures' => $factures,
