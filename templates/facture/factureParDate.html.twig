@@ -17,7 +17,15 @@
             <tr>
                 <td class="selection-checkbox">
                     <label>
-                        <input onchange="handleFactureSelection(this)" type="checkbox" class="facture-checkbox" data-facture-id="{{ facture.id }}" data-quantite="{{ facture.produits[0].quantite }}" data-nom-produit="{{ facture.produits[0].produit.nom }}">
+                        <input
+                                onchange="handleFactureSelection(this)"
+                                type="checkbox"
+                                class="facture-checkbox"
+                                data-facture-id="{{ facture.id }}"
+                                data-quantite="{{ facture.produits|map(p => p.quantite)|join(',') }}"
+                                data-nom-produit="{{ facture.produits|map(p => p.produit.nom)|join(',') }}"
+                                data-debug="{{ facture.produits|map(p => p.quantite)|join(',') }}"
+                        >
                     </label>
                 </td>
                 <td>{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</td>

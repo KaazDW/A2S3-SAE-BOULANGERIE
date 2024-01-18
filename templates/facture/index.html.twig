@@ -26,20 +26,30 @@
 
             // Fonction pour mettre à jour l'affichage des sélections
             function updateSelectionDisplay() {
-            var displayContent = '';
+                var displayContent = '';
+                console.log(selectedFactures);
+                if (selectedFactures.length === 0) {
+                    displayContent = 'Aucune facture sélectionnée.';
+                } else {
+                    selectedFactures.forEach(function (facture) {
+                        displayContent += "Facture ID: " + facture.id + "<br>";
 
-            if (selectedFactures.length === 0) {
-            displayContent = 'Aucune facture sélectionnée.';
-        } else {
-            selectedFactures.forEach(function(facture) {
-            displayContent += "Facture ID: " + facture.id +
-            ", Quantité: " + facture.quantite +
-            ", Produit: " + facture.nomProduit + "<br>";
-        });
-        }
+                        // Diviser les chaînes en tableaux
+                        var quantiteArray = facture.quantite.split(',');
+                        var nomProduitArray = facture.nomProduit.split(',');
 
-            $('#factures-selectionnees').html(displayContent);
-        }
+                        // Afficher chaque produit avec sa quantité successivement
+                        for (var i = 0; i < quantiteArray.length; i++) {
+                            displayContent += nomProduitArray[i].trim() +
+                                " : " + quantiteArray[i].trim() + "<br>";
+                        }
+
+                        displayContent += "<hr>";
+                    });
+                }
+
+                $('#factures-selectionnees').html(displayContent);
+            }
             /// Ajouter un gestionnaire d'événements aux checkboxes
             //$('.facture-checkbox').change(function() {
             //    handleFactureSelection(this);
@@ -52,25 +62,33 @@
             });
 // Fonction pour gérer la sélection des factures
             function handleFactureSelection(checkbox) {
-            console.log(checkbox);
-            var factureId = $(checkbox).data('facture-id');
-            var quantite = $(checkbox).data('quantite');
-            var nomProduit = $(checkbox).data('nom-produit');
-            if ($(checkbox).prop('checked')) {
-            selectedFactures.push({
-            id: factureId,
-            quantite: quantite,
-            nomProduit: nomProduit
-        });
-        } else {
-            selectedFactures = selectedFactures.filter(function(facture) {
-            return facture.id !== factureId;
-        });
-        }
+                console.log(checkbox);
+                var factureId = $(checkbox).data('facture-id');
+                var quantite = $(checkbox).data('quantite');
+                var nomProduit = $(checkbox).data('nom-produit');
 
-            // Mettre à jour l'affichage des sélections
-            updateSelectionDisplay();
-        }
+                // Déboguer la valeur de data-debug
+                var debugValue = $(checkbox).data('debug');
+                console.log("Valeur de data-debug : " + debugValue);
+
+                if ($(checkbox).prop('checked')) {
+                    // Convertir quantite en chaîne de caractères
+                    var processedQuantite = quantite.toString();
+
+                    selectedFactures.push({
+                        id: factureId,
+                        quantite: processedQuantite,
+                        nomProduit: nomProduit
+                    });
+                } else {
+                    selectedFactures = selectedFactures.filter(function(facture) {
+                        return facture.id !== factureId;
+                    });
+                }
+
+                // Mettre à jour l'affichage des sélections
+                updateSelectionDisplay();
+            }
     </script>
     <script>
         function validerFormulaire() {
