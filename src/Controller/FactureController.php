@@ -52,6 +52,15 @@ class FactureController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    #[Route('/factures/{date}', name: 'getFacturesParDate')]
+    public function getFacturesParDate(string $date, EntityManagerInterface $entityManager): Response{
+        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($date);
+        dd($factures);
+
+        return $this->render('votre_template.html.twig', [
+            'factures' => $factures,
+        ]);
+    }
 
     #[Route('/visualiser_facture/{id}', name: 'visualiser_facture')]
     public function visualiserFacture(int $id, EntityManagerInterface $entityManager): Response
