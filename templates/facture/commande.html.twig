@@ -1,11 +1,33 @@
+{# templates/facture/nouvelle_facture.html.twig #}
+
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-{% endblock %}
+{% block title %}Nouvelle Facture{% endblock %}
 
 {% block body %}
-   <p>test</p>
-{% endblock body %}
+    <div class="container">
+        <h1>Nouvelle Facture</h1>
 
-{% block javascripts %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        {# Affichez chaque champ de la collection individuellement #}
+        {% for produitForm in form.produits %}
+            {{ form_row(produitForm.produit) }}
+            {{ form_row(produitForm.quantite) }}
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Ajouter la commande</button>
+        {{ form_end(form) }}
+    </div>
+
+    <script>
+        // Fonction pour ajouter de nouveaux éléments au clic sur un bouton (exemple)
+        function addProduit() {
+            var index = new Date().getTime(); // Utilisez un timestamp comme identifiant unique
+            var prototype = '{{ form_widget(form.produits.vars.prototype)|raw }}';
+            prototype = prototype.replace(/__name__/g, index);
+            $('#facture_produits').append(prototype);
+        }
+    </script>
 {% endblock %}

@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Facture;
 use TCPDF;
+use App\Form\FactureType;
 
 
 
@@ -52,23 +53,27 @@ class FactureController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    // RECUPERE LES FACTURES QUI SONT COMMANDEES A LA DATE DONNEE EN PARAMETRE
     #[Route('/factures/{date}', name: 'getFacturesParDate')]
     public function getFacturesParDate(string $date, EntityManagerInterface $entityManager): Response {
-        // Modifiez le format pour correspondre à "année-jour-mois"
+        //Modifie le format de la date
         $dateObj = DateTime::createFromFormat('Y-m-d', $date);
-    
+
+        //Cas ou la conversion échoue
         if ($dateObj === false) {
-            // Gérez le cas où la conversion échoue
             return new Response('Format de date invalide.', Response::HTTP_BAD_REQUEST);
         }
-    
+        // Mets la date au bon format
         $formattedDate = $dateObj->format('Y-m-d');
 
+        // TABLEAU QUI SERVIRA AU REPOSITORY
         $selectedDate = [
             'type' => 'dateReservation',
             'value' => $formattedDate,
         ];
 
+        // RECUPERE LES FACTURES A LA DATE $SELECTEDDATE
         $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
     
         return $this->render('facture/factureParDate.html.twig', [
@@ -130,11 +135,41 @@ class FactureController extends AbstractController
             return $response;
         }
 
-    #[Route('/création_commande', name: 'commande')]
-    public function passerCommande( EntityManagerInterface $entityManager): Response
+    #[Route('/creation_commande', name: 'commande')]
+    public function passerCommande( EntityManagerInterface $entityManager, Request $request): Response
     {
-        return $this->render('facture/commande.html.twig', [
+        {
+            // Créer une nouvelle instance de Facture
+            $facture = new Facture();
+    
+            // Créer une instance de FactureType
+            $form = $this->createForm(FactureType::class, $facture);
+    
+            // Gérer la soumission du formulaire
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
 
+                $user = $this->getUser();
+                if (!$user) {
+                    // Rediriger vers la page de connexion ou effectuer d'autres actions nécessaires
+                    return $this->redirectToRoute('app_login');
+                }
+
+                $facture->setDateAchat(new DateTime());
+                $facture->setUser($user);
+
+                $entityManager->persist($facture);
+                $entityManager->flush();
+    
+                // Redirigez l'utilisateur vers une autre page après la soumission réussie
+                return $this->redirectToRoute('page_de_redirection');
+            }
+    
+        }
+
+        return $this->render('facture/commande.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 

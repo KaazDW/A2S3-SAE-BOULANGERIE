@@ -41,18 +41,6 @@ class Facture
         return $this->id;
     }
 
-    public function getIdUser(): ?int
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(int $idUser): static
-    {
-        $this->idUser = $idUser;
-
-        return $this;
-    }
-
     public function getMontant(): ?float
     {
         return $this->montant;
@@ -101,7 +89,7 @@ class Facture
     {
         if (!$this->produits->contains($factureProduit)) {
             $this->produits->add($factureProduit);
-            $factureProduit->setId($this);
+            // $factureProduit->setId($this);
         }
 
         return $this;
