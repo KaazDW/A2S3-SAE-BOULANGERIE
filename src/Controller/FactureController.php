@@ -53,11 +53,25 @@ class FactureController extends AbstractController
         ]);
     }
     #[Route('/factures/{date}', name: 'getFacturesParDate')]
-    public function getFacturesParDate(string $date, EntityManagerInterface $entityManager): Response{
-        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($date);
-        dd($factures);
+    public function getFacturesParDate(string $date, EntityManagerInterface $entityManager): Response {
+        // Modifiez le format pour correspondre à "année-jour-mois"
+        $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+    
+        if ($dateObj === false) {
+            // Gérez le cas où la conversion échoue
+            return new Response('Format de date invalide.', Response::HTTP_BAD_REQUEST);
+        }
+    
+        $formattedDate = $dateObj->format('Y-m-d');
 
-        return $this->render('votre_template.html.twig', [
+        $selectedDate = [
+            'type' => 'dateReservation',
+            'value' => $formattedDate,
+        ];
+
+        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
+    
+        return $this->render('facture/factureParDate.html.twig', [
             'factures' => $factures,
         ]);
     }

@@ -22,7 +22,7 @@
                     {% endfor %}
                 </td>
                 <td>{{ facture.montant|number_format(2, ',', ' ') }}</td>
-                <td>{{ facture.date ? facture.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('visualiser_facture', {'id': facture.id}) }}" class="btn btn-primary">Voir</a>
                     <a href="{{ path('telecharger_facture', {'id': facture.id}) }}" class="btn btn-primary">Télécharger</a>

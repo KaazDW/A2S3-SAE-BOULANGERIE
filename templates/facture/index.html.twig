@@ -19,7 +19,7 @@
 
     <script>
         function validerFormulaire() {
-            var dateValue = document.getElementById('{{ form.selectedDate.vars.id }}').value;
+            var dateValue = document.getElementById('{{ form.dateReservation.vars.id }}').value;
             console.log(dateValue);
 
             // Effectuer une requête AJAX
@@ -40,7 +40,7 @@
         }
     </script>
 
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function() {
             var selectedFactures = [];
