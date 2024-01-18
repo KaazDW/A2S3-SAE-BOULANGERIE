@@ -1,8 +1,8 @@
 {# Verifie la présence d'une alert pour afficher la pastille de notification sur l'icone#}
 {% if alertIngredients is not empty %}
-    <a class="redround" ><i id="alertButton" style="padding: 5px;" class="fa-solid fa-bell"></i></a>
+    <a class="redround tooltip-container" data-tooltip="Notifications" ><i id="alertButton" style="padding: 5px;" class="fa-solid fa-bell"></i></a>
 {% else %}
-    <a><i id="alertButton" style="padding: 5px;" class="fa-solid fa-bell"></i></a>
+    <a class="tooltip-container" data-tooltip="Notifications" ><i id="alertButton" style="padding: 5px;" class="fa-solid fa-bell"></i></a>
 {% endif %}
 {# Verifie la présence d'une ou plusieurs alerte afin de les afficher dans un modale spécifique#}
 <div class="tooltip-style-modal" id="alertModal">
