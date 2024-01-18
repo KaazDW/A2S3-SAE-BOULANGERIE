@@ -1,17 +1,19 @@
 <form hx-post="{{ path('ajouterIngredient', {'idProduit': produit.id}) }}" hx-target="this" hx-swap="outerHTML">
 {% set prodIngredientIds = produit.Ingredients|map(i => i.ingredient.id) %}
-<div display="flex">
-    <select name="ingredient">
-        {% for ingredient in ingredients %}
-            {% if ingredient.id not in prodIngredientIds %}
-                <option value="{{ingredient.id}}">{{ ingredient.nom }}</option>
-            {% endif %}
-        {% endfor %}
-    </select>
-    <label for="cars">Quantité (en grammes):</label>
-    <input type="number" name="quantite" value="50" min="1">
+<div style="margin: 10px 0; display:flex; justify-content: space-between">
+    <div>
+        <select name="ingredient">
+            {% for ingredient in ingredients %}
+                {% if ingredient.id not in prodIngredientIds %}
+                    <option value="{{ingredient.id}}">{{ ingredient.nom }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <label for="cars">Quantité (en grammes):</label>
+        <input type="number" name="quantite" style="width: 50px; margin-right: 3px;" value="50" min="1">gr
+    </div>
+    <button class="button" type="submit">Valider</button>
 </div>
 
-<button class="btn btn-success" type="submit">Valider</button>
 
 </form>
