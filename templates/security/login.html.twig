@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    <script src="{{ asset('Tooltiper/tooltiper.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('Tooltiper/tooltiper.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/base.css') }}">
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
@@ -14,33 +17,33 @@
     {% endblock %}
 </head>
 <body>
-
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+    <section class="login">
+        <div class="leftSection">
+            <img src="/images/low-poly-mill-removebg-preview.png" alt="rr">
         </div>
-    {% endif %}
-
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-    <a href="{{ path('app_register') }}"> Créer un compte </a>
-</form>
+        <form method="post">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <div class="container">
+                <div class="content">
+                    <h1>Le Moulin Du Pont Du Vent</h1>
+                    <h3 class="h3 mb-3 font-weight-normal">Connectez-vous</h3>
+                    <div class="inputs">
+                        <label for="inputEmail">Email</label>
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                        <label for="inputPassword">Password</label>
+                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    </div>
+                </div>
+            </div>
+            <div class="btns">
+                <button class="btn btn-lg btn-primary button" type="submit">Sign in</button>
+                <a href="{{ path('app_register') }}" class="signup"> Créer un compte </a>
+            </div>
+        </form>
+    </section>
 </body>
 </html>
 
