@@ -49,6 +49,7 @@ header {
   border-bottom: 1px solid var(--color-lightgrey);
   padding: 8px 0;
   background-color: var(--color-subgrey);
+  margin-bottom: 35px;
 }
 header div.nav {
   width: 80%;
@@ -143,7 +144,7 @@ header div.nav ul.link li {
 
 section.container {
   width: 80%;
-  margin: 25px auto 0;
+  margin: 0 auto;
 }
 section.container .dataTables_filter {
   border: 1px solid var(--color-lightgrey);
@@ -151,7 +152,6 @@ section.container .dataTables_filter {
   padding: 12px 18px;
   border-radius: 10px;
   display: inline-block;
-  margin-top: 10px;
 }
 section.container .dataTables_filter input {
   padding: 5px;
@@ -208,6 +208,27 @@ section.login form .container {
 }
 section.login form .container .content h1 {
   font-size: 35px;
+  display: inline-block;
+  padding-bottom: 0;
+  margin-bottom: 15px;
+}
+section.login form .container .content h1:after {
+  content: "";
+  display: block;
+  margin: auto;
+  height: 3px;
+  border-radius: 15px;
+  animation: underline 2s infinite;
+}
+@keyframes underline {
+  0% {
+    width: 0%;
+    background-color: black;
+  }
+  100% {
+    width: 100%;
+    background-color: transparent;
+  }
 }
 section.login form .container .content .inputs {
   margin-top: 35px;
@@ -225,6 +246,23 @@ section.login form .container .content .inputs input {
 section.login form .container .content .inputs input:focus {
   outline: none;
   border: none;
+}
+
+section.factures {
+  width: 80%;
+  margin: 0 auto;
+}
+section.factures .container form {
+  display: flex;
+  margin: 15px 0;
+  align-items: center;
+}
+section.factures .container form input {
+  padding: 5px;
+  border-radius: 5px;
+  margin-right: 15px;
+  border: 2px solid var(--color-lightgrey);
+  background-color: var(--color-subgrey);
 }
 
 /*# sourceMappingURL=base.css.map */

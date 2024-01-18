@@ -3,19 +3,21 @@
 {% block title %}Liste des Factures{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>Liste des Factures</h1>
+    <section class="factures">
+        <div class="container">
+            <h1>Liste des Factures</h1>
 
-        {# Afficher le formulaire #}
-        {{ form_start(form) }}
-        <button type="button" class="btn btn-primary" onclick="validerFormulaire()">Valider</button>
-        {{ form_end(form) }}
+            {# Afficher le formulaire #}
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button type="button" class="button" onclick="validerFormulaire()">Valider</button>
+            {{ form_end(form) }}
 
-        <div class="listeFactures" hx-target="this" hx-swap="outerHTML">
-             {% include 'facture/factureParDate.html.twig' %}
+            <div class="listeFactures" hx-target="this" hx-swap="outerHTML">
+                 {% include 'facture/factureParDate.html.twig' %}
+            </div>
         </div>
-
-    </div>
+    </section>
 {% endblock %}
 
 {% block javascripts %}
