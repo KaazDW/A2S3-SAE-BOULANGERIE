@@ -105,7 +105,7 @@ header div.nav ul.link li {
   display: none;
   color: #fff;
   padding: 7px 12px;
-  margin-top: 7px;
+  margin-top: 4px;
   border-radius: 10px;
   white-space: nowrap;
   opacity: 1;
@@ -130,7 +130,6 @@ header div.nav ul.link li {
   background-color: var(--color-subgrey);
   display: none;
   padding: 7px 12px;
-  margin-top: 7px;
   border-radius: 10px;
   white-space: nowrap;
   opacity: 1;
@@ -147,15 +146,61 @@ section.container {
   margin: 15px auto 0;
 }
 section.container table {
-  margin: auto;
+  margin: 35px auto auto;
   border-spacing: 0 !important;
   border-collapse: collapse;
+  border-radius: 15px;
+  width: 1000px;
 }
 section.container table tr, section.container table td {
   padding: 5px 15px;
-  border: 1px solid red;
+  border: 2px solid var(--color-lightgrey);
   margin: 0 !important;
-  padding-right: 15px !important;
+}
+
+section.login {
+  width: 80%;
+  height: 80vh;
+  margin: 15px auto 0;
+  display: flex;
+  align-items: center;
+}
+section.login form {
+  background-color: var(--color-subgrey);
+  border: 1px solid var(--color-lightgrey);
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+}
+section.login form .btns {
+  margin-top: 20px;
+}
+section.login form .btns .signup {
+  font-size: 15px;
+  margin-left: 25px;
+}
+section.login form .container {
+  display: flex;
+}
+section.login form .container .content h1 {
+  font-size: 35px;
+}
+section.login form .container .content .inputs {
+  margin-top: 35px;
+  text-align: center;
+}
+section.login form .container .content .inputs label {
+  display: block;
+  margin-top: 10px;
+}
+section.login form .container .content .inputs input {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 15px;
+}
+section.login form .container .content .inputs input:focus {
+  outline: none;
+  border: none;
 }
 
 /*# sourceMappingURL=base.css.map */
