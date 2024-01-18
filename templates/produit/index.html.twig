@@ -10,7 +10,7 @@
                 <tr>
                 <th scope="col" class="text-center col-2">Nom</th>
                 <th scope="col" class="text-center col -1">Prix Unitaire</th>
-                <th scope="col" class="text-center col-5">Ingredients / Quantité de l'ingrédients (en grammes)</th>
+                <th scope="col" class="text-center col-5">Ingredients / Quantité de l'ingrédient (en grammes)</th>
                 <th></th>
                 </tr>
             </thead>
@@ -35,13 +35,13 @@
                                 <div style="flex: 1; margin-right:1em;">
                                     <p style="cursor:pointer;" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}">{{ recette.quantite }}</p>
                                 </div>
-                                <div class="changements" style="margin-left: auto; display: flex; align-items: center;">
-                                    <img src="/icons/croix.svg" alt="supprimer" hx-delete="{{ path('supprimerIngredient', {'idRecette': recette.id}) }}" style="margin-right: 10px; cursor:pointer;">
+                                <div class="edits" style="margin-left: auto; display: flex; align-items: center;">
+                                    <img src="/icons/croix.svg" alt="supprimer" hx-delete="{{ path('supprimerIngredient', {'idRecette': recette.id}) }}" style="padding: 0 10px; margin-right: 10px; cursor:pointer;">
                                 </div>
                             </div>
                         {% endfor %}
-                        <div style="display: flex; justify-content: center; align-items: center;" hx-target="this" hx-swap="outerHTML">
-                            <button class="btn btn-success" hx-get="{{ path('ajouterIngredient', {'idProduit': produit.id}) }}">+</button>
+                        <div style="display: flex; justify-content: end; align-items: center;" hx-target="this" hx-swap="outerHTML">
+                            <button class="button" hx-get="{{ path('ajouterIngredient', {'idProduit': produit.id}) }}">+</button>
                         </div>
                     </td>
                     <td class="text-center">
