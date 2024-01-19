@@ -24,8 +24,7 @@ class UserCrudController extends AbstractCrudController
             TextField::new('prenom')->setLabel('Prenom'),
             TextField::new('email')->setLabel('Email'),
             TextField::new('num_tel')->setLabel('Telephone'),
-
-            Field::new('roles', 'Role')->setTemplatePath('admin/userRoles.html.twig'),
+            // Field::new('roles', 'Role')->setTemplatePath('admin/userRoles.html.twig'),
 
 
 

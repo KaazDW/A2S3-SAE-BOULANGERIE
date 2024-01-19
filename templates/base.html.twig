@@ -2,12 +2,12 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <script src="{{ asset('Tooltiper/tooltiper.js') }}"></script>
+        <title>{% block title %}Le Moulin du Pont des vents{% endblock %}</title>
+        <link rel="icon" type="image/png" href="{{ asset('images/logo_moulin.png') }}">
         <link rel="stylesheet" href="{{ asset('Tooltiper/tooltiper.css') }}">
         <link rel="stylesheet" href="{{ asset('style/css/base.css') }}">
+        <script src="{{ asset('Tooltiper/tooltiper.js') }}"></script>
         <script src="https://kit.fontawesome.com/98657ff299.js" crossorigin="anonymous"></script>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -52,6 +52,10 @@
             </div>
         </header>
         <main>
+            {% if app.user %}
+                {% set roles = app.user.getRoles() %}
+                {{ dump(roles) }}
+            {% endif %}
             {% block body %}
             {% endblock %}
 
