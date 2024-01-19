@@ -5,29 +5,54 @@
 {% block title %}Nouvelle Facture{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>Nouvelle Facture</h1>
+<div class="container">
+    <form action="/ajouterFacture" method="post">
+        <label for="dateReservation">Date de réservation</label>
+        <input type="date" id="dateReservation" name="dateReservation" required>
+        <br>
 
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
+        <label for="produitDropdown">Sélectionnez un produit :</label>
+        <select id="produitDropdown" name="produitDropdown">
+            <option value="" disabled selected>Choisissez un produit</option>
 
-        {# Affichez chaque champ de la collection individuellement #}
-        {% for produitForm in form.produits %}
-            {{ form_row(produitForm.produit) }}
-            {{ form_row(produitForm.quantite) }}
-        {% endfor %}
+            {% for produit in produits %}
+                {# Assurez-vous d'avoir une méthode appropriée dans votre entité Produit pour obtenir le nom et l'ID #}
+                <option value="{{ produit.id }}">{{ produit.nom }} {{produit.prixUnitaire}}€</option>
+            {% endfor %}
+        </select>
 
-        <button type="submit" class="btn btn-primary">Ajouter la commande</button>
-        {{ form_end(form) }}
-    </div>
+        <div id="produitsSelectionnes"></div>
+        <div id="total">Total: €</div>
 
-    <script>
-        // Fonction pour ajouter de nouveaux éléments au clic sur un bouton (exemple)
-        function addProduit() {
-            var index = new Date().getTime(); // Utilisez un timestamp comme identifiant unique
-            var prototype = '{{ form_widget(form.produits.vars.prototype)|raw }}';
-            prototype = prototype.replace(/__name__/g, index);
-            $('#facture_produits').append(prototype);
-        }
-    </script>
+        <button type="submit">Valider</button>
+    </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var produitDropdown = document.getElementById("produitDropdown");
+        var produitsSelectionnes = document.getElementById("produitsSelectionnes");
+
+        // Quand un produit du dropdown est sélectionné
+        produitDropdown.addEventListener("change", function () {
+            var selectedOption = produitDropdown.options[produitDropdown.selectedIndex];
+
+            if (selectedOption.value !== "") {
+                // Crée une div pour le produit sélectionné
+                var produitDiv = document.createElement("div");
+                produitDiv.innerHTML = selectedOption.text;
+
+                // Ajoute le produit à la div des produits sélectionnés
+                produitsSelectionnes.appendChild(produitDiv);
+
+                // Retire le produit du dropdown
+                selectedOption.remove();
+
+                // Réinitialise le dropdown pour sélectionner l'option vide
+                produitDropdown.selectedIndex = 0;
+            }
+        });
+    });
+</script>
+
+</div>
 {% endblock %}

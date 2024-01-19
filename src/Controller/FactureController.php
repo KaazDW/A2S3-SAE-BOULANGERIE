@@ -136,7 +136,13 @@ class FactureController extends AbstractController
         {
             // Créer une nouvelle instance de Facture
             $facture = new Facture();
-    
+
+            // Recupere les produits par nom croissant
+            $produits = $entityManager->getRepository(Produit::class)->findBy([], ['nom' => 'ASC']);
+
+
+            // Récupérer tous les produits triés par ordre alphabétique du nom
+            // $tousLesProduits = $produitRepository;
             // Créer une instance de FactureType
             $form = $this->createForm(FactureType::class, $facture);
     
@@ -164,6 +170,7 @@ class FactureController extends AbstractController
         }
 
         return $this->render('facture/commande.html.twig', [
+            'produits' => $produits,
             'form' => $form->createView(),
         ]);
     }
