@@ -18,17 +18,48 @@
             </div>
         </div>
     </section>
+
+    {#    en haut à droite (récap factures selectionnées)#}
+    <section class="factures">
+        <div class="container" hx-target="this" hx-swap="outerHTML">
+            <h2>Factures Selectionnées :</h2>
+            <div id="factures-selectionnees">
+            </div>
+            <h2>Somme des produits :</h2>
+            <div id="sommes-produits">
+
+            </div>
+            <button onclick="gestionStock()" id="submit-form-btn">Démarrer la commande</button>
+        </div>
+    </section>
+
+    {#    en bas à gauche (aggrégation des commandes par ingrédients)#}
+    <section class="factures">
+        <div class="container"  hx-target="this" hx-swap="outerHTML">
+
+        </div>
+    </section>
+
+    {#    en bas à droite (preview gestion des stocks avant/apres)#}
+    <section class="factures">
+        <div class="container"  hx-target="this" hx-swap="outerHTML">
+
+        </div>
+    </section>
 {% endblock %}
 
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <script>
-        var selectedFactures = [];
+        let selectedFactures = [];
+        let operatedContentArray = [];
 
         // Fonction pour mettre à jour l'affichage des sélections
         function updateSelectionDisplay() {
             var displayContent = '';
+            operatedContentArray = [];
+
             console.log(selectedFactures);
             if (selectedFactures.length === 0) {
                 displayContent = 'Aucune facture sélectionnée.';
@@ -39,12 +70,14 @@
                     // Diviser les chaînes en tableaux
                     var quantiteArray = facture.quantite.split(',');
                     var nomProduitArray = facture.nomProduit.split(',');
-
                     // Afficher chaque produit avec sa quantité successivement
                     for (var i = 0; i < quantiteArray.length; i++) {
                         displayContent += nomProduitArray[i].trim() +
                             " : " + quantiteArray[i].trim() + "<br>";
+                        operatedContentArray.push(nomProduitArray[i].trim() + ',' + quantiteArray[i].trim());
                     }
+                    // console.log('operatedContentArray', operatedContentArray);
+                    sommeQuantiteProduit(operatedContentArray);
 
                     displayContent += "<hr>";
                 });
@@ -53,10 +86,52 @@
             $('#factures-selectionnees').html(displayContent);
         }
 
+        function updateSommesProduitsDisplay(quantitesParProduit) {
+            var displayContent = '';
+
+            for (var produit in quantitesParProduit) {
+                var quantite = quantitesParProduit[produit];
+                displayContent += produit + " : " + quantite + "<br>";
+            }
+
+            $('#sommes-produits').html(displayContent);
+        }
+
         // Fonction pour réinitialiser les sélections
         function resetSelections() {
             selectedFactures = [];
             updateSelectionDisplay();
+        }
+
+         function sommeQuantiteProduit(tab = []) {
+            // Créer un objet pour stocker les quantités par produit
+            const quantitesParProduit = {};
+            // Exemple de manipulation de donnée de l'objet :
+            //  quantitesParProduit["Baguette au seigle"];
+            //  delete quantitesParProduit["Baguette au nois"];
+
+
+            // Parcourir le tableau
+            tab.forEach(element => {
+                // Diviser la chaîne en nom du produit et quantité
+                const [produit, quantite] = element.split(',');
+
+                // Vérifier si le produit existe déjà dans l'objet
+                if (quantitesParProduit.hasOwnProperty(produit)) {
+                    // Ajouter la quantité si le produit existe déjà
+                    quantitesParProduit[produit] += parseInt(quantite, 10);
+                } else {
+                    // Ajouter le produit à l'objet s'il n'existe pas encore
+                    quantitesParProduit[produit] = parseInt(quantite, 10);
+                }
+            });
+
+             // Afficher le résultat
+             console.log('Résultat :', quantitesParProduit);
+
+             // Mettre à jour l'affichage des sommes des produits
+             updateSommesProduitsDisplay(quantitesParProduit);
+
         }
 
         // Ajouter un gestionnaire d'événements au bouton de validation
