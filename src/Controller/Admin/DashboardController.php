@@ -51,7 +51,7 @@ class DashboardController extends AbstractDashboardController
     {
         return [
             // lien vers la page d'accueil
-            MenuItem::linkToUrl('Accueil', 'fas fa-home', '/'),
+            MenuItem::linkToUrl('Retour à l\'accueil', 'fas fa-home', '/'),
 
             MenuItem::section('Administration'),
             MenuItem::linkToCrud('Utilisateurs', 'fas fa-user-group', User::class),

@@ -35,7 +35,7 @@
 }
 
 // Pour l'animation au chargement du DOM
-body.loaded {
+main.loaded {
   opacity: 1;
 }
 
@@ -46,19 +46,25 @@ body {
   height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr;
-
-  // Pour l'animation au chargement du DOM
-  //opacity: 0;
-  //transition: opacity 1s ease-in-out;
 }
 *{
   //border: 1px solid red;
 }
+main{
+  // Pour l'animation au chargement du DOM
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+}
 header{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
   border-bottom: 1px solid var(--color-lightgrey);
   padding: 8px 0;
   background-color: var(--color-subgrey);
-  margin-bottom: 35px;
   div.nav{
     width: 80%;
     margin: 0 auto;

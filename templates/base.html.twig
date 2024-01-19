@@ -51,7 +51,7 @@
                 </ul>
             </div>
         </header>
-        <main>
+        <main style="margin-top: 80px;">
             {% if app.user %}
                 {% set roles = app.user.getRoles() %}
                 {{ dump(roles) }}
@@ -62,5 +62,10 @@
             {% block javascripts %}
             {% endblock %}
         </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('main').classList.add('loaded'); // for opacity body animation on load
+        });
+    </script>
     </body>
 </html>
