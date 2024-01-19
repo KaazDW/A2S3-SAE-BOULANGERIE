@@ -192,51 +192,6 @@
                 .catch(error => console.error('Erreur lors de la requête:', error));
         }
     </script>
-
-
-    <script>
-        function validerFormulaire() {
-            // RECUPERE LA VALEUR DE LA DATE
-            var dateValue = document.getElementById('{{ form.dateReservation.vars.id }}').value;
-
-            // Effectue une requête AJAX
-            fetch('/factures/' + dateValue, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-                .then(response => response.text())
-                .then(data => {
-                    // Mets à jour le contenu de la div listeFactures avec la réponse
-                    document.querySelector('.listeFactures').innerHTML = data;
-
-                    // Réinitialise les sélections après le changement de date
-                    resetOnDateChange();
-                })
-                .catch(error => console.error('Erreur lors de la requête:', error));
-        }
-
-        function validerFormulaire() {
-            // RECUPERE LA VALEUR DE LA DATE
-            var dateValue = document.getElementById('{{ form.dateReservation.vars.id }}').value;
-            resetSelections();
-            // Effectue une requête AJAX
-            fetch('/factures/' + dateValue, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-                .then(response => response.text())
-                .then(data => {
-                    // Mets à jour le contenu de la div listeFactures avec la réponse
-                    document.querySelector('.listeFactures').innerHTML = data;
-                })
-                .catch(error => console.error('Erreur lors de la requête:', error));
-        }
-    </script>
-
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 {% endblock %}
