@@ -53,38 +53,34 @@
             </tbody>
         </table>
         <div style="display: flex; justify-content: end; margin-top: 15px;">
-            <button id="addButton" class="button tooltip-container" data-tooltip="Ajouter un nouveau Produit"><i class="fa-solid fa-plus" style="margin-right: 15px;"></i>Ajouter</button>
-        </div>
-
-
-        <!-- Modal pour l'ajout -->
-        <div class="tooltip-style-modal-light" id="addModal">
-            <div class="modal-body">
-                <h2>Créer sa recette</h2>
-
-                {# Affichage du formulaire #}
-                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-
-                <div class="mb-3">
+            <!-- Modal pour l'ajout -->
+            <div class="tooltip-style-modal-light" id="addModal">
+                <h3>Ajouter une recette</h3>
+                    {# Affichage du formulaire #}
+                    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
                     {{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
-                </div>
-
-                <div class="mb-3">
                     {{ form_row(form.prixUnitaire, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div class="btn btn-primary">
                     {{ form_end(form) }}
-                </div>
+            </div>
+            <!-- Boutton d'affichage du Modal pour l'ajout -->
+            <div>
+                <button id="addButton" class="button tooltip-container" data-tooltip="Ajouter un nouveau Produit"><i class="fa-solid fa-plus" style="font-weight: 800; font-size: 20px; text-align: center"></i></button>
             </div>
         </div>
+
+
+
     </section>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
+            var element = document.getElementById('produit_form_Ajouter');
+            if (element) {
+                element.classList.add('button');
+            }
+
             var dataTable = $('#produitTable').DataTable({
                 dom: 'f', // permet d'activer uniquement la fonctionnalité de recherche
                 language: {
@@ -104,8 +100,8 @@
         document.addEventListener('click', function (event) {
             // Verifie la position du click
             // Si celui-ci est bien sur notre bouton alors afficher le modal, sinon : le caché
-            if (event.target == addButton) {
-                if(addModal.style.display == 'block'){
+            if (addButton.contains(event.target)) {
+                if(addModal.style.display === 'block'){
                     addModal.style.display = 'none';
                 } else {
                     addModal.style.display = 'block';
