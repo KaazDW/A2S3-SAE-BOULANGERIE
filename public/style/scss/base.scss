@@ -223,6 +223,7 @@ section.login{
   form{
     background-color: var(--color-subgrey);
     border: 1px solid var(--color-lightgrey);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     padding: 30px;
     text-align: center;
@@ -279,7 +280,6 @@ section.login{
   }
 }
 
-
 // Page Facture
 section.factures {
   width: 80%;
@@ -295,6 +295,27 @@ section.factures {
         margin-right: 15px;
         border: 2px solid var(--color-lightgrey);
         background-color: var(--color-subgrey)
+      }
+    }
+  }
+}
+
+// Page erreur 404
+section.error404{
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  div.content{
+    display: flex;
+    flex-direction: column;
+    img{
+      aspect-ratio: auto;
+    }
+    a{
+      margin: auto;
+      margin-top: 55px;
+      i{
+        margin-right: 10px;
       }
     }
   }
