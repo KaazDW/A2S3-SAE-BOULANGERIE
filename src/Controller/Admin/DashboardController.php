@@ -60,7 +60,6 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Recettes', 'fas fa-clipboard-list', Recette::class),
             MenuItem::linkToCrud('Factures', 'fas fa-file-lines', Facture::class),
             MenuItem::linkToCrud('Événements', 'fas fa-calendar-days', Evenement::class),
-            MenuItem::linkToCrud('Panier', 'fas fa-bag-shopping', Panier::class),
     ];
     }
 }
