@@ -34,6 +34,11 @@ class Facture
     #[ORM\OneToMany(mappedBy: 'facture', targetEntity: FactureProduit::class)]
     private Collection $produits;
 
+    #[ORM\Column]
+    private ?string $prenom = null;
+    #[ORM\Column]
+    private ?string $nom = null;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
@@ -132,5 +137,27 @@ class Facture
         $this->user = $user;
     }
 
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
 
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
 }

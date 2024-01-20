@@ -9,7 +9,14 @@
     <form action="/ajouterFacture" method="post">
         <label for="dateReservation">Date de réservation</label>
         <input type="date" id="dateReservation" name="dateReservation" required>
+
         <br>
+
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" name="nom" required>
+
+        <label for="prenom">Prénom</label>
+        <input type="text" id="prenom" name="prenom" required>
 
         <label for="produitDropdown">Sélectionnez un produit :</label>
         <select id="produitDropdown" name="produitDropdown">
@@ -26,33 +33,47 @@
 
         <button type="submit">Valider</button>
     </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var produitDropdown = document.getElementById("produitDropdown");
+            var produitsSelectionnes = document.getElementById("produitsSelectionnes");
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var produitDropdown = document.getElementById("produitDropdown");
-        var produitsSelectionnes = document.getElementById("produitsSelectionnes");
+            // Quand un produit du dropdown est sélectionné
+            produitDropdown.addEventListener("change", function () {
+                var selectedOption = produitDropdown.options[produitDropdown.selectedIndex];
 
-        // Quand un produit du dropdown est sélectionné
-        produitDropdown.addEventListener("change", function () {
-            var selectedOption = produitDropdown.options[produitDropdown.selectedIndex];
+                if (selectedOption.value !== "") {
+                    // Crée une div pour le produit sélectionné
+                    var produitDiv = document.createElement("div");
+                    produitDiv.innerHTML = selectedOption.text;
 
-            if (selectedOption.value !== "") {
-                // Crée une div pour le produit sélectionné
-                var produitDiv = document.createElement("div");
-                produitDiv.innerHTML = selectedOption.text;
+                    // Attribue l'ID du produit comme ID de la div
+                    produitDiv.id = "produitDiv_" + selectedOption.value;
 
-                // Ajoute le produit à la div des produits sélectionnés
-                produitsSelectionnes.appendChild(produitDiv);
+                    // Ajoute le produit à la div des produits sélectionnés
+                    produitsSelectionnes.appendChild(produitDiv);
 
-                // Retire le produit du dropdown
-                selectedOption.remove();
+                    // Ajoute un dropdown pour la quantité avec l'ID du produit
+                    var quantiteDropdown = document.createElement("select");
+                    quantiteDropdown.name = "quantiteProduit[" + selectedOption.value + "]";
+                    for (var i = 1; i <= 20; i++) {
+                        var option = document.createElement("option");
+                        option.value = i;
+                        option.text = i;
+                        quantiteDropdown.appendChild(option);
+                    }
 
-                // Réinitialise le dropdown pour sélectionner l'option vide
-                produitDropdown.selectedIndex = 0;
-            }
+                    // Ajoute le dropdown de quantité à la div des produits sélectionnés
+                    produitDiv.appendChild(quantiteDropdown);
+
+                    // Retire le produit du dropdown
+                    selectedOption.remove();
+
+                    // Réinitialise le dropdown pour sélectionner l'option vide
+                    produitDropdown.selectedIndex = 0;
+                }
+            });
         });
-    });
-</script>
-
+    </script>
 </div>
 {% endblock %}

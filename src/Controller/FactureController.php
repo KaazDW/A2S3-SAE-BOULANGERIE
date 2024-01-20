@@ -157,7 +157,7 @@ class FactureController extends AbstractController
                     return $this->redirectToRoute('app_login');
                 }
 
-                $facture->setDateAchat(new DateTime());
+                $facture->setDateCreation(new DateTime());
                 $facture->setUser($user);
 
                 $entityManager->persist($facture);
