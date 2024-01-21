@@ -21,6 +21,7 @@
         <div class="leftSection">
             <img src="/images/low-poly-mill-removebg-preview.png" alt="rr">
         </div>
+        <main>
         <form method="post">
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -39,11 +40,17 @@
                 </div>
             </div>
             <div class="btns">
-                <button class="btn btn-lg btn-primary button" type="submit">Sign in</button>
+                <button class="button" type="submit">Sign in</button>
                 <a href="{{ path('app_register') }}" class="signup"> Créer un compte </a>
             </div>
         </form>
+        </main>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('main').classList.add('loaded'); // for opacity body animation on load
+        });
+    </script>
 </body>
 </html>
 

@@ -1,33 +1,60 @@
 <!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>??</text></svg>">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="{{ asset('Tooltiper/tooltiper.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('Tooltiper/tooltiper.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/base.css') }}">
     {% block stylesheets %}
     {% endblock %}
 
     {% block javascripts %}
     {% endblock %}
 </head>
-
+<body>
 {% block body %}
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <form method="post" action="{{ path('app_register') }}">
-        {{ form_start(registrationForm) }}
-
-        {# Afficher les champs individuellement dans l'ordre souhait� #}
-        {{ form_row(registrationForm.prenom) }}
-        {{ form_row(registrationForm.nom) }}
-        {{ form_row(registrationForm.num_tel) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        {{ form_row(registrationForm.adresse) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        {# Bouton de soumission du formulaire #}
-        <button type="submit" class="btn btn-outline-dark">Register</button>
-
-        {{ form_end(registrationForm) }}
-    </form>
-    <a href="{{ path('app_login') }}"> J'ai deja un compte </a>
+    <section class="login">
+        <div class="leftSection">
+            <img src="/images/low-poly-mill-removebg-preview.png" alt="rr">
+        </div>
+        <main>
+            <form method="post" action="{{ path('app_register') }}">
+                {{ form_start(registrationForm) }}
+                <div class="container">
+                    <div class="content">
+                        <h1>Le Moulin Du Pont Du Vent</h1>
+                        <h3 class="h3 mb-3 font-weight-normal">Créer un compte</h3>
+                        <div class="inputs">
+                            <div class="row">
+                                {{ form_row(registrationForm.prenom) }}
+                                {{ form_row(registrationForm.nom) }}
+                            </div>
+                            <div class="row">
+                                {{ form_row(registrationForm.num_tel) }}
+                                {{ form_row(registrationForm.email) }}
+                            </div>
+                            {{ form_row(registrationForm.plainPassword) }}
+                            {{ form_row(registrationForm.adresse) }}
+                            <div class="agree   ">
+                                {{ form_row(registrationForm.agreeTerms) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btns">
+                    <button type="submit" class="button" style="margin-right: 10px;">Créer un compte</button>
+                    <a href="{{ path('app_login') }}">Retour a la connexion </a>
+                </div>
+                {{ form_end(registrationForm) }}
+            </form>
+        </main>
+    </section>
 {% endblock %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('main').classList.add('loaded'); // for opacity body animation on load
+    });
+</script>
+</body>
+</html>

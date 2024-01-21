@@ -264,13 +264,29 @@ section.login{
         .inputs {
           margin-top: 35px;
           text-align: center;
-
+          .row{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+          }
+          .agree{
+            div{
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              input{
+                margin-top: 11px;
+                margin-left: 15px;
+              }
+            }
+          }
           label {
             display: block;
             margin-top: 10px;
           }
 
           input {
+            background-color: var(--color-lightgrey);
             padding: 10px 20px;
             border: none;
             border-radius: 15px;

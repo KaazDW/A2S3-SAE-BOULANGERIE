@@ -254,11 +254,26 @@ section.login form .container .content .inputs {
   margin-top: 35px;
   text-align: center;
 }
+section.login form .container .content .inputs .row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+section.login form .container .content .inputs .agree div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+section.login form .container .content .inputs .agree div input {
+  margin-top: 11px;
+  margin-left: 15px;
+}
 section.login form .container .content .inputs label {
   display: block;
   margin-top: 10px;
 }
 section.login form .container .content .inputs input {
+  background-color: var(--color-lightgrey);
   padding: 10px 20px;
   border: none;
   border-radius: 15px;
