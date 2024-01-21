@@ -52,10 +52,6 @@
             </div>
         </header>
         <main style="margin-top: 80px;">
-            {% if app.user %}
-                {% set roles = app.user.getRoles() %}
-                {{ dump(roles) }}
-            {% endif %}
             {% block body %}
             {% endblock %}
 
