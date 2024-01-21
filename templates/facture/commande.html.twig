@@ -6,34 +6,89 @@
 
 {% block body %}
 <div class="container">
-    <form action="/ajouterFacture" method="post">
-        <label for="dateReservation">Date de réservation</label>
-        <input type="date" id="dateReservation" name="dateReservation" required>
 
-        <br>
+<form id="commandeForm" action="/creation_commande" method="post">
+    <label for="dateReservation">Date de réservation</label>
+    <input type="date" id="dateReservation" name="dateReservation" required>
 
-        <label for="nom">Nom</label>
-        <input type="text" id="nom" name="nom" required>
+    <br>
+    <h3>à qui la commande est adressée</h3>
+    <label for="nom">Nom</label>
+    <input type="text" id="nom" name="nom" required>
 
-        <label for="prenom">Prénom</label>
-        <input type="text" id="prenom" name="prenom" required>
+    <label for="prenom">Prénom</label>
+    <input type="text" id="prenom" name="prenom" required>
 
-        <label for="produitDropdown">Sélectionnez un produit :</label>
-        <select id="produitDropdown" name="produitDropdown">
-            <option value="" disabled selected>Choisissez un produit</option>
+    <label for="produitDropdown">Sélectionnez un produit :</label>
+    <select id="produitDropdown" name="produitDropdown">
+        <option value="" disabled selected>Choisissez un produit</option>
 
-            {% for produit in produits %}
-                {# Assurez-vous d'avoir une méthode appropriée dans votre entité Produit pour obtenir le nom et l'ID #}
-                <option value="{{ produit.id }}">{{ produit.nom }} {{produit.prixUnitaire}}€</option>
-            {% endfor %}
-        </select>
+        {% for produit in produits %}
+            <option value="{{ produit.id }}">{{ produit.nom }} {{produit.prixUnitaire}}€</option>
+        {% endfor %}
+    </select>
 
-        <div id="produitsSelectionnes"></div>
-        <div id="total">Total: €</div>
+    <div id="produitsSelectionnes"></div>
+    <div id="total">Total: €</div>
 
-        <button type="submit">Valider</button>
-    </form>
+    <label for="paiementJourMeme">Paiera le jour-même</label>
+    <input type="radio" id="paiementJourMeme" name="typePaiement" value="jourMeme" checked>
+    <br>
+    <label for="paiementDejaEffectue">A déjà payé</label>
+    <input type="radio" id="paiementDejaEffectue" name="typePaiement" value="dejaEffectue">
+    <br>
+    <div id="datePaiementContainer" style="display: none;">
+        <label for="datePaiement">Date de paiement</label>
+        <input type="datetime-local" id="datePaiement" name="datePaiement" required>
+    </div>
+
+    <button type="button" onclick="validerFormulaire()">Valider</button>
+</form>
+
+{# SCRIPT QUI SERT A AFFICHER OU NON LA DATE LORSQUE L'ON CLIQUE SUR A DEJA PAYE #}
+<script>
+    var paiementJourMeme = document.getElementById("paiementJourMeme");
+    var paiementDejaEffectue = document.getElementById("paiementDejaEffectue");
+    var datePaiementContainer = document.getElementById("datePaiementContainer");
+
+    paiementJourMeme.addEventListener("change", function () {
+        datePaiementContainer.style.display = "none";
+    });
+
+    paiementDejaEffectue.addEventListener("change", function () {
+        datePaiementContainer.style.display = "block";
+    });
+</script>
+
     <script>
+
+        function validerFormulaire() {
+            //recupere les infos dans la div des produits sélectionnées
+            var produitsSelectionnes = document.querySelectorAll("#produitsSelectionnes div");
+            var quantites = document.querySelectorAll("#produitsSelectionnes select");
+
+            //Tableau qui contiendra pour chaque id de produit, une quantité dans la facture
+            var produitsEtQuantites = {};
+
+            // parcours l'ensemble des divs crées dans produitsSelectionnes
+            for (var i = 0; i < produitsSelectionnes.length; i++) {
+                var produitDiv = produitsSelectionnes[i];
+                var quantiteDropdown = quantites[i];
+
+                var idProduit = produitDiv.id.replace("produitDiv_", "");
+                var quantite = quantiteDropdown.value;
+
+                produitsEtQuantites[idProduit] = quantite;
+            }
+
+            var formulaire = document.getElementById("commandeForm");
+
+            // Ensuite, soumettez le formulaire programmation.
+            document.getElementById("commandeForm").submit();
+            
+        }
+
+
         document.addEventListener("DOMContentLoaded", function () {
             var produitDropdown = document.getElementById("produitDropdown");
             var produitsSelectionnes = document.getElementById("produitsSelectionnes");

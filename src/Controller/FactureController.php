@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Produit;
 use App\Form\FactureFilterType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Facture;
+use App\Entity\Produit;
+use App\Entity\FactureProduit;
+
 use TCPDF;
 use App\Form\FactureType;
 
@@ -134,45 +136,88 @@ class FactureController extends AbstractController
     public function passerCommande( EntityManagerInterface $entityManager, Request $request): Response
     {
         {
-            // Créer une nouvelle instance de Facture
-            $facture = new Facture();
-
             // Recupere les produits par nom croissant
             $produits = $entityManager->getRepository(Produit::class)->findBy([], ['nom' => 'ASC']);
-
-
-            // Récupérer tous les produits triés par ordre alphabétique du nom
-            // $tousLesProduits = $produitRepository;
-            // Créer une instance de FactureType
-            $form = $this->createForm(FactureType::class, $facture);
     
-            // Gérer la soumission du formulaire
-            $form->handleRequest($request);
-    
-            if ($form->isSubmitted() && $form->isValid()) {
+            // TRAITEMENT DE LA SOUMISSION DU FORMULAIRE
+            if ($request->isMethod('POST')) {
 
+                $montantFacture = 0.00;
+
+                $facture = new Facture();
+
+                // set l'utilisateur comme celui connecté
                 $user = $this->getUser();
-                if (!$user) {
-                    // Rediriger vers la page de connexion ou effectuer d'autres actions nécessaires
-                    return $this->redirectToRoute('app_login');
-                }
-
-                $facture->setDateCreation(new DateTime());
                 $facture->setUser($user);
 
+                // date creation pour la date et l'heure actuelle
+                $dateEtHeureActuelle = new DateTime();
+                $facture->setDateCreation($dateEtHeureActuelle);
+
+                // set le nom
+                $nom = $request->request->get('nom');
+                $facture->setNom($nom);
+
+                // set le prenom
+                $prenom = $request->request->get('prenom');
+                $facture->setPrenom($prenom);
+
+                // METS LA DATE AU BON FORMAT ET SET LA DATE DE RESERVATION
+                $dateReservation = $request->request->get('dateReservation');
+                $dateObj = DateTime::createFromFormat('Y-m-d', $dateReservation);
+                $facture->setDateReservation($dateObj);
+
+                // si le paiement est déjà effectué, recupere sa valeur, sinon ce sera la date et l'heure actuelle
+                if($request->request->get('typePaiement')=="dejaEffectue"){
+                    $datePaiement = $request->request->get('datePaiement');
+                    $datePaiementObj = DateTime::createFromFormat('Y-m-d\TH:i', $datePaiement);
+
+                    $facture->setDatePaiement($datePaiementObj);
+                }
+                else{
+                    $facture->setDatePaiement(new DateTime());
+                }
+            
+                // $request->request->all() pour obtenir toutes les données du formulaire
+                $formData = $request->request->all();
+                // accede aux données du tableau associatif 'quantiteProduit'
+                $quantiteProduitArray = $formData['quantiteProduit'] ?? [];
+
+                // POUR CHAQUE ELEMENT PRESENT DANS LE TABLEAU, CREE UNE NOUVELLE INSTANCE DE factureProduit
+                foreach($quantiteProduitArray as $idProduit => $quantite){
+                    // Recupere le produit
+                    $produit = $entityManager->getRepository(Produit::class)->find($idProduit);
+
+                    // Mets à jour la valeur totale
+                    $montantFacture += $quantite * $produit->getPrixUnitaire();
+                    
+                    if ($produit) {
+                        // Créé une nouvelle instance de FactureProduit
+                        $factureProduit = new FactureProduit();
+                        $factureProduit->setProduit($produit);
+                        $factureProduit->setFacture($facture);
+                        $factureProduit->setQuantite($quantite);
+
+                        $entityManager->persist($factureProduit);
+                    }
+                    else{
+                        return new Response('Le produit n\'est pas trouvé', Response::HTTP_BAD_REQUEST);
+                    }
+
+                }
+                $facture->setMontant($montantFacture);
+
+                // enregistre les changements en bdd
                 $entityManager->persist($facture);
                 $entityManager->flush();
-    
-                // Redirigez l'utilisateur vers une autre page après la soumission réussie
-                return $this->redirectToRoute('page_de_redirection');
+
             }
-    
-        }
+            
 
         return $this->render('facture/commande.html.twig', [
             'produits' => $produits,
-            'form' => $form->createView(),
         ]);
     }
+}
 
 }

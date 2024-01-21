@@ -31,6 +31,7 @@ class Facture
 
     #[ORM\Column(type: "datetime")]
     private ?\DateTimeInterface $dateCreation = null;
+    
     #[ORM\OneToMany(mappedBy: 'facture', targetEntity: FactureProduit::class)]
     private Collection $produits;
 
