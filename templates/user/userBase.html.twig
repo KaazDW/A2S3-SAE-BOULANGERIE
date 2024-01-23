@@ -21,7 +21,7 @@
 <body>
 <header>
     <div class="nav">
-        <a href="{{ path('accueil') }}" class="accueil tooltip-container" data-tooltip="Retourner à l'accueil">
+        <a href="{{ path('commande_user') }}" class="accueil tooltip-container" data-tooltip="Retourner à l'accueil">
             <div class="title">
                 <img src="/images/logo_moulin.png" alt="Logo MDPDV">
                 <h3>Le Moulin du Pont des Vents</h3>
@@ -29,10 +29,10 @@
         </a>
         <ul class="link">
             <li>
-                <a href="{{ path('commande') }}" class="tooltip-container" data-tooltip="[...]">Commandes</a>
+                <a href="{{ path('commande_user') }}" class="tooltip-container" data-tooltip="[...]">Commandes</a>
             </li>
             <li>
-                <a href="{{ path('profils') }}" class="tooltip-container" data-tooltip="[...]">Profil</a>
+                <a href="{{ path('profil') }}" class="tooltip-container" data-tooltip="[...]">Profil</a>
             </li>
             <li>
                 <a href="{{ path('app_logout') }}" class="tooltip-container" data-tooltip="Se déconnecter"><i class="fa-solid fa-right-from-bracket"></i></a>
