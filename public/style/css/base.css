@@ -320,4 +320,56 @@ section.error404 div.content a i {
   margin-right: 10px;
 }
 
+.case {
+  background-color: var(--color-subgrey);
+  border: 2px solid var(--color-lightgrey);
+  border-radius: 10px;
+}
+
+section.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 30px 5px;
+}
+section.head .el {
+  display: flex;
+}
+section.head .el .case {
+  height: 40px;
+  width: 40px;
+  margin-left: 5px;
+}
+
+section.home {
+  height: calc(100vh - 80px - 70px);
+  margin: 0 30px;
+}
+section.home .top {
+  display: grid;
+  grid-template-columns: 20% calc(40% - 10px) calc(40% - 10px);
+  grid-gap: 10px;
+}
+section.home .top .case {
+  height: calc((100vh - 100px) / 4 - 11px - 50px);
+}
+section.home .middle {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 40% calc(20% - 10px) calc(20% - 10px) calc(20% - 10px);
+  grid-gap: 10px;
+}
+section.home .middle .case {
+  height: calc((100vh - 100px) / 4 - 11px);
+}
+section.home .bottom {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: calc(50% - 5px) calc(50% - 5px);
+  grid-gap: 10px;
+}
+section.home .bottom .case {
+  height: calc(((100vh - 100px) / 4 - 5px) * 2 - 10px);
+}
+
 /*# sourceMappingURL=base.css.map */

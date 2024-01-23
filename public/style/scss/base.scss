@@ -342,3 +342,71 @@ section.error404{
     }
   }
 }
+
+// Page d'accueil
+.case{
+  background-color: var(--color-subgrey);
+  border: 2px solid var(--color-lightgrey);
+  border-radius: 10px;
+}
+section.head{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 30px 5px;
+
+  .title{
+
+  }
+  .el{
+    display: flex;
+    .case{
+      height: 40px;
+      width: 40px;
+      margin-left: 5px;
+    }
+  }
+}
+section.home{
+  // 100vh permet de prendre la hauteur de l'écran, dont on soustrait la hauteur du header (de tout ce qui est affiché au dessus de la section)
+  height: calc(100vh - 80px - 70px);
+
+  //border: 1px solid red;
+
+  margin: 0 30px;
+
+  .top {
+    display: grid;
+    // grid-template-colums est suivis d'autant de valeurs qu'il y a de colonnes dans la ranger
+    // fait des calcule avec soustraction permet de soustraire les marges présentes entre les
+    // cases pour que celle-ci ne débordent pas à droite
+    grid-template-columns: 20% calc(40% - 10px) calc(40% - 10px);
+    grid-gap: 10px;
+
+    .case{
+      height: calc(((100vh - 100px) / 4 - (33px / 3)) - 50px);
+    }
+  }
+  .middle {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 40% calc(20% - 10px) calc(20% - 10px) calc(20% - 10px) ;
+    grid-gap: 10px;
+
+    .case {
+      height: calc((100vh - 100px) / 4 - (33px / 3));
+    }
+  }
+  .bottom {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: calc(50% - 5px) calc(50% - 5px);
+    grid-gap: 10px;
+
+    .case{
+      height: calc((((100vh - 100px) / 4 - 5px)*2) - 10px);
+    }
+  }
+
+
+}
