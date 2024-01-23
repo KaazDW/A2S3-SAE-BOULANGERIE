@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Le Moulin du Pont des vents{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo_moulin.png') }}">
+    <link rel="stylesheet" href="{{ asset('Tooltiper/tooltiper.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/base.css') }}">
+    <script src="{{ asset('Tooltiper/tooltiper.js') }}"></script>
+    <script src="https://kit.fontawesome.com/98657ff299.js" crossorigin="anonymous"></script>
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+        {#            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">#}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="{{ asset('js/bibliotheques/htmx/htmx.min.js') }}"></script>
+    {% endblock %}
+</head>
+<body>
+<header>
+    <div class="nav">
+        <a href="{{ path('accueil') }}" class="accueil tooltip-container" data-tooltip="Retourner à l'accueil">
+            <div class="title">
+                <img src="/images/logo_moulin.png" alt="Logo MDPDV">
+                <h3>Le Moulin du Pont des Vents</h3>
+            </div>
+        </a>
+        <ul class="link">
+            <li>
+                <a href="{{ path('commande') }}" class="tooltip-container" data-tooltip="[...]">Commandes</a>
+            </li>
+            <li>
+                <a href="{{ path('profils') }}" class="tooltip-container" data-tooltip="[...]">Profil</a>
+            </li>
+            <li>
+                <a href="{{ path('app_logout') }}" class="tooltip-container" data-tooltip="Se déconnecter"><i class="fa-solid fa-right-from-bracket"></i></a>
+            </li>
+        </ul>
+    </div>
+</header>
+<main>
+    {% block body %}
+    {% endblock %}
+
+    {% block javascripts %}
+    {% endblock %}
+</main>
+</body>
+</html>
