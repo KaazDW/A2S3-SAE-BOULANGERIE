@@ -50,6 +50,13 @@ security:
          - { path: ^/login, roles: ROLE_USER }
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/accueil, roles: ROLE_ADMIN }
+         - { path: ^/facture, roles: ROLE_ADMIN }
+         - { path: ^/création_commande, roles: ROLE_ADMIN }
+         - { path: ^/ingredient, roles: ROLE_ADMIN }
+         - { path: ^/produit, roles: ROLE_ADMIN }
+
+
 
 when@test:
     security:
