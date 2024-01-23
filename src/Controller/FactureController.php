@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Produit;
 use App\Form\FactureFilterType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Facture;
+use App\Entity\Produit;
+use App\Entity\FactureProduit;
+
 use TCPDF;
+use App\Form\FactureType;
 
 
 
@@ -32,11 +35,6 @@ class FactureController extends AbstractController
             $dateReservation = DateTime::createFromFormat('d/m/Y', $dateReservation)->format('Y-m-d');
         }
 
-//        $selectedDate = [
-//            'type' => 'dateReservation',
-//            'value' => $dateReservation,
-//        ];
-
         $date = DateTime::createFromFormat('d/m/Y', '01/01/2024')->format('Y-m-d');
 
         $selectedDate = [
@@ -45,30 +43,34 @@ class FactureController extends AbstractController
         ];
 
         // Récupérer toutes les factures avec les détails de l'utilisateur et les produits
-        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
+        $factures = $entityManager->getRepository(Facture::class)->findAllFromDate($selectedDate);
 
         return $this->render('facture/index.html.twig', [
             'factures' => $factures,
             'form' => $form->createView(),
         ]);
     }
+
+    // RECUPERE LES FACTURES QUI SONT COMMANDEES A LA DATE DONNEE EN PARAMETRE
     #[Route('/factures/{date}', name: 'getFacturesParDate')]
     public function getFacturesParDate(string $date, EntityManagerInterface $entityManager): Response {
-        // Modifiez le format pour correspondre à "année-jour-mois"
+        //Modifie le format de la date
         $dateObj = DateTime::createFromFormat('Y-m-d', $date);
-    
+
+        //Cas ou la conversion échoue
         if ($dateObj === false) {
-            // Gérez le cas où la conversion échoue
             return new Response('Format de date invalide.', Response::HTTP_BAD_REQUEST);
         }
-    
+        // Mets la date au bon format
         $formattedDate = $dateObj->format('Y-m-d');
 
+        // TABLEAU QUI SERVIRA AU REPOSITORY
         $selectedDate = [
             'type' => 'dateReservation',
             'value' => $formattedDate,
         ];
 
+        // RECUPERE LES FACTURES A LA DATE $SELECTEDDATE
         $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
     
         return $this->render('facture/factureParDate.html.twig', [
@@ -130,12 +132,92 @@ class FactureController extends AbstractController
             return $response;
         }
 
-    #[Route('/création_commande', name: 'commande')]
-    public function passerCommande( EntityManagerInterface $entityManager): Response
+    #[Route('/creation_commande', name: 'commande')]
+    public function passerCommande( EntityManagerInterface $entityManager, Request $request): Response
     {
-        return $this->render('facture/commande.html.twig', [
+        {
+            // Recupere les produits par nom croissant
+            $produits = $entityManager->getRepository(Produit::class)->findBy([], ['nom' => 'ASC']);
+    
+            // TRAITEMENT DE LA SOUMISSION DU FORMULAIRE
+            if ($request->isMethod('POST')) {
 
+                $montantFacture = 0.00;
+
+                $facture = new Facture();
+
+                // set l'utilisateur comme celui connecté
+                $user = $this->getUser();
+                $facture->setUser($user);
+
+                // date creation pour la date et l'heure actuelle
+                $dateEtHeureActuelle = new DateTime();
+                $facture->setDateCreation($dateEtHeureActuelle);
+
+                // set le nom
+                $nom = $request->request->get('nom');
+                $facture->setNom($nom);
+
+                // set le prenom
+                $prenom = $request->request->get('prenom');
+                $facture->setPrenom($prenom);
+
+                // METS LA DATE AU BON FORMAT ET SET LA DATE DE RESERVATION
+                $dateReservation = $request->request->get('dateReservation');
+                $dateObj = DateTime::createFromFormat('Y-m-d', $dateReservation);
+                $facture->setDateReservation($dateObj);
+
+                // si le paiement est déjà effectué, recupere sa valeur, sinon ce sera la date et l'heure actuelle
+                if($request->request->get('typePaiement')=="dejaEffectue"){
+                    $datePaiement = $request->request->get('datePaiement');
+                    $datePaiementObj = DateTime::createFromFormat('Y-m-d\TH:i', $datePaiement);
+
+                    $facture->setDatePaiement($datePaiementObj);
+                }
+                else{
+                    $facture->setDatePaiement(new DateTime());
+                }
+            
+                // $request->request->all() pour obtenir toutes les données du formulaire
+                $formData = $request->request->all();
+                // accede aux données du tableau associatif 'quantiteProduit'
+                $quantiteProduitArray = $formData['quantiteProduit'] ?? [];
+
+                // POUR CHAQUE ELEMENT PRESENT DANS LE TABLEAU, CREE UNE NOUVELLE INSTANCE DE factureProduit
+                foreach($quantiteProduitArray as $idProduit => $quantite){
+                    // Recupere le produit
+                    $produit = $entityManager->getRepository(Produit::class)->find($idProduit);
+
+                    // Mets à jour la valeur totale
+                    $montantFacture += $quantite * $produit->getPrixUnitaire();
+                    
+                    if ($produit) {
+                        // Créé une nouvelle instance de FactureProduit
+                        $factureProduit = new FactureProduit();
+                        $factureProduit->setProduit($produit);
+                        $factureProduit->setFacture($facture);
+                        $factureProduit->setQuantite($quantite);
+
+                        $entityManager->persist($factureProduit);
+                    }
+                    else{
+                        return new Response('Le produit n\'est pas trouvé', Response::HTTP_BAD_REQUEST);
+                    }
+
+                }
+                $facture->setMontant($montantFacture);
+
+                // enregistre les changements en bdd
+                $entityManager->persist($facture);
+                $entityManager->flush();
+
+            }
+            
+
+        return $this->render('facture/commande.html.twig', [
+            'produits' => $produits,
         ]);
     }
+}
 
 }

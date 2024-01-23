@@ -27,9 +27,18 @@ class Facture
     private ?\DateTimeInterface $dateReservation = null;
 
     #[ORM\Column(type: "datetime")]
-    private ?\DateTimeInterface $dateAchat = null;
+    private ?\DateTimeInterface $datePaiement = null;
+
+    #[ORM\Column(type: "datetime")]
+    private ?\DateTimeInterface $dateCreation = null;
+    
     #[ORM\OneToMany(mappedBy: 'facture', targetEntity: FactureProduit::class)]
     private Collection $produits;
+
+    #[ORM\Column]
+    private ?string $prenom = null;
+    #[ORM\Column]
+    private ?string $nom = null;
 
     public function __construct()
     {
@@ -39,18 +48,6 @@ class Facture
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdUser(): ?int
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(int $idUser): static
-    {
-        $this->idUser = $idUser;
-
-        return $this;
     }
 
     public function getMontant(): ?float
@@ -65,14 +62,14 @@ class Facture
         return $this;
     }
 
-    public function getDateAchat(): ?\DateTimeInterface
+    public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->dateAchat;
+        return $this->dateCreation;
     }
 
-    public function setDateAchat(?\DateTimeInterface $dateAchat): self
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
     {
-        $this->dateAchat = $dateAchat;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
@@ -89,6 +86,18 @@ class Facture
         return $this;
     }
 
+    public function getDatePaiement(): ?\DateTimeInterface
+    {
+        return $this->datePaiement;
+    }
+
+    public function setDatePaiement(?\DateTimeInterface $datePaiement): self
+    {
+        $this->datePaiement = $datePaiement;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, FactureProduit>
      */
@@ -101,7 +110,7 @@ class Facture
     {
         if (!$this->produits->contains($factureProduit)) {
             $this->produits->add($factureProduit);
-            $factureProduit->setId($this);
+            // $factureProduit->setId($this);
         }
 
         return $this;
@@ -129,5 +138,27 @@ class Facture
         $this->user = $user;
     }
 
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
 
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
 }

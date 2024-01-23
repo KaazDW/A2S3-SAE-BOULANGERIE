@@ -1,0 +1,18 @@
+{# templates/error/error.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Page non trouvée{% endblock %}
+
+{% block body %}
+    <section class="error404">
+        <h1>Votre redirection n'a pas abouti !</h1>
+        <p>Désolé, une erreur est survenu.</p>
+        <div class="content">
+            <div>
+                <img src="/images/low-poly-mill-removebg-preview.png" alt="rr">
+            </div>
+            <a href="{{ path('accueil') }}" class="button"><i class="fa-solid fa-house"></i>Retourner a l'accueil</a>
+        </div>
+    </section>
+{% endblock %}

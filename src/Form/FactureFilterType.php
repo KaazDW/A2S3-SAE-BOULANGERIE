@@ -16,6 +16,7 @@ class FactureFilterType extends AbstractType
             ->add('dateReservation', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
+                'label' => false,
             ]);
     }
 

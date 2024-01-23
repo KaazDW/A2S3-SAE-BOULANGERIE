@@ -35,7 +35,7 @@
 }
 
 // Pour l'animation au chargement du DOM
-body.loaded {
+main.loaded {
   opacity: 1;
 }
 
@@ -46,15 +46,22 @@ body {
   height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr;
-
-  // Pour l'animation au chargement du DOM
-  //opacity: 0;
-  //transition: opacity 1s ease-in-out;
 }
 *{
   //border: 1px solid red;
 }
+main{
+  // Pour l'animation au chargement du DOM
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+}
 header{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
   border-bottom: 1px solid var(--color-lightgrey);
   padding: 8px 0;
   background-color: var(--color-subgrey);
@@ -136,8 +143,6 @@ header{
 }
 
 .tooltip-style-modal-light {
-  position: absolute;
-  //background-color: #333;
   border: 1px solid var(--color-lightgrey);
   background-color: var(--color-subgrey);
   display: none;
@@ -148,25 +153,36 @@ header{
   opacity: 1;
   transition: opacity 0.1s ease-in-out;
   z-index: 999;
-  left: 50%;
   font-style: normal;
   font-size: 16px !important;
-  transform: translateX(-50%);
+  width: 100%;
+  margin-right: 2%;
+  form{
+    display: flex;
+    margin-top: 15px;
+    label{
+
+    }
+    input{
+      padding: 3px;
+      border-radius: 5px;
+      border: 1px solid var(--color-lightgrey);
+      margin: 0 20px 0 10px;
+    }
+  }
 }
 
 
 // Page Produit
-
 section.container{
   width: 80%;
-  margin: 25px auto 0;
+  margin: 0 auto ;
   .dataTables_filter{
     border: 1px solid var(--color-lightgrey);
     background-color: var(--color-subgrey);
     padding: 12px 18px;
     border-radius: 10px;
     display: inline-block;
-    margin-top: 10px;
     input{
       padding: 5px;
       border-radius: 5px;
@@ -213,6 +229,7 @@ section.login{
   form{
     background-color: var(--color-subgrey);
     border: 1px solid var(--color-lightgrey);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     padding: 30px;
     text-align: center;
@@ -228,17 +245,48 @@ section.login{
       .content {
         h1 {
           font-size: 35px;
+          display: inline-block;
+          padding-bottom: 0;
+          margin-bottom: 15px;
+        }
+        h1:after {
+          content: '';
+          display: block;
+          margin: auto;
+          height: 3px;
+          border-radius: 15px;
+          animation: underline 2s infinite;
+        }
+        @keyframes underline {
+          0% { width: 0%; background-color: black;}
+          100% {width: 100%; background-color: transparent;}
         }
         .inputs {
           margin-top: 35px;
           text-align: center;
-
+          .row{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+          }
+          .agree{
+            div{
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              input{
+                margin-top: 11px;
+                margin-left: 15px;
+              }
+            }
+          }
           label {
             display: block;
             margin-top: 10px;
           }
 
           input {
+            background-color: var(--color-lightgrey);
             padding: 10px 20px;
             border: none;
             border-radius: 15px;
@@ -249,6 +297,47 @@ section.login{
             border: none;
           }
         }
+      }
+    }
+  }
+}
+
+// Page Facture
+section.factures {
+  width: 80%;
+  margin: 0 auto;
+  .container{
+    form{
+      display: flex;
+      margin: 15px 0;
+      align-items: center;
+      input{
+        padding: 5px;
+        border-radius: 5px;
+        margin-right: 15px;
+        border: 2px solid var(--color-lightgrey);
+        background-color: var(--color-subgrey)
+      }
+    }
+  }
+}
+
+// Page erreur 404
+section.error404{
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  div.content{
+    display: flex;
+    flex-direction: column;
+    img{
+      aspect-ratio: auto;
+    }
+    a{
+      margin: auto;
+      margin-top: 55px;
+      i{
+        margin-right: 10px;
       }
     }
   }

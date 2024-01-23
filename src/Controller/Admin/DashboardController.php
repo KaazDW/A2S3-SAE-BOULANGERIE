@@ -50,13 +50,16 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         return [
+            // lien vers la page d'accueil
+            MenuItem::linkToUrl('Retour à l\'accueil', 'fas fa-home', '/'),
+
+            MenuItem::section('Administration'),
             MenuItem::linkToCrud('Utilisateurs', 'fas fa-user-group', User::class),
             MenuItem::linkToCrud('Ingredients', 'fas fa-bread-slice', Ingredient::class),
             MenuItem::linkToCrud('Produits', 'fas fa-jar', Produit::class),
             MenuItem::linkToCrud('Recettes', 'fas fa-clipboard-list', Recette::class),
             MenuItem::linkToCrud('Factures', 'fas fa-file-lines', Facture::class),
             MenuItem::linkToCrud('Événements', 'fas fa-calendar-days', Evenement::class),
-            MenuItem::linkToCrud('Panier', 'fas fa-bag-shopping', Panier::class),
     ];
     }
 }

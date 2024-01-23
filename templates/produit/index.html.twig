@@ -4,8 +4,7 @@
 
 {% block body %}
     <section class="container">
-        <button id="addButton" class="button"><i class="fa-solid fa-plus" style="margin-right: 15px;"></i>Ajouter</button>
-        <table class="table table-striped table-bordered table-hover" id="produitTable">
+        <table id="produitTable">
             <thead>
                 <tr>
                 <th scope="col" class="text-center col-2">Nom</th>
@@ -20,8 +19,8 @@
                 <tr class="produit-row-{{ produit.id }}"  style="vertical-align:middle;" id="produit{{produit.id}}">
                     <td style="vertical-align:center">{{ produit.nom }}</td>
                     <td>
-                        <p style="cursor:pointer;" hx-target="this" hx-get="{{ path('majPrixProduit', {'idProduit': produit.id}) }}" hx-trigger="click" hx-swap="outerHTML">
-                            {{ produit.prixUnitaire }}€
+                        <p style="cursor:pointer; text-align: center" hx-target="this" hx-get="{{ path('majPrixProduit', {'idProduit': produit.id}) }}" hx-trigger="click" hx-swap="outerHTML">
+                            <b>{{ produit.prixUnitaire }}</b> <i>€</i>
                         </p>
                     </td>
                     <td>
@@ -31,9 +30,9 @@
                                 <div style="flex: 1;">
                                     <p>{{ ingredient.nom }}</p>
                                 </div>
-                                <div style="width: 50px; margin: 0 10px;">/</div>
-                                <div style="flex: 1; margin-right:1em;">
-                                    <p style="cursor:pointer;" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}">{{ recette.quantite }}</p>
+                                <div style="width: 50px; margin: 0 10px;"><i class="fa-solid fa-right-long" style="color: grey;"></i></div>
+                                <div style="flex: 1;text-align: right;  margin-right:1em; text-align: right; ">
+                                    <p style="cursor:pointer; width: 100px;" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}"><b>{{ recette.quantite }}</b> <i>gr</i></p>
                                 </div>
                                 <div class="edits" style="margin-left: auto; display: flex; align-items: center;">
                                     <img src="/icons/croix.svg" alt="supprimer" hx-delete="{{ path('supprimerIngredient', {'idRecette': recette.id}) }}" style="padding: 0 10px; margin-right: 10px; cursor:pointer;">
@@ -41,7 +40,7 @@
                             </div>
                         {% endfor %}
                         <div style="display: flex; justify-content: end; align-items: center;" hx-target="this" hx-swap="outerHTML">
-                            <button class="button" hx-get="{{ path('ajouterIngredient', {'idProduit': produit.id}) }}">+</button>
+                            <button class="button tooltip-container" data-tooltip="Ajouter un nouvel ingrédient à la recette" hx-get="{{ path('ajouterIngredient', {'idProduit': produit.id}) }}">+</button>
                         </div>
                     </td>
                     <td class="text-center">
@@ -53,40 +52,39 @@
             {% endfor %}
             </tbody>
         </table>
-
-
-        <!-- Modal pour l'ajout -->
-        <div class="tooltip-style-modal-light" id="addModal">
-            <div class="modal-body">
-                <h2>Créer sa recette</h2>
-
-                {# Affichage du formulaire #}
-                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-
-                <div class="mb-3">
+        <div style="display: flex; justify-content: end; margin-top: 15px;">
+            <!-- Modal pour l'ajout -->
+            <div class="tooltip-style-modal-light" id="addModal">
+                <h3>Ajouter une recette</h3>
+                    {# Affichage du formulaire #}
+                    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
                     {{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
-                </div>
-
-                <div class="mb-3">
                     {{ form_row(form.prixUnitaire, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div class="btn btn-primary">
                     {{ form_end(form) }}
-                </div>
+            </div>
+            <!-- Boutton d'affichage du Modal pour l'ajout -->
+            <div>
+                <button id="addButton" class="button tooltip-container" data-tooltip="Ajouter un nouveau Produit"><i class="fa-solid fa-plus" style="font-weight: 800; font-size: 20px; text-align: center"></i></button>
             </div>
         </div>
+
+
+
     </section>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
+            var element = document.getElementById('produit_form_Ajouter');
+            if (element) {
+                element.classList.add('button');
+            }
+
             var dataTable = $('#produitTable').DataTable({
                 dom: 'f', // permet d'activer uniquement la fonctionnalité de recherche
                 language: {
-                    search: "Rechercher : " // Le mot de base est "search: " je l'ai remplacé par "Rechercher : "
+                    search: '<i class="fa-solid fa-magnifying-glass" style="margin-right: 15px; "></i> <span style="margin-right: 15px;">Rechercher : </span>' // Le mot de base est "search: " je l'ai remplacé par "Rechercher : "
                 }
             });
 
@@ -102,8 +100,8 @@
         document.addEventListener('click', function (event) {
             // Verifie la position du click
             // Si celui-ci est bien sur notre bouton alors afficher le modal, sinon : le caché
-            if (event.target == addButton) {
-                if(addModal.style.display == 'block'){
+            if (addButton.contains(event.target)) {
+                if(addModal.style.display === 'block'){
                     addModal.style.display = 'none';
                 } else {
                     addModal.style.display = 'block';

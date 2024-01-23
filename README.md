@@ -16,7 +16,11 @@
   </p>
 </div>
 
-
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=symfony,sass,js" />
+  </a>
+</p>
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -49,12 +53,10 @@
 <!-- ABOUT THE PROJECT -->
 ## A Propos
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 Liste des fonctionnalités : 
-- 
--
-- 
+- ✅
+- ⌛
+- ❌
 
 ## Informations : 
 - Symfony 5.6.2 (c) 2021-2024

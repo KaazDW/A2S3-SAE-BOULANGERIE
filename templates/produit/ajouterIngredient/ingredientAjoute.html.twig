@@ -3,15 +3,16 @@
     <div style="flex: 1;">
         <p>{{ recette.ingredient.nom }}</p>
     </div>
-    <div style="width: 50px; margin: 0 10px;">/</div>
-    <div style="flex: 1;">
-        <p style="cursor:pointer;" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}">{{ recette.quantite }}</p>
-
+    <div style="width: 50px; margin: 0 10px;">
+        <i class="fa-solid fa-right-long" style="color: grey;"></i>
+    </div>
+    <div style="flex: 1; text-align: right; ">
+        <p style="cursor:pointer;width: 100px;" hx-get="{{ path('modifierQuantite', {'idRecette': recette.id, 'quantite': recette.quantite}) }}"><b>{{ recette.quantite }}</b> <i>gr</i></p>
     </div>
     <div class="changements" style="margin-left: auto; display: flex; align-items: center;">
         <img src="/icons/croix.svg" alt="supprimer" hx-delete="{{ path('supprimerIngredient', {'idRecette': recette.id}) }}" style="padding: 0 10px; margin-right: 10px; cursor:pointer">
     </div>
 </div>
-<div style="display: flex; justify-content: center; align-items: center;" hx-target="this" hx-swap="outerHTML">
-    <button class="button" hx-get="{{ path('ajouterIngredient', {'idProduit': produit.id}) }}">+</button>
+<div style="display: flex; justify-content: end; align-items: center;" hx-target="this" hx-swap="outerHTML">
+    <button class="button tooltip-container" data-tooltip="Ajouter un nouvel ingrédient à la recette" hx-get="{{ path('ajouterIngredient', {'idProduit': produit.id}) }}">+</button>
 </div>

@@ -18,7 +18,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
-    #[ORM\Column]
+    #[ORM\Column(type: 'json')]
     private array $roles = [];
 
     #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'users')]
@@ -32,7 +32,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 public function __construct() {
     $this->produits = new ArrayCollection();
-    $this->paniers = new ArrayCollection();
     $this->factures = new ArrayCollection();
 
 }
@@ -48,8 +47,6 @@ public function __construct() {
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Facture::class)]
     private Collection $factures;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Panier::class, orphanRemoval: true)]
-    private Collection $paniers;
     public function getId(): ?int
     {
         return $this->id;
@@ -95,6 +92,18 @@ public function __construct() {
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return implode(', ', $this->getRoles());
+    }
+
+    public function getRolesAsString(): string
+    {
+        return implode(', ', $this->roles);
+    }
+
+
 
     /**
      * @see PasswordAuthenticatedUserInterface
@@ -161,9 +170,6 @@ public function __construct() {
         $this->factures = $factures;
     }
 
-
-
-
     /**
      * @see UserInterface
      */
@@ -196,36 +202,6 @@ public function __construct() {
         if ($this->produits->removeElement($produit)) {
             $produit->removeUser($this);
         }
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Panier>
-     */
-    public function getPaniers(): Collection
-    {
-        return $this->paniers;
-    }
-
-    public function addPanier(Panier $panier): static
-    {
-        if (!$this->paniers->contains($panier)) {
-            $this->paniers->add($panier);
-            $panier->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePanier(Panier $panier): static
-    {
-        if ($this->paniers->removeElement($panier)) {
-            // set the owning side to null (unless already changed)
-            if ($panier->getUser() === $this) {
-                $panier->setUser(null);
-            }
-        }
-
         return $this;
     }
 }
