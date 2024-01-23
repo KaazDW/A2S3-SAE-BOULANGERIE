@@ -37,20 +37,26 @@
 
             </div>
             <div class="case">
-
+                <p>CA de l'année en cours : {{ chiffreAffaireAnneeEnCours }} €</p>
+                <p>CA de l'année précédente : {{ chiffreAffaireAnneePrecedente }} €</p>
             </div>
             <div class="case">
-
+                <p>CA du moi en cours : {{ chiffreAffaireMois }} €</p>
             </div>
             <div class="case">
-
             </div>
         </div>
         <div class="bottom">
             <div class="case">
-
+                <p>graphique (courbe) chiffre d'affaire par mois :</p>
             </div>
             <div class="case">
+                <p>TOP 3 des produits les plus vendus ce mois-ci :</p>
+                <ul>
+                    {% for produit in Top3ProduitsVendusCeMois %}
+                        <li>{{ produit.nom }} - {{ produit.quantite_vendue }} €</li>
+                    {% endfor %}
+                </ul>
 
             </div>
         </div>

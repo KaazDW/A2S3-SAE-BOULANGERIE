@@ -4,7 +4,13 @@ namespace App\Repository;
 
 use App\Entity\Facture;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr\Func;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr;
+use Symfony\Component\Validator\Constraints\DateTime;
+
 
 /**
  * @extends ServiceEntityRepository<Facture>
@@ -20,6 +26,7 @@ class FactureRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Facture::class);
     }
+
     // RECUPERE TOUT LES FACTURES AVEC L'UTILISATEUR, LES PRODUITS... POUR UN JOUR DONNE
     public function findAllWithUserDetailsAndProducts($selectedDate)
     {
@@ -39,12 +46,13 @@ class FactureRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
     public function findAllFromDate($selectedDate)
     {
         $queryBuilder = $this->createQueryBuilder('f')
             ->leftJoin('f.user', 'u')
             ->leftJoin('f.produits', 'p');
-    
+
         if ($selectedDate['type'] === 'dateAchat') {
             $queryBuilder
                 ->where('f.dateAchat >= :selectedDate')
@@ -54,32 +62,84 @@ class FactureRepository extends ServiceEntityRepository
                 ->where('f.dateReservation >= :selectedDate')
                 ->setParameter('selectedDate', $selectedDate['value']);
         }
-    
+
         return $queryBuilder->getQuery()->getResult();
     }
 
-//    /**
-//     * @return Facture[] Returns an array of Facture objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Facture
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * Retourne le chiffre d'affaires de l'année en cours.
+     *
+     * @param \DateTimeInterface $date
+     * @return float|null
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function findChiffreAffaireAnneeEnCours(): ?float
+    {
+        $sql = 'SELECT SUM(montant) as chiffre_affaire FROM facture WHERE YEAR(date_paiement) = YEAR(CURRENT_DATE())';
+
+        $result = $this->getEntityManager()
+            ->getConnection()
+            ->executeQuery($sql)
+            ->fetchOne();
+
+        return $result !== false ? (float) $result : null;
+    }
+
+    /**
+     * Retourne le chiffre d'affaires de l'année précédente.
+     *
+     * @return float|null
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function findChiffreAffaireAnneePrecedente(): ?float
+    {
+        $sql = 'SELECT SUM(montant) as chiffre_affaire FROM facture WHERE YEAR(date_paiement) = YEAR(CURRENT_DATE) - 1';
+
+        $result = $this->getEntityManager()
+            ->getConnection()
+            ->executeQuery($sql)
+            ->fetchOne();
+
+        return $result !== false ? (float) $result : null;
+    }
+
+        public function findChiffreAffaireMois(): ?float
+    {
+        $sql = 'SELECT SUM(montant) as chiffre_affaire FROM facture WHERE MONTH(date_paiement) = MONTH(CURRENT_DATE)';
+
+        $result = $this->getEntityManager()
+            ->getConnection()
+            ->executeQuery($sql)
+            ->fetchOne();
+
+        return $result !== false ? (float) $result : null;
+    }
+
+    /**
+     * Retourne le top 3 des produits les plus vendus ce mois-ci.
+     *
+     * @return array
+     */
+    public function findTop3ProduitsVendusCeMois(): array
+    {
+        $sql = 'SELECT p.nom, SUM(fp.quantite) as quantite_vendue
+                FROM facture_produit fp
+                JOIN produit p ON fp.id_produit = p.id
+                JOIN facture f ON fp.id_facture = f.id
+                WHERE MONTH(f.date_paiement) = MONTH(CURRENT_DATE)
+                GROUP BY p.nom
+                ORDER BY quantite_vendue DESC
+                LIMIT 3';
+
+        $result = $this->getEntityManager()
+            ->getConnection()
+            ->executeQuery($sql)
+            ->fetchAllAssociative();
+
+        return $result;
+    }
+
 }
