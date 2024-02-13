@@ -14,36 +14,28 @@ class AccueilController extends AbstractController
     #[Route('/accueil', name: 'accueil')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        try {
-            $repository = $entityManager->getRepository(Facture::class);
+        $repository = $entityManager->getRepository(Facture::class);
 
-            $chiffreAffaireAnneeEnCours = $repository->findChiffreAffaireAnneeEnCours();
-            $chiffreAffaireAnneePrecedente = $repository->findChiffreAffaireAnneePrecedente();
-            $chiffreAffaireMois = $repository->findChiffreAffaireMois();
-            $Top3ProduitsVendusCeMois = $repository->findTop3ProduitsVendusCeMois();
+        $chiffreAffaireAnneeEnCours = $repository->findChiffreAffaireAnneeEnCours();
+        $chiffreAffaireAnneePrecedente = $repository->findChiffreAffaireAnneePrecedente();
+        $chiffreAffaireMois = $repository->findChiffreAffaireMois();
+        $Top3ProduitsVendusCeMois = $repository->findTop3ProduitsVendusCeMois();
 
-            // Récupère l'année et le mois actuel
-            $annee = (int) date('Y');
-            $mois = (int) date('m');
-        
-            $qteProduits = 3;
-            // Par défaut, récupère les 3 produits les plus vendus durant le mois de l'année actuelle 
-            $meilleursProduits = $repository->trouverMeilleursProduitsMensuel($annee, $mois, $qteProduits );
+        // RECUPERE L'ANNEE ET LE MOIS ACTUEL
+        $annee = (int) date('Y');
+        $mois = (int) date('m');
+    
+        $qteProduits = 3;
+        // PAR DEFAUT RECUPERE LES 3 PRODUITS LES PLUS VENDUS DURANT LE MOIS DE L'ANNEE ACTUELLE 
+        $meilleursProduits = $entityManager->getRepository(Facture::class)->trouverMeilleursProduitsMensuel($annee, $mois,$qteProduits );
 
-            return $this->render('pages/accueil.html.twig', [
-                'chiffreAffaireAnneeEnCours' => $chiffreAffaireAnneeEnCours,
-                'chiffreAffaireAnneePrecedente' => $chiffreAffaireAnneePrecedente,
-                'chiffreAffaireMois' => $chiffreAffaireMois,
-                'Top3ProduitsVendusCeMois' => $Top3ProduitsVendusCeMois,
-                'MeilleursProduits' => $meilleursProduits,
-            ]);
-        }
-        catch (\Exception $e) {
-            // Gérer les erreurs de manière appropriée
-            $errorMessage = 'Une erreur est survenue : ' . $e->getMessage();
-            // Vous pouvez journaliser l'erreur ou rediriger vers une page d'erreur personnalisée
-            return new Response($errorMessage, Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        return $this->render('pages/accueil.html.twig',[
+            'chiffreAffaireAnneeEnCours' => $chiffreAffaireAnneeEnCours,
+            'chiffreAffaireAnneePrecedente' => $chiffreAffaireAnneePrecedente,
+            'chiffreAffaireMois' => $chiffreAffaireMois,
+            'Top3ProduitsVendusCeMois' => $Top3ProduitsVendusCeMois,
+            'MeilleursProduits' => $meilleursProduits,
+        ]);
     }
 
     #[Route('/accueil/dashBoardMeilleursProduits', name: 'dashBoardMeilleursProduits')]
