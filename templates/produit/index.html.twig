@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Pont des vents produits{% endblock %}
 
 {% block body %}
@@ -66,6 +65,8 @@
             <div>
                 <button id="addButton" class="button tooltip-container" data-tooltip="Ajouter un nouveau Produit"><i class="fa-solid fa-plus" style="font-weight: 800; font-size: 20px; text-align: center"></i></button>
             </div>
+            <div id="chart"></div>
+
         </div>
 
 
@@ -74,6 +75,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
     <script>
         $(document).ready(function() {
             var element = document.getElementById('produit_form_Ajouter');

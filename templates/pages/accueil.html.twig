@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
+{# CSS Pour les graphs #}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('js/bibliotheques/ApexChartsJS/dist/apexcharts.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -52,51 +55,110 @@
             </div>
             <div class="case">
                 <p>TOP 3 des produits les plus vendus ce mois-ci :</p>
-                <ul>
-                    {% for produit in Top3ProduitsVendusCeMois %}
-                        <li>{{ produit.nom }} - {{ produit.quantite_vendue }} €</li>
-                    {% endfor %}
-                </ul>
 
+                <form id="formTopProduits" method="GET" hx-get="{{ path('dashBoardMeilleursProduits') }}" hx-trigger="submit" hx-target="#divTopProduits">
+                    <div style="display:flex;">
+                        <label for="anneeMois">Mois : </label>
+                        <input type="month" id="anneeMois" name="anneeMois" min="2020-02" />
+                        <label for="qteProduits"> Nombre de produits à afficher : </label>
+                        <input type="number" id="qteProduits" name="qteProduits" min="1" value="3" />
+                        <button type="submit"> Valider</button>
+                    </div>
+                </form>
+
+
+
+                {# CONTENT DU GRAPH DES MEILLEURS PRODUITS DU MOIS #}
+                <div id="divTopProduits"></div>
             </div>
         </div>
-
-
-
-
-
     </section>
-{#    <table class="table">#}
-{#        <thead>#}
-{#        <tr>#}
-{#            <th>Nom Prenom</th>#}
-{#            <th>Produit Quantité</th>#}
-{#            <th>Montant</th>#}
-{#            <th>Date</th>#}
-{#            <th>Télécharger</th>#}
-{#        </tr>#}
-{#        </thead>#}
-{#        <tbody>#}
-{#        {% for facture in factures %}#}
-{#            <tr>#}
-{#                <td>{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</td>#}
-{#                <td>#}
-{#                    {% for factureProduit in facture.produits %}#}
-{#                        {{ factureProduit.quantite }} - {{ factureProduit.produit.nom }} <br/>#}
-{#                        {% if not loop.last %}{% endif %}#}
-{#                    {% endfor %}#}
-{#                </td>#}
-{#                <td>{{ facture.montant|number_format(2, ',', ' ') }}</td>#}
-{#                <td>{{ facture.date ? facture.date|date('Y-m-d H:i:s') : '' }}</td>#}
-{#                <td>#}
-{#                    <a href="{{ path('visualiser_facture', {'id': facture.id}) }}" class="btn btn-primary">Voir</a>#}
-{#                    <a href="{{ path('telecharger_facture', {'id': facture.id}) }}" class="btn btn-primary">Télécharger</a>#}
-{#                </td>#}
-{#            </tr>#}
-{#        {% endfor %}#}
-{#        </tbody>#}
-{#    </table>#}
 {% endblock %}
 
 {% block javascripts %}
+<script>
+    // RECUPERE LA DATE ACUTELLE ET SET LA VALEUR PAR DEFAUT DE L'INPUT MONTH POUR LES MEILLEURS PRODUITS DU MOIS
+    let currentDate = new Date();
+    let formattedDate = currentDate.toISOString().slice(0, 7); // Format YYYY-MM
+    document.getElementById("anneeMois").value=formattedDate;
+</script>
+
+
+
+<script src="{{ asset('js/bibliotheques/ApexChartsJS/dist/apexcharts.js') }}"></script>
+{# SCRIPT POUR LE DASHBOARD #}
+<script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        // RECUPRE LES PRODUITS ET LES QUANTITES POUR REMPLIR UNE PREMIERE FOIS LE GRAPH
+        var produits = {
+            nomProduits: [],
+            quantites: []
+        };
+        {% for produit in MeilleursProduits %}
+            produits.nomProduits.push('{{ produit.nom|escape('js') }}');
+            produits.quantites.push({{ produit.quantite_vendue }});
+        {% endfor %}
+
+
+        // Données fictives pour le graphique
+        var options = {
+            series: [{
+                name: 'Nombre d\'achats',
+                data: produits.quantites
+            }],
+            chart: {
+                height: 350,
+                type: 'bar',
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '50%',
+                    endingShape: 'flat'
+                },
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function (val) {
+                    return val;
+                },
+                offsetY: -20,
+                style: {
+                    fontSize: '12px',
+                    colors: ["#304758"]
+                }
+            },
+            xaxis: {
+                categories: produits.nomProduits,
+                labels: {
+                    style: {
+                        fontSize: '12px'
+                    }
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Nombre d\'achats',
+                    offsetY: -10
+                }
+            },
+            title: {
+                text: 'TOP 3 des produits les plus vendus ce mois-ci :',
+                floating: true,
+                offsetY: 330,
+                align: 'center',
+                style: {
+                    color: '#444'
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#divTopProduits"), options);
+        chart.render();
+    });
+
+</script>
+
 {% endblock %}

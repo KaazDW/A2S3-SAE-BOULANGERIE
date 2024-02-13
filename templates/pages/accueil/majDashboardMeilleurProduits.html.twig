@@ -1,0 +1,73 @@
+
+
+<script>
+console.log(produits);
+    var produits = {
+        nomProduits: [
+            {% for produit in meilleursProduits %}
+                "{{ produit.nom }}",
+            {% endfor %}
+        ],
+        quantites: [
+            {% for produit in meilleursProduits %}
+                {{ produit.quantite_vendue }},
+            {% endfor %}
+        ]
+    };
+
+    // Mise à jour du graphique avec les nouvelles données
+    var options = {
+        series: [{
+            name: 'Nombre d\'achats',
+            data: produits.quantites
+        }],
+        chart: {
+            height: 350,
+            type: 'bar',
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '50%',
+                endingShape: 'flat'
+            },
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return val;
+            },
+            offsetY: -20,
+            style: {
+                fontSize: '12px',
+                colors: ["#304758"]
+            }
+        },
+        xaxis: {
+            categories: produits.nomProduits,
+            labels: {
+                style: {
+                    fontSize: '12px'
+                }
+            }
+        },
+        yaxis: {
+            title: {
+                text: 'Nombre d\'achats',
+                offsetY: -10
+            }
+        },
+        title: {
+            text: 'TOP 3 des produits les plus vendus ce mois-ci :',
+            floating: true,
+            offsetY: 330,
+            align: 'center',
+            style: {
+                color: '#444'
+            }
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#divTopProduits"), options);
+    chart.render();
+</script>

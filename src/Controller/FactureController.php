@@ -212,12 +212,32 @@ class FactureController extends AbstractController
                 $entityManager->flush();
 
             }
-            
-
-        return $this->render('facture/commande.html.twig', [
-            'produits' => $produits,
-        ]);
+        
+            return $this->render('facture/commande.html.twig', [
+                'produits' => $produits,
+            ]);
+        }
+    
     }
-}
+
+    // FONCTION PERMETTANT DE RECUPERE UNE CERTAINE QUANTITE DE PRODUIT QUI SONT LES PLUS ACHETEES D'UN CERTAIN MOIS 
+    #[Route('/meilleursProduits', name: 'meilleursProduitsMensuel')]
+    public function recupMeilleursProduitsMensuel(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        // RECUPERE LA DATE ET LA QUANTITE DE PRODUIT A RECUPERER EN GET
+
+        $moisEtAnnee = $request->query->get('anneeMois');
+        list($annee, $mois) = explode('-', $moisEtAnnee);
+        $annee = (int)$annee;
+        $mois = (int)$mois;
+
+        $qteProduits = $request->query->get('qteProduits');
+
+        // RECUPERE L'ENSEMBLE DES PRODUITS LES PLUS VENDUS DANS LE MOIS DE L'ANNEE AVEC UNE LIMITE EQUIVALENTE A qteProduits
+        $meilleursProduits = $entityManager->getRepository(Facture::class)->trouverMeilleursProduitsMensuel($annee, $mois,$qteProduits );
+        dd($meilleursProduits);
+
+        return new response();
+    }
 
 }

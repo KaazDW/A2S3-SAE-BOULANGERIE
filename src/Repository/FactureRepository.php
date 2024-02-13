@@ -142,4 +142,25 @@ class FactureRepository extends ServiceEntityRepository
         return $result;
     }
 
+    // RECUPERE L'ENSEMBLE DES PRODUITS LES PLUS VENDUS DANS LE MOIS DE L'ANNEE AVEC UNE LIMITE EQUIVALENTE A qteProduits
+    public function trouverMeilleursProduitsMensuel(int $annee, int $mois, int $qteProduits): array
+    {
+        $debutMois = new \DateTime("$annee-$mois-01 00:00:00");
+        $finMois = clone $debutMois;
+        $finMois->modify('last day of this month')->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('f')
+        ->select('p.nom', 'SUM(fp.quantite) as quantite_vendue')
+        ->leftJoin('f.produits', 'fp')
+        ->leftJoin('fp.produit', 'p')
+        ->where('f.dateReservation BETWEEN :debutMois AND :finMois')
+        ->setParameter('debutMois', $debutMois)
+        ->setParameter('finMois', $finMois)
+        ->groupBy('p.nom')
+        ->orderBy('quantite_vendue', 'DESC')
+        ->setMaxResults($qteProduits)
+        ->getQuery()
+        ->getResult();
+    }
+
 }
