@@ -178,7 +178,6 @@ class FactureController extends AbstractController
                     $facture->setDatePaiement(new DateTime());
                 }
             
-                // $request->request->all() pour obtenir toutes les données du formulaire
                 $formData = $request->request->all();
                 // accede aux données du tableau associatif 'quantiteProduit'
                 $quantiteProduitArray = $formData['quantiteProduit'] ?? [];
