@@ -5,7 +5,7 @@
 {% block title %}Nouvelle Facture{% endblock %}
 
 {% block body %}
-<div class="container">
+<section class="container">
 
     <form id="commandeForm" action="/creation_commande" method="post">
         <label for="dateReservation">Date de réservation</label>
@@ -44,7 +44,7 @@
 
         <button type="submit" onclick="validerFormulaire()">Valider</button>
     </form>
-</div>
+</section>
 
 {# SCRIPT QUI SERT A AFFICHER OU NON LA DATE LORSQUE L'ON CLIQUE SUR A DEJA PAYE #}
 <script>
