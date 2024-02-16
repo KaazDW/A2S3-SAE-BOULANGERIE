@@ -51,7 +51,7 @@ class AccueilController extends AbstractController
 
         // RECUPERE L'ENSEMBLE DES PRODUITS LES PLUS VENDUS DANS LE MOIS DE L'ANNEE AVEC UNE LIMITE EQUIVALENTE A qteProduits
         $meilleursProduits = $entityManager->getRepository(Facture::class)->trouverMeilleursProduitsMensuel($annee, $mois, $qteProduits);
-
+        
         return $this->render('pages/accueil/majDashboardMeilleurProduits.html.twig',[
             'meilleursProduits' => $meilleursProduits,
         ]);

@@ -208,8 +208,9 @@ class FactureController extends AbstractController
 
                 // enregistre les changements en bdd
                 $entityManager->persist($facture);
-                $entityManager->flush();
 
+                $entityManager->flush();
+                $this->addFlash('success', 'La commande a été passée avec succès.');
             }
         
             return $this->render('facture/commande.html.twig', [

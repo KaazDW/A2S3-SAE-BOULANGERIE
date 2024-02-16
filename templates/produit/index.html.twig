@@ -3,6 +3,23 @@
 
 {% block body %}
     <section class="container">
+        <div style="display: flex; justify-content: end; margin-top: 15px; margin-bottom:15px;">
+            <!-- Modal pour l'ajout -->
+            <div class="tooltip-style-modal-light" id="addModal">
+                <h3>Ajouter une recette</h3>
+                    {# Affichage du formulaire #}
+                    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                    {{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.prixUnitaire, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_end(form) }}
+            </div>
+            <!-- Boutton d'affichage du Modal pour l'ajout -->
+            <div>
+                <button id="addButton" class="button tooltip-container" data-tooltip="Ajouter un nouveau Produit"><i class="fa-solid fa-plus" style="font-weight: 800; font-size: 20px; text-align: center"></i></button>
+            </div>
+            <div id="chart"></div>
+
+        </div>
         <table id="produitTable">
             <thead>
                 <tr>
@@ -51,24 +68,6 @@
             {% endfor %}
             </tbody>
         </table>
-        <div style="display: flex; justify-content: end; margin-top: 15px;">
-            <!-- Modal pour l'ajout -->
-            <div class="tooltip-style-modal-light" id="addModal">
-                <h3>Ajouter une recette</h3>
-                    {# Affichage du formulaire #}
-                    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-                    {{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_row(form.prixUnitaire, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_end(form) }}
-            </div>
-            <!-- Boutton d'affichage du Modal pour l'ajout -->
-            <div>
-                <button id="addButton" class="button tooltip-container" data-tooltip="Ajouter un nouveau Produit"><i class="fa-solid fa-plus" style="font-weight: 800; font-size: 20px; text-align: center"></i></button>
-            </div>
-            <div id="chart"></div>
-
-        </div>
-
 
 
     </section>

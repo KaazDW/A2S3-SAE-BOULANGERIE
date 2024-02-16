@@ -32,10 +32,10 @@
                         <a href="{{ path('admin') }}" class="tooltip-container" data-tooltip="Accéder à l'interface d'administration">Admin</a>
                     </li>
                     <li>
-                        <a href="{{ path('commande') }}" class="tooltip-container" data-tooltip="Toutes les commandes">Commandes</a>
+                        <a href="{{ path('commande') }}" class="tooltip-container" data-tooltip="Création de commandes">Commandes</a>
                     </li>
                     <li>
-                        <a href="{{ path('produits') }}" class="tooltip-container" data-tooltip="Tout vos produits">Produits</a>
+                        <a href="{{ path('produits') }}" class="tooltip-container" data-tooltip="Gestion des produits">Produits</a>
                     </li>
                     <li>
                         <a href="{{ path('app_facture') }}" class="tooltip-container" data-tooltip="Facture en cours">Factures</a>
@@ -52,7 +52,9 @@
             </div>
         </header>
         <main style="margin-top: 80px;">
+
             {% block body %}
+
             {% endblock %}
 
             {% block javascripts %}
