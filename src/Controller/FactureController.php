@@ -23,60 +23,69 @@ use App\Form\FactureType;
 class FactureController extends AbstractController
 {
     #[Route('/facture', name: 'app_facture')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(FactureFilterType::class);
-        $form->handleRequest($request);
+        $factures = $entityManager->getRepository(Facture::class)->findAll();
 
-        $dateReservation = $form->get('dateReservation')->getData();
-
-        // Convertir la date au format 'Y-m-d' si elle n'est pas vide
-        if ($dateReservation) {
-            $dateReservation = DateTime::createFromFormat('d/m/Y', $dateReservation)->format('Y-m-d');
+        // Récupérer tous les produits associés à toutes les factures
+        $produits = [];
+        foreach ($factures as $facture) {
+            foreach ($facture->getProduits() as $produitFacture) {
+                $produit = $produitFacture->getProduit();
+                // Vérifier si le produit existe déjà dans le tableau
+                if (!isset($produits[$produit->getId()])) {
+                    $produits[$produit->getId()] = $produit;
+                }
+            }
         }
 
-        $date = DateTime::createFromFormat('d/m/Y', '01/01/2024')->format('Y-m-d');
+        // Calculer le total de chaque produit commandé
+        $produitTotals = [];
+        foreach ($factures as $facture) {
+            foreach ($facture->getProduits() as $produitFacture) {
+                $produitNom = $produitFacture->getProduit()->getNom();
+                $quantite = $produitFacture->getQuantite();
 
-        $selectedDate = [
-            'type' => 'dateReservation',
-            'value' => $date,
-        ];
-
-        // Récupérer toutes les factures avec les détails de l'utilisateur et les produits
-        $factures = $entityManager->getRepository(Facture::class)->findAllFromDate($selectedDate);
+                if (!isset($produitTotals[$produitNom])) {
+                    $produitTotals[$produitNom] = 0;
+                }
+                $produitTotals[$produitNom] += $quantite;
+            }
+        }
 
         return $this->render('facture/index.html.twig', [
             'factures' => $factures,
-            'form' => $form->createView(),
+            'produits' => $produits, // Passer les produits à Twig
+            'produitTotals' => $produitTotals,
         ]);
     }
 
     // RECUPERE LES FACTURES QUI SONT COMMANDEES A LA DATE DONNEE EN PARAMETRE
-    #[Route('/factures/{date}', name: 'getFacturesParDate')]
-    public function getFacturesParDate(string $date, EntityManagerInterface $entityManager): Response {
-        //Modifie le format de la date
-        $dateObj = DateTime::createFromFormat('Y-m-d', $date);
-
-        //Cas ou la conversion échoue
-        if ($dateObj === false) {
-            return new Response('Format de date invalide.', Response::HTTP_BAD_REQUEST);
-        }
-        // Mets la date au bon format
-        $formattedDate = $dateObj->format('Y-m-d');
-
-        // TABLEAU QUI SERVIRA AU REPOSITORY
-        $selectedDate = [
-            'type' => 'dateReservation',
-            'value' => $formattedDate,
-        ];
-
-        // RECUPERE LES FACTURES A LA DATE $SELECTEDDATE
-        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
-    
-        return $this->render('facture/factureParDate.html.twig', [
-            'factures' => $factures,
-        ]);
-    }
+//    #[Route('/factures/{date}', name: 'getFacturesParDate')]
+//    public function getFacturesParDate(string $date, EntityManagerInterface $entityManager): Response {
+//        //Modifie le format de la date
+//        $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+//
+//        //Cas ou la conversion échoue
+//        if ($dateObj === false) {
+//            return new Response('Format de date invalide.', Response::HTTP_BAD_REQUEST);
+//        }
+//        // Mets la date au bon format
+//        $formattedDate = $dateObj->format('Y-m-d');
+//
+//        // TABLEAU QUI SERVIRA AU REPOSITORY
+//        $selectedDate = [
+//            'type' => 'dateReservation',
+//            'value' => $formattedDate,
+//        ];
+//
+//        // RECUPERE LES FACTURES A LA DATE $SELECTEDDATE
+//        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
+//
+//        return $this->render('facture/factureParDate.html.twig', [
+//            'factures' => $factures,
+//        ]);
+//    }
 
     #[Route('/visualiser_facture/{id}', name: 'visualiser_facture')]
     public function visualiserFacture(int $id, EntityManagerInterface $entityManager): Response
