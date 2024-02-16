@@ -22,4 +22,5 @@
 .env
 .idea
 /public/bundles/
+/public/bundles/easyadmin
 .env

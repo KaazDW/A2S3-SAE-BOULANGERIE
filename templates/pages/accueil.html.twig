@@ -24,17 +24,17 @@
         </div>
     </section>
     <section class="home">
-        <div class="top">
-            <div class="case">
+{#        <div class="top">#}
+{#            <div class="case">#}
 
-            </div>
-            <div class="case">
+{#            </div>#}
+{#            <div class="case">#}
 
-            </div>
-            <div class="case">
+{#            </div>#}
+{#            <div class="case">#}
 
-            </div>
-        </div>
+{#            </div>#}
+{#        </div>#}
         <div class="middle">
             <div class="case">
 
@@ -51,22 +51,21 @@
         </div>
         <div class="bottom">
             <div class="case">
-                <p>graphique (courbe) chiffre d'affaire par mois :</p>
+                <h4>graphique (courbe) chiffre d'affaire par mois :</h4>
             </div>
             <div class="case">
-                <p>TOP 3 des produits les plus vendus ce mois-ci :</p>
-
-                <form id="formTopProduits" method="GET" hx-get="{{ path('dashBoardMeilleursProduits') }}" hx-trigger="submit" hx-target="#divTopProduits">
-                    <div style="display:flex;">
-                        <label for="anneeMois">Mois : </label>
-                        <input type="month" id="anneeMois" name="anneeMois" min="2020-02" />
-                        <label for="qteProduits"> Nombre de produits à afficher : </label>
-                        <input type="number" id="qteProduits" name="qteProduits" min="1" value="3" />
-                        <button type="submit"> Valider</button>
-                    </div>
-                </form>
-
-
+                <div class="heading">
+                    <h4>TOP <span id="topNb">3</span> des produits les plus vendus ce mois-ci :</h4>
+                    <form id="formTopProduits" method="GET" hx-get="{{ path('dashBoardMeilleursProduits') }}" hx-trigger="submit" hx-target="#divTopProduits">
+                        <div style="display:flex; margin-top: 15px;">
+{#                            <label for="anneeMois"></label>#}
+                            <input type="month" id="anneeMois" name="anneeMois" min="2020-02" />
+{#                            <label for="qteProduits"> Nombre de produits à afficher : </label>#}
+                            <input type="number" id="qteProduits" name="qteProduits" min="1" value="3" />
+                            <button type="submit"> Valider</button>
+                        </div>
+                    </form>
+                </div>
 
                 {# CONTENT DU GRAPH DES MEILLEURS PRODUITS DU MOIS #}
                 <div id="divTopProduits"></div>
@@ -77,6 +76,28 @@
 
 {% block javascripts %}
 <script>
+    // Récupération de l'input et du span
+    const inputQteProduits = document.getElementById("qteProduits");
+    const spanTopNb = document.getElementById("topNb");
+    // Récupération des champs du formulaire
+    const inputAnneeMois = document.getElementById("anneeMois");
+
+    // Ajout d'un event listener sur l'événement "input"
+    inputQteProduits.addEventListener("input", function() {
+        // Met à jour le contenu du span avec la valeur de l'input
+        spanTopNb.textContent = inputQteProduits.value;
+    });
+    // Ajout d'un événement "blur" sur chaque champ
+    inputAnneeMois.addEventListener("blur", function() {
+        // Soumet le formulaire
+        document.getElementById("formTopProduits").submit();
+    });
+
+    inputQteProduits.addEventListener("blur", function() {
+        // Soumet le formulaire
+        document.getElementById("formTopProduits").submit();
+    });
+
     // RECUPERE LA DATE ACUTELLE ET SET LA VALEUR PAR DEFAUT DE L'INPUT MONTH POUR LES MEILLEURS PRODUITS DU MOIS
     let currentDate = new Date();
     let formattedDate = currentDate.toISOString().slice(0, 7); // Format YYYY-MM
@@ -144,15 +165,15 @@
                     offsetY: -10
                 }
             },
-            title: {
-                text: 'TOP 3 des produits les plus vendus ce mois-ci :',
-                floating: true,
-                offsetY: 330,
-                align: 'center',
-                style: {
-                    color: '#444'
-                }
-            }
+            // title: {
+            //     text: 'TOP 3 des produits les plus vendus ce mois-ci :',
+            //     floating: true,
+            //     offsetY: 330,
+            //     align: 'center',
+            //     style: {
+            //         color: '#444'
+            //     }
+            // }
         };
 
         var chart = new ApexCharts(document.querySelector("#divTopProduits"), options);

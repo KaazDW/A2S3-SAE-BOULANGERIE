@@ -348,6 +348,10 @@ section.error404{
   background-color: var(--color-subgrey);
   border: 2px solid var(--color-lightgrey);
   border-radius: 10px;
+  h4{
+    margin-top: 15px;
+    margin-left: 15px;
+  }
 }
 section.head{
   display: flex;
@@ -375,18 +379,18 @@ section.home{
 
   margin: 0 30px;
 
-  .top {
-    display: grid;
+  //.top {
+  //  display: grid;
     // grid-template-colums est suivis d'autant de valeurs qu'il y a de colonnes dans la ranger
     // fait des calcule avec soustraction permet de soustraire les marges présentes entre les
     // cases pour que celle-ci ne débordent pas à droite
-    grid-template-columns: 20% calc(40% - 10px) calc(40% - 10px);
-    grid-gap: 10px;
-
-    .case{
-      height: calc(((100vh - 100px) / 4 - (33px / 3)) - 50px);
-    }
-  }
+  //  grid-template-columns: 20% calc(40% - 10px) calc(40% - 10px);
+  //  grid-gap: 10px;
+  //
+  //  .case{
+  //    height: calc(((100vh - 100px) / 4 - (33px / 3)) - 50px);
+  //  }
+  //}
   .middle {
     margin-top: 10px;
     display: grid;
@@ -394,7 +398,7 @@ section.home{
     grid-gap: 10px;
 
     .case {
-      height: calc((100vh - 100px) / 4 - (33px / 3));
+      height: calc((100vh - 100px) / 3 - (33px / 3));
     }
   }
   .bottom {
@@ -404,7 +408,24 @@ section.home{
     grid-gap: 10px;
 
     .case{
-      height: calc((((100vh - 100px) / 4 - 5px)*2) - 10px);
+      height: calc(((100vh - 100px) / 4 - 5px) * 2 + 70px);
+      .heading{
+        display: flex;
+        align-items: center;
+        #formTopProduits{
+          margin-left: 15px;
+          input{
+            margin: 0 10px;
+            width: 50px;
+            padding: 2px 5px;
+            border-radius: 5px;
+            border: 1px solid grey;
+          }
+        }
+      }
+      #divTopProduits{
+        margin-top: 50px;
+      }
     }
   }
 

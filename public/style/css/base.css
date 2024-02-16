@@ -325,6 +325,10 @@ section.error404 div.content a i {
   border: 2px solid var(--color-lightgrey);
   border-radius: 10px;
 }
+.case h4 {
+  margin-top: 15px;
+  margin-left: 15px;
+}
 
 section.head {
   display: flex;
@@ -345,14 +349,6 @@ section.home {
   height: calc(100vh - 80px - 70px);
   margin: 0 30px;
 }
-section.home .top {
-  display: grid;
-  grid-template-columns: 20% calc(40% - 10px) calc(40% - 10px);
-  grid-gap: 10px;
-}
-section.home .top .case {
-  height: calc((100vh - 100px) / 4 - 11px - 50px);
-}
 section.home .middle {
   margin-top: 10px;
   display: grid;
@@ -360,7 +356,7 @@ section.home .middle {
   grid-gap: 10px;
 }
 section.home .middle .case {
-  height: calc((100vh - 100px) / 4 - 11px);
+  height: calc((100vh - 100px) / 3 - 11px);
 }
 section.home .bottom {
   margin-top: 10px;
@@ -369,7 +365,24 @@ section.home .bottom {
   grid-gap: 10px;
 }
 section.home .bottom .case {
-  height: calc(((100vh - 100px) / 4 - 5px) * 2 - 10px);
+  height: calc(((100vh - 100px) / 4 - 5px) * 2 + 70px);
+}
+section.home .bottom .case .heading {
+  display: flex;
+  align-items: center;
+}
+section.home .bottom .case .heading #formTopProduits {
+  margin-left: 15px;
+}
+section.home .bottom .case .heading #formTopProduits input {
+  margin: 0 10px;
+  width: 50px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  border: 1px solid grey;
+}
+section.home .bottom .case #divTopProduits {
+  margin-top: 50px;
 }
 
 /*# sourceMappingURL=base.css.map */
