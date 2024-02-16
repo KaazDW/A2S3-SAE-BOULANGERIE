@@ -5,8 +5,13 @@
 {% block title %}Nouvelle Facture{% endblock %}
 
 {% block body %}
-<section class="container">
-
+<div class="container">
+                {# AFFICHE LES MESSAGES DE SUCCES  #}
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
     <form id="commandeForm" action="/creation_commande" method="post">
         <label for="dateReservation">Date de réservation</label>
         <input type="date" id="dateReservation" name="dateReservation" required>
@@ -39,7 +44,7 @@
         <br>
         <div id="datePaiementContainer" style="display: none;">
             <label for="datePaiement">Date de paiement</label>
-            <input type="datetime-local" id="datePaiement" name="datePaiement" required>
+            <input type="datetime-local" id="datePaiement" name="datePaiement">
         </div>
 
         <button type="submit" onclick="validerFormulaire()">Valider</button>
@@ -51,14 +56,32 @@
     var paiementJourMeme = document.getElementById("paiementJourMeme");
     var paiementDejaEffectue = document.getElementById("paiementDejaEffectue");
     var datePaiementContainer = document.getElementById("datePaiementContainer");
+    var datePaiementInput = document.getElementById("datePaiement");
 
     paiementJourMeme.addEventListener("change", function () {
         datePaiementContainer.style.display = "none";
+        if (datePaiementInput.hasAttribute('required')) {
+            datePaiementInput.removeAttribute('required');
+        }
     });
 
     paiementDejaEffectue.addEventListener("change", function () {
         datePaiementContainer.style.display = "block";
+        datePaiementInput.setAttribute('required', 'required');
     });
+</script>
+
+{# SCRIPT POUR SET LA DATE MINIMALE DE RESERVATION A DEUX JOURS APRES LE JOUR ACTUEL #}
+<script>
+    var dateReservationInput = document.getElementById("dateReservation");
+
+    var dateActuelle = new Date();
+
+    // Ajout de deux jours à la date actuelle pour obtenir la date minimale de réservation
+    dateActuelle.setDate(dateActuelle.getDate() + 2);
+    var minDate = dateActuelle.toISOString().split('T')[0]; 
+
+    dateReservationInput.min = minDate;
 </script>
 
 <script>
@@ -74,7 +97,7 @@
 
         // Vérification des champs obligatoires
         if (nom === "" || prenom === "" || dateReservation === "" || produitsSelectionnes.length === 0) {
-            return; // Arrête la soumission du formulaire
+            return;
         }
 
 
@@ -94,12 +117,11 @@
 
         var formulaire = document.getElementById("commandeForm");
 
-        // Ensuite, soumettez le formulaire programmation.
         document.getElementById("commandeForm").submit();
         
     }
 
-
+    // GESTIONNAIRE D'EVENEMENT POUR LE DROPDOWN
     document.addEventListener("DOMContentLoaded", function () {
         var produitDropdown = document.getElementById("produitDropdown");
         var produitsSelectionnes = document.getElementById("produitsSelectionnes");
@@ -109,7 +131,7 @@
             var selectedOption = produitDropdown.options[produitDropdown.selectedIndex];
 
             if (selectedOption.value !== "") {
-                // Crée une div pour le produit sélectionné
+                // Créér une div pour le produit sélectionné
                 var produitDiv = document.createElement("div");
                 produitDiv.innerHTML = selectedOption.text;
 
@@ -119,18 +141,37 @@
                 // Ajoute le produit à la div des produits sélectionnés
                 produitsSelectionnes.appendChild(produitDiv);
 
-                // Ajoute un input de type number pour la quantité avec l'ID du produit
+                // AJOUTE L'INPUT DE QUANTITE DU PRODUIT
                 var quantiteInput = document.createElement("input");
                 quantiteInput.type = "number";
                 quantiteInput.name = "quantiteProduit[" + selectedOption.value + "]";
-                quantiteInput.min = "1"; // Valeur minimale de 1
-                quantiteInput.value = "1"; // Valeur par défaut de 1
+                quantiteInput.min = "1"; 
+                quantiteInput.value = "1"; // Valeur par défaut
 
-                // Ajoute l'input de quantité à la div des produits sélectionnés
                 produitDiv.appendChild(quantiteInput);
 
-                // Retire le produit du dropdown
                 selectedOption.remove();
+
+                // IMAGE POUR SUPPRIMER LE PRODUTI DE LA FACTURE
+                var deleteIcon = document.createElement("img");
+                deleteIcon.src = "/icons/croix.svg";
+                deleteIcon.alt = "supprimer";
+                deleteIcon.style.padding = "0 10px";
+                deleteIcon.style.marginRight = "10px";
+                deleteIcon.style.cursor = "pointer";
+                deleteIcon.addEventListener("click", function () {
+                    produitDiv.remove(); // Supprime la div du produit sélectionné
+
+                        // LE RAJOUTE AU DROPDOWN
+                        var newOption = document.createElement("option");
+                        newOption.value = selectedOption.value;
+                        newOption.text = selectedOption.text;
+                        produitDropdown.appendChild(newOption);
+                });
+                produitDiv.appendChild(deleteIcon);
+
+                // Retire le produit du dropdown
+
 
                 // Réinitialise le dropdown pour sélectionner l'option vide
                 produitDropdown.selectedIndex = 0;
