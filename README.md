@@ -60,6 +60,7 @@ Liste des fonctionnalités :
 
 ### Technologies : 
 - Symfony 5.6.2 (c) 2021-2024
+- Php8.2
 - PhpUnit 9.6.*
 - Htmx </>
 - JS
@@ -104,7 +105,7 @@ _Objectif : Initialiser et lancer le projet localement :_
    php bin/console doctrine:migrations:migrate
    ```
    
-### Commandes supplémentaire pour le développement
+### Commandes supplémentaires pour le développement
 Compilation des feuilles de style SASS : 
 ``` 
 sass public/style/scss/base.scss:public/style/css/base.css -w
