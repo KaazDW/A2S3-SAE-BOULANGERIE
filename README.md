@@ -58,10 +58,16 @@ Liste des fonctionnalités :
 - ⌛
 - ❌
 
-## Informations : 
+### Technologies : 
 - Symfony 5.6.2 (c) 2021-2024
+- PhpUnit 9.6.*
+- Htmx </>
+- JS
+
+
 - Font-awesome Free Licence
-- 
+- ApexCharts.js 
+
 
 
 
@@ -99,12 +105,27 @@ _Objectif : Initialiser et lancer le projet localement :_
    ```
    
 ### Commandes supplémentaire pour le développement
-[...]
+Compilation des feuilles de style SASS : 
+``` 
+sass public/style/scss/base.scss:public/style/css/base.css -w
+```
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+### Tests fonctionnels
+> `tests/FunctionnelsTest.php`
 
-[...]
+Dupliquer votre base de donnée initiale, en y ajoutant le suffixe `_test`.
+
+***exemple : bdd initiale -> sae-boulangerie, bdd de test -> sae-boulangerie_test***
+
+Dans le fichier de test, modifier l'adresse email utilisé pour l'authentification.
+
+**Pour exécuter les tests, utilisez la commande suivante :**
+```sh
+php bin/phpunit
+```
+
 
 <!-- LICENSE -->
 ## License
