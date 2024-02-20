@@ -7,14 +7,8 @@
         <div class="container">
             <h1>Liste des Factures</h1>
 
-{#            #}{# Afficher le formulaire #}
-{#            {{ form_start(form) }}#}
-{#                {{ form_widget(form) }}#}
-{#                <button type="button" class="button" onclick="validerFormulaire()">Valider</button>#}
-{#            {{ form_end(form) }}#}
-
             <div class="listeFactures" hx-target="this" hx-swap="outerHTML">
-                 {% include 'facture/factureParDate.html.twig' %}
+                {% include 'facture/factureParDate.html.twig' %}
             </div>
             <h2>Récapitulatif des Produits Commandés</h2>
             <ul>
@@ -24,198 +18,44 @@
                         <ul>
                             {% for produit in produits %}
                                 {% if produit.nom == produitNom %}
-                                    {% for recette in produit.ingredients %}
+                                    {% for ingredientProduit in produit.ingredients %}
                                         {% set quantiteProduit = totalProduit %}
-                                        {% set quantiteUtilisee = recette.quantite * quantiteProduit %}
-                                        {% set stockRestant = recette.ingredient.stock - quantiteUtilisee %}
-                                        <li>{{ recette.ingredient.nom }} - Quantité: {{ recette.quantite }} - Stock restant: {{ stockRestant }}</li>
+                                        {% set quantiteUtilisee = ingredientProduit.quantite * quantiteProduit %}
+{#                                        {% set stockRestant = ingredientProduit.ingredient.stock - quantiteUtilisee %}#}
+                                        <li>{{ ingredientProduit.ingredient.nom }} - Quantité: {{ ingredientProduit.quantite * quantiteProduit }}</li>
                                     {% endfor %}
                                 {% endif %}
                             {% endfor %}
+                            <p>DELIMITATION DES PRODUITS  </p>
                         </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <h2>Quantités Totales des Ingrédients</h2>
+            <ul>
+                {% for ingredientNom, quantiteTotale in quantitesTotalesIngredients %}
+                    <li>
+                        {{ ingredientNom }} - Quantité totale: {{ quantiteTotale }} - Stock actuel:
+                        {% for ingredient in ingredients %}
+                            {% if ingredient.nom == ingredientNom %}
+                                {% if ingredient.nom != "Eau"%}
+                                    {% if ingredient.stock - quantiteTotale <=0 %}
+                                        <span style="color: red;">{{ ingredient.stock - quantiteTotale}}</span>
+                                        {% else %}
+                                        {{ ingredient.stock - quantiteTotale}}
+                                    {% endif %}
+                                {% else %}
+                                    EAU ILLIMITE
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
                     </li>
                 {% endfor %}
             </ul>
         </div>
     </section>
 
-
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 {% endblock %}
-
-
-
-    {#    en haut à droite (récap factures selectionnées)#}
-{#    <section class="factures">#}
-{#        <div class="container" hx-target="this" hx-swap="outerHTML">#}
-{#            <h2>Factures Selectionnées :</h2>#}
-{#            <div id="factures-selectionnees">#}
-{#            </div>#}
-{#            <h2>Somme des produits :</h2>#}
-{#            <div id="sommes-produits">#}
-
-{#            </div>#}
-{#            <button onclick="gestionStock()" id="submit-form-btn">Démarrer la commande</button>#}
-{#        </div>#}
-{#    </section>#}
-
-    {#    en bas à gauche (aggrégation des commandes par ingrédients)#}
-{#    <section class="factures">#}
-{#        <div class="container"  hx-target="this" hx-swap="outerHTML">#}
-
-{#        </div>#}
-{#    </section>#}
-
-{#    #}{#    en bas à droite (preview gestion des stocks avant/apres)#}
-{#    <section class="factures">#}
-{#        <div class="container"  hx-target="this" hx-swap="outerHTML">#}
-
-{#        </div>#}
-{#    </section>#}
-{#{% endblock %}#}
-
-{#{% block javascripts %}#}
-{#    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>#}
-
-{#    <script>#}
-{#        let selectedFactures = [];#}
-{#        let operatedContentArray = [];#}
-
-{#        // Fonction pour mettre à jour l'affichage des sélections#}
-{#        function updateSelectionDisplay() {#}
-{#            var displayContent = '';#}
-{#            operatedContentArray = [];#}
-
-{#            console.log(selectedFactures);#}
-{#            if (selectedFactures.length === 0) {#}
-{#                displayContent = 'Aucune facture sélectionnée.';#}
-{#            } else {#}
-{#                selectedFactures.forEach(function (facture) {#}
-{#                    displayContent += "Facture ID: " + facture.id + "<br>";#}
-
-{#                    // Diviser les chaînes en tableaux#}
-{#                    var quantiteArray = facture.quantite.split(',');#}
-{#                    var nomProduitArray = facture.nomProduit.split(',');#}
-{#                    // Afficher chaque produit avec sa quantité successivement#}
-{#                    for (var i = 0; i < quantiteArray.length; i++) {#}
-{#                        displayContent += nomProduitArray[i].trim() +#}
-{#                            " : " + quantiteArray[i].trim() + "<br>";#}
-{#                        operatedContentArray.push(nomProduitArray[i].trim() + ',' + quantiteArray[i].trim());#}
-{#                    }#}
-{#                    // console.log('operatedContentArray', operatedContentArray);#}
-{#                    sommeQuantiteProduit(operatedContentArray);#}
-
-{#                    displayContent += "<hr>";#}
-{#                });#}
-{#            }#}
-
-{#            $('#factures-selectionnees').html(displayContent);#}
-{#        }#}
-
-{#        function updateSommesProduitsDisplay(quantitesParProduit) {#}
-{#            var displayContent = '';#}
-
-{#            for (var produit in quantitesParProduit) {#}
-{#                var quantite = quantitesParProduit[produit];#}
-{#                displayContent += produit + " : " + quantite + "<br>";#}
-{#            }#}
-
-{#            $('#sommes-produits').html(displayContent);#}
-{#        }#}
-
-{#        // Fonction pour réinitialiser les sélections#}
-{#        function resetSelections() {#}
-{#            selectedFactures = [];#}
-{#            updateSelectionDisplay();#}
-{#        }#}
-
-{#         function sommeQuantiteProduit(tab = []) {#}
-{#            // Créer un objet pour stocker les quantités par produit#}
-{#            const quantitesParProduit = {};#}
-{#            // Exemple de manipulation de donnée de l'objet :#}
-{#            //  quantitesParProduit["Baguette au seigle"];#}
-{#            //  delete quantitesParProduit["Baguette au nois"];#}
-
-
-{#            // Parcourir le tableau#}
-{#            tab.forEach(element => {#}
-{#                // Diviser la chaîne en nom du produit et quantité#}
-{#                const [produit, quantite] = element.split(',');#}
-
-{#                // Vérifier si le produit existe déjà dans l'objet#}
-{#                if (quantitesParProduit.hasOwnProperty(produit)) {#}
-{#                    // Ajouter la quantité si le produit existe déjà#}
-{#                    quantitesParProduit[produit] += parseInt(quantite, 10);#}
-{#                } else {#}
-{#                    // Ajouter le produit à l'objet s'il n'existe pas encore#}
-{#                    quantitesParProduit[produit] = parseInt(quantite, 10);#}
-{#                }#}
-{#            });#}
-
-{#             // Afficher le résultat#}
-{#             console.log('Résultat :', quantitesParProduit);#}
-
-{#             // Mettre à jour l'affichage des sommes des produits#}
-{#             updateSommesProduitsDisplay(quantitesParProduit);#}
-
-{#        }#}
-
-{#        // Ajouter un gestionnaire d'événements au bouton de validation#}
-{#        $('#submit-form-btn').click(function () {#}
-{#            // Ajoutez votre logique ici pour traiter les factures sélectionnées#}
-{#            console.log("Factures sélectionnées : ", selectedFactures);#}
-{#        });#}
-
-{#        // Fonction pour gérer la sélection des factures#}
-{#        function handleFactureSelection(checkbox) {#}
-{#            console.log(checkbox);#}
-{#            var factureId = $(checkbox).data('facture-id');#}
-{#            var quantite = $(checkbox).data('quantite');#}
-{#            var nomProduit = $(checkbox).data('nom-produit');#}
-
-{#            // Déboguer la valeur de data-debug#}
-{#            var debugValue = $(checkbox).data('debug');#}
-{#            console.log("Valeur de data-debug : " + debugValue);#}
-
-{#            if ($(checkbox).prop('checked')) {#}
-{#                // Convertir quantite en chaîne de caractères#}
-{#                var processedQuantite = quantite.toString();#}
-
-{#                selectedFactures.push({#}
-{#                    id: factureId,#}
-{#                    quantite: processedQuantite,#}
-{#                    nomProduit: nomProduit#}
-{#                });#}
-{#            } else {#}
-{#                selectedFactures = selectedFactures.filter(function (facture) {#}
-{#                    return facture.id !== factureId;#}
-{#                });#}
-{#            }#}
-
-{#            // Mettre à jour l'affichage des sélections#}
-{#            updateSelectionDisplay();#}
-{#        }#}
-
-{#        function validerFormulaire() {#}
-{#            // RECUPERE LA VALEUR DE LA DATE#}
-{#            var dateValue = document.getElementById('{{ form.dateReservation.vars.id }}').value;#}
-
-{#            // Effectue une requête AJAX#}
-{#            fetch('/factures/' + dateValue, {#}
-{#                method: 'GET',#}
-{#                headers: {#}
-{#                    'Content-Type': 'application/json'#}
-{#                },#}
-{#            })#}
-{#                .then(response => response.text())#}
-{#                .then(data => {#}
-{#                    // Mets à jour le contenu de la div listeFactures avec la réponse#}
-{#                    document.querySelector('.listeFactures').innerHTML = data;#}
-
-{#                    // Réinitialise les sélections après le changement de date#}
-{#                    resetOnDateChange();#}
-{#                })#}
-{#                .catch(error => console.error('Erreur lors de la requête:', error));#}
-{#        }#}
-{#    </script>#}

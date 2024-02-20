@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Ingredient;
 use App\Form\FactureFilterType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,37 +27,52 @@ class FactureController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $factures = $entityManager->getRepository(Facture::class)->findAll();
+        $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
 
-        // Récupérer tous les produits associés à toutes les factures
+
+        // Initialisation des tableaux pour stocker les données
         $produits = [];
+        $produitTotals = [];
+        $quantitesTotalesIngredients = [];
+
+        // Calcul de la quantité totale de chaque ingrédient et des autres données
         foreach ($factures as $facture) {
             foreach ($facture->getProduits() as $produitFacture) {
                 $produit = $produitFacture->getProduit();
-                // Vérifier si le produit existe déjà dans le tableau
-                if (!isset($produits[$produit->getId()])) {
-                    $produits[$produit->getId()] = $produit;
+                $produitNom = $produit->getNom();
+                $quantiteProduit = $produitFacture->getQuantite();
+
+                // Ajout du produit s'il n'existe pas encore dans le tableau
+                if (!isset($produits[$produitNom])) {
+                    $produits[$produitNom] = $produit;
                 }
-            }
-        }
 
-        // Calculer le total de chaque produit commandé
-        $produitTotals = [];
-        foreach ($factures as $facture) {
-            foreach ($facture->getProduits() as $produitFacture) {
-                $produitNom = $produitFacture->getProduit()->getNom();
-                $quantite = $produitFacture->getQuantite();
-
+                // Calcul du total de chaque produit
                 if (!isset($produitTotals[$produitNom])) {
                     $produitTotals[$produitNom] = 0;
                 }
-                $produitTotals[$produitNom] += $quantite;
+                $produitTotals[$produitNom] += $quantiteProduit;
+
+                // Calcul de la quantité totale de chaque ingrédient
+                foreach ($produit->getIngredients() as $ingredientProduit) {
+                    $ingredientNom = $ingredientProduit->getIngredient()->getNom();
+                    $quantite = $ingredientProduit->getQuantite() * $quantiteProduit;
+
+                    // Ajout de la quantité à celle déjà existante pour cet ingrédient
+                    if (!isset($quantitesTotalesIngredients[$ingredientNom])) {
+                        $quantitesTotalesIngredients[$ingredientNom] = 0;
+                    }
+                    $quantitesTotalesIngredients[$ingredientNom] += $quantite;
+                }
             }
         }
 
         return $this->render('facture/index.html.twig', [
             'factures' => $factures,
-            'produits' => $produits, // Passer les produits à Twig
+            'produits' => $produits,
             'produitTotals' => $produitTotals,
+            'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
+            'ingredients' => $ingredients,
         ]);
     }
 
@@ -131,15 +147,15 @@ class FactureController extends AbstractController
         return $response;
     }
 
-        #[Route('/telecharger_facture/{id}', name: 'telecharger_facture')]
-        public function telechargerFacture(int $id, EntityManagerInterface $entityManager): Response
-        {
-            $facture = $this->getFactureById($id, $entityManager);
-            $pdfContent = $this->generatePdfContent($facture);
-            $response = $this->createPdfResponse($pdfContent, $facture);
+    #[Route('/telecharger_facture/{id}', name: 'telecharger_facture')]
+    public function telechargerFacture(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $facture = $this->getFactureById($id, $entityManager);
+        $pdfContent = $this->generatePdfContent($facture);
+        $response = $this->createPdfResponse($pdfContent, $facture);
 
-            return $response;
-        }
+        return $response;
+    }
 
     #[Route('/creation_commande', name: 'commande')]
     public function passerCommande( EntityManagerInterface $entityManager, Request $request): Response
@@ -147,7 +163,7 @@ class FactureController extends AbstractController
         {
             // Recupere les produits par nom croissant
             $produits = $entityManager->getRepository(Produit::class)->findBy([], ['nom' => 'ASC']);
-    
+
             // TRAITEMENT DE LA SOUMISSION DU FORMULAIRE
             if ($request->isMethod('POST')) {
 
@@ -186,7 +202,7 @@ class FactureController extends AbstractController
                 else{
                     $facture->setDatePaiement(new DateTime());
                 }
-            
+
                 // $request->request->all() pour obtenir toutes les données du formulaire
                 $formData = $request->request->all();
                 // accede aux données du tableau associatif 'quantiteProduit'
@@ -199,7 +215,7 @@ class FactureController extends AbstractController
 
                     // Mets à jour la valeur totale
                     $montantFacture += $quantite * $produit->getPrixUnitaire();
-                    
+
                     if ($produit) {
                         // Créé une nouvelle instance de FactureProduit
                         $factureProduit = new FactureProduit();
@@ -221,12 +237,12 @@ class FactureController extends AbstractController
                 $entityManager->flush();
 
             }
-        
+
             return $this->render('facture/commande.html.twig', [
                 'produits' => $produits,
             ]);
         }
-    
+
     }
 
     // FONCTION PERMETTANT DE RECUPERE UNE CERTAINE QUANTITE DE PRODUIT QUI SONT LES PLUS ACHETEES D'UN CERTAIN MOIS 
