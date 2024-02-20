@@ -76,6 +76,64 @@ class FactureController extends AbstractController
         ]);
     }
 
+    #[Route('/factureSelect', name: 'app_factureSelect')]
+    public function factureSelect(EntityManagerInterface $entityManager,Request $request): Response
+    {
+
+        // Récupérer les identifiants des factures sélectionnées
+        $formData = $request->request->all();
+        $factureIds = $formData['factures_selectionnees'];
+        $factures = $entityManager->getRepository(Facture::class)->findBy(['id' => $factureIds]);
+
+        $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
+
+
+        // Initialisation des tableaux pour stocker les données
+        $produits = [];
+        $produitTotals = [];
+        $quantitesTotalesIngredients = [];
+
+        // Calcul de la quantité totale de chaque ingrédient et des autres données
+        foreach ($factures as $facture) {
+            foreach ($facture->getProduits() as $produitFacture) {
+                $produit = $produitFacture->getProduit();
+                $produitNom = $produit->getNom();
+                $quantiteProduit = $produitFacture->getQuantite();
+
+                // Ajout du produit s'il n'existe pas encore dans le tableau
+                if (!isset($produits[$produitNom])) {
+                    $produits[$produitNom] = $produit;
+                }
+
+                // Calcul du total de chaque produit
+                if (!isset($produitTotals[$produitNom])) {
+                    $produitTotals[$produitNom] = 0;
+                }
+                $produitTotals[$produitNom] += $quantiteProduit;
+
+                // Calcul de la quantité totale de chaque ingrédient
+                foreach ($produit->getIngredients() as $ingredientProduit) {
+                    $ingredientNom = $ingredientProduit->getIngredient()->getNom();
+                    $quantite = $ingredientProduit->getQuantite() * $quantiteProduit;
+
+                    // Ajout de la quantité à celle déjà existante pour cet ingrédient
+                    if (!isset($quantitesTotalesIngredients[$ingredientNom])) {
+                        $quantitesTotalesIngredients[$ingredientNom] = 0;
+                    }
+                    $quantitesTotalesIngredients[$ingredientNom] += $quantite;
+                }
+            }
+        }
+
+        return $this->render('facture/index.html.twig', [
+            'factures' => $factures,
+            'produits' => $produits,
+            'produitTotals' => $produitTotals,
+            'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
+            'ingredients' => $ingredients,
+        ]);
+    }
+
     // RECUPERE LES FACTURES QUI SONT COMMANDEES A LA DATE DONNEE EN PARAMETRE
 //    #[Route('/factures/{date}', name: 'getFacturesParDate')]
 //    public function getFacturesParDate(string $date, EntityManagerInterface $entityManager): Response {
