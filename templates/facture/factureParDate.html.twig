@@ -37,6 +37,7 @@
             {% endfor %}
             </tbody>
         </table>
-        <button type="submit">Valider</button>
+        <input type="hidden" name="start_production" value="true"> <!-- Champ caché pour démarrer la production -->
+        <button type="submit">Lancer la production</button>
     </form>
 {% endif %}

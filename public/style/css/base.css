@@ -357,6 +357,7 @@ section.home .middle {
   margin-top: 10px;
   display: grid;
   grid-template-columns: 40% calc(20% - 10px) calc(20% - 10px) calc(20% - 10px);
+  grid-auto-rows: auto;
   grid-gap: 10px;
 }
 section.home .middle .case {

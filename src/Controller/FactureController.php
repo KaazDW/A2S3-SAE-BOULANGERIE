@@ -125,7 +125,35 @@ class FactureController extends AbstractController
             }
         }
 
-        return $this->render('facture/index.html.twig', [
+        if ($request->isMethod('POST')) {
+            $formData = $request->request->all();
+            $factureIds = $formData['factures_selectionnees'];
+
+            // Mettre à jour l'état des factures sélectionnées
+            $factures = $entityManager->getRepository(Facture::class)->findBy(['id' => $factureIds]);
+            foreach ($factures as $facture) {
+                $facture->setEtat(true); // Mettre l'état à true
+                $entityManager->persist($facture);
+            }
+            $entityManager->flush();
+
+            // Mettre à jour le stock des ingrédients
+            foreach ($factures as $facture) {
+                foreach ($facture->getProduits() as $produitFacture) {
+                    foreach ($produitFacture->getProduit()->getIngredients() as $ingredientProduit) {
+                        $ingredient = $ingredientProduit->getIngredient();
+                        $quantiteUtilisee = $ingredientProduit->getQuantite() * $produitFacture->getQuantite();
+                        $nouveauStock = $ingredient->getStock() - $quantiteUtilisee;
+                        $ingredient->setStock($nouveauStock);
+                        $entityManager->persist($ingredient);
+                    }
+                }
+            }
+            $entityManager->flush();
+        }
+
+
+            return $this->render('facture/index.html.twig', [
             'factures' => $factures,
             'produits' => $produits,
             'produitTotals' => $produitTotals,
