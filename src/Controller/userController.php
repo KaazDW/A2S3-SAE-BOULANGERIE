@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class userController extends AbstractController
 {
-    #[Route('/commande_user', name: 'commande_user')]
+    #[Route('/user/commande', name: 'commande_user')]
     public function passerCommande(): Response
     {
         // Récupérez l'utilisateur connecté
@@ -26,9 +26,12 @@ class userController extends AbstractController
         ]);
     }
 
-    #[Route('/profil', name: 'profil')]
+    #[Route('/user/profil', name: 'profil')]
     public function profil(): Response
     {
-        return $this->render('user/profil.html.twig');
+        $user = $this->getUser();
+        return $this->render('user/profil.html.twig', [
+            'user' => $user,
+        ]);
     }
 }
