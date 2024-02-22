@@ -1,39 +1,40 @@
-<table>
-    <thead>
-    <tr>
-        <th>Numéro de facture</th>
-        <th>Produit Quantité</th>
-        <th>Montant</th>
-        <th>Date de Réservation</th>
-        <th>Etat</th>
-        <th>Télécharger</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for facture in factures %}
+{% if factures is not empty %}
+    <table>
+        <thead>
         <tr>
-            <td>{{ facture.id }}</td>
-            <td>
-                {% for factureProduit in facture.produits %}
-                    {{ factureProduit.quantite }} - {{ factureProduit.produit.nom }} <br/>
-                {% endfor %}
-            </td>
-            <td>{{ facture.montant }}€</td>
-            <td>{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
-            <td>{% if facture.datePaiement is not null %}
-                    <span style="color: green;">Payer</span>
-                {% else %}
-                    <span style="color: red;">Non reglé</span>
-                {% endif %}</td>
-            <td>
-                <a href="{{ path('telecharger_facture', {'id': facture.id}) }}" class="btn btn-primary">Télécharger</a>
-
-            </td>
+            <th>Numéro de facture</th>
+            <th>Produit Quantité</th>
+            <th>Montant</th>
+            <th>Date de Réservation</th>
+            <th>Etat</th>
+            <th>Télécharger</th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
-
-<script>
-
-</script>
+        </thead>
+        <tbody>
+        {% for facture in factures %}
+            <tr>
+                <td>{{ facture.id }}</td>
+                <td>
+                    {% for factureProduit in facture.produits %}
+                        {{ factureProduit.quantite }} - {{ factureProduit.produit.nom }} <br/>
+                    {% endfor %}
+                </td>
+                <td>{{ facture.montant }}€</td>
+                <td>{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    {% if facture.datePaiement is not null %}
+                        <span style="color: green;">Payer</span>
+                    {% else %}
+                        <span style="color: red;">Non reglé</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('telecharger_facture', {'id': facture.id}) }}" class="btn btn-primary">Télécharger</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Vous avez passé aucune commande pour l'instant.</p>
+{% endif %}
