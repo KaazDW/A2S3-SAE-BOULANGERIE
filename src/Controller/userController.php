@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Facture;
 use App\Entity\Ingredient;
+use App\Entity\Produit;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +24,15 @@ class userController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        // Recupere les produits par nom croissant
+        $produits = $entityManager->getRepository(Produit::class)->findBy([], ['nom' => 'ASC']);
+
+
 
         // Passez la variable user au template
         return $this->render('user/commande.html.twig', [
             'user' => $user,
+            'produits' => $produits,
 
         ]);
     }

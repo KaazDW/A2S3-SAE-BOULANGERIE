@@ -278,6 +278,10 @@ class FactureController extends AbstractController
                 $dateObj = DateTime::createFromFormat('Y-m-d', $dateReservation);
                 $facture->setDateReservation($dateObj);
 
+                // set l'etat
+                $etat = false;
+                $facture->setEtat($etat);
+
                 // si le paiement est déjà effectué, recupere sa valeur, sinon ce sera la date et l'heure actuelle
                 if($request->request->get('typePaiement')=="dejaEffectue"){
                     $datePaiement = $request->request->get('datePaiement');

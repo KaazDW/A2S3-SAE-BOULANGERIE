@@ -1,211 +1,151 @@
 {% extends 'user/userBase.html.twig' %}
 
 {% block stylesheets %}
-    {#    {{ parent() }}#}
+    {# Vos feuilles de style #}
 {% endblock %}
 
 {% block body %}
-        <h1>Passer une commande</h1>
+    <div class="container">
 
-        <div id="infos-utilisateur">
-            <h2>Informations de l'utilisateur</h2>
-            <p>Nom: {{ user.nom }}</p>
-            <p>Prénom: {{ user.prenom }}</p>
-            <p>Telephone: {{ user.getNumTel() }}</p>
-            <p>Adresse: {{ user.adresse }}</p>
-            <p>Email: {{ user.email }}</p>
-            <!-- Ajoutez d'autres informations si nécessaire -->
+        <form id="commandeForm" action="/creation_commande" method="post">
+            <!-- Informations de l'utilisateur -->
+            <div id="infos-utilisateur">
+                <h2>Informations de l'utilisateur</h2>
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" name="nom" required>
 
-            <!-- Bouton pour passer à la section suivante -->
-            <button>Modifier</button>
-            <button id="btn-suivant">Suivant</button>
-        </div>
+                <label for="prenom">Prénom</label>
+                <input type="text" id="prenom" name="prenom" required>
 
-    {# Twig #}
-    <div id="nouvelle-section" style="display: none;">
-        <h2>Nouvelle Section</h2>
-        <form id="form-nouvelle-section">
-            <label for="dateReservation">Date de réservation</label>
-            <input type="date" id="dateReservation" name="dateReservation" required>
-            <button type="button" id="btn-precedent">Précédent</button>
-            <button type="button" id="btn-suivant">Suivant</button>
+                <button id="btn-suivant-infos">Suivant</button>
+            </div>
+
+            <!-- Section de sélection de la date de réservation -->
+            <div id="nouvelle-section-date" style="display: none;">
+                <label for="dateReservation">Date de réservation</label>
+                <input type="date" id="dateReservation" name="dateReservation" required>
+
+                <!-- Boutons Précédent et Suivant -->
+                <button type="button" id="btn-precedent-date">Précédent</button>
+                <button type="button" id="btn-suivant-date">Suivant</button>
+            </div>
+
+            <!-- Section de sélection des produits -->
+            <div id="nouvelle-section-produits" style="display: none;">
+                <label for="produitDropdown">Sélectionnez un produit :</label>
+                <select id="produitDropdown" name="produitDropdown">
+                    <option value="" disabled selected>Choisissez un produit</option>
+                    {% for produit in produits %}
+                        <option value="{{ produit.id }}">{{ produit.nom }} {{ produit.prixUnitaire }}€</option>
+                    {% endfor %}
+                </select>
+
+                <!-- Champ pour la quantité -->
+                <label for="quantite">Quantité :</label>
+                <input type="number" id="quantite" name="quantite" min="1" value="1">
+
+                <div id="produitsSelectionnes"></div>
+                <div id="total">Total: €</div>
+
+                <!-- Choix de paiement -->
+                <label for="paiementJourMeme">Paiera le jour-même</label>
+                <input type="radio" id="paiementJourMeme" name="typePaiement" value="jourMeme" checked>
+                <br>
+                <label for="paiementDejaEffectue">A déjà payé</label>
+                <input type="radio" id="paiementDejaEffectue" name="typePaiement" value="dejaEffectue">
+                <br>
+                <div id="datePaiementContainer" style="display: none;">
+                    <label for="datePaiement">Date de paiement</label>
+                    <input type="datetime-local" id="datePaiement" name="datePaiement" required>
+                </div>
+
+                <!-- Boutons Précédent et Suivant -->
+                <button type="button" id="btn-precedent-produits">Précédent</button>
+                <button type="button" id="btn-suivant-produits">Suivant</button>
+
+                <!-- Bouton Valider -->
+                <button type="button" onclick="validerFormulaire()">Valider</button>
+            </div>
         </form>
-    </div>
 
-
-    <div id="nouvelle-section" style="display: none;">
-        <label for="produitDropdown">Sélectionnez un produit :</label>
-        <select id="produitDropdown" name="produitDropdown">
-            <option value="" disabled selected>Choisissez un produit</option>
-
-{#            {% for produit in produits %}#}
-{#                #}{# Assurez-vous d'avoir une méthode appropriée dans votre entité Produit pour obtenir le nom et l'ID #}
-{#                <option value="{{ produit.id }}" data-prix="{{ produit.prixUnitaire }}">{{ produit.nom }} {{ produit.prixUnitaire }}€</option>#}
-{#            {% endfor %}#}
-        </select>
-
-        <div id="produitsSelectionnes"></div>
-        <div id="total">Total: €</div>
-
-        <button type="submit">Valider</button>
-        <button type="button" id="btn-precedent">Précédent</button>
-        <button type="button" id="btn-suivant">Suivant</button>
-    </div>
-
-
-{% endblock %}
-
-{% block javascripts %}
-    {# Twig #}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            // ...
-
-            // Gérer le clic sur le bouton "Suivant"
-            $("#btn-suivant").click(function() {
-                $("#infos-utilisateur").hide();
-                $("#nouvelle-section").show();
-            });
-
-            // Gérer le clic sur le bouton "Précédent"
-            $("#btn-precedent").click(function() {
-                $("#nouvelle-section").hide();
-                $("#infos-utilisateur").show();
-            });
-
-            // Gérer le clic sur le bouton "Suivant" du formulaire
-            {#$("#form-nouvelle-section #btn-suivant").click(function() {#}
-            {#    // Collecter les données du formulaire#}
-            {#    var dateReservation = $("#dateReservation").val();#}
-            {#    var userId = {{ app.user.id }}; // Récupérer l'ID de l'utilisateur connecté côté serveur#}
-
-            {#    // Envoyer les données au serveur via AJAX#}
-            {#    $.ajax({#}
-            {#        url: '{{ path('creer_facture') }}', // Assurez-vous d'avoir une route pour cette action#}
-            {#        method: 'POST',#}
-            {#        data: {#}
-            {#            dateReservation: dateReservation,#}
-            {#            userId: userId#}
-            {#        },#}
-            {#        success: function(response) {#}
-            {#            // Gérer la réponse du serveur (peut-être rediriger l'utilisateur, etc.)#}
-            {#            console.log(response);#}
-            {#        },#}
-            {#        error: function(error) {#}
-            {#            console.error(error);#}
-            {#        }#}
-            {#    });#}
-            // });
-        });
-
-        document.addEventListener("DOMContentLoaded", function () {
-            var produitDropdown = document.getElementById("produitDropdown");
-            var produitsSelectionnes = document.getElementById("produitsSelectionnes");
-
-            // Quand un produit du dropdown est sélectionné
-            produitDropdown.addEventListener("change", function () {
-                var selectedOption = produitDropdown.options[produitDropdown.selectedIndex];
-
-                if (selectedOption.value !== "") {
-                    // Crée une div pour le produit sélectionné
-                    var produitDiv = document.createElement("div");
-                    produitDiv.innerHTML = selectedOption.text;
-
-                    // Ajoute le produit à la div des produits sélectionnés
-                    produitsSelectionnes.appendChild(produitDiv);
-
-                    // Retire le produit du dropdown
-                    selectedOption.remove();
-
-                    // Réinitialise le dropdown pour sélectionner l'option vide
-                    produitDropdown.selectedIndex = 0;
-                }
-            });
-        });
-    </script>
-        {# Twig #}
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+        <!-- Script pour afficher ou masquer la date de paiement -->
         <script>
-            $(document).ready(function () {
-                var produitDropdown = $("#produitDropdown");
-                var produitsSelectionnes = $("#produitsSelectionnes");
-                var totalDiv = $("#total");
+            var paiementJourMeme = document.getElementById("paiementJourMeme");
+            var paiementDejaEffectue = document.getElementById("paiementDejaEffectue");
+            var datePaiementContainer = document.getElementById("datePaiementContainer");
 
-                // ...
+            paiementJourMeme.addEventListener("change", function () {
+                datePaiementContainer.style.display = "none";
+            });
 
-                // Gérer le clic sur le bouton "Valider"
-                $("#form-nouvelle-section").submit(function (event) {
-                    event.preventDefault();
-
-                    // Collecter les données du formulaire
-                    var dateReservation = $("#dateReservation").val();
-                    var userId = {{ app.user.id }}; // Récupérer l'ID de l'utilisateur connecté côté serveur
-
-                    // Récupérer les produits sélectionnés
-                    var produits = [];
-                    $("#produitsSelectionnes div").each(function () {
-                        produits.push({
-                            id: $(this).data("id"),
-                            nom: $(this).data("nom"),
-                            prix: $(this).data("prix")
-                        });
-                    });
-
-                    // Envoyer les données au serveur via AJAX
-                    {#$.ajax({#}
-                    {#    url: '{{ path('creer_facture') }}', // Assurez-vous d'avoir une route pour cette action#}
-                    {#    method: 'POST',#}
-                    {#    data: {#}
-                    {#        dateReservation: dateReservation,#}
-                    {#        userId: userId,#}
-                    {#        produits: produits#}
-                    {#    },#}
-                    {#    success: function (response) {#}
-                    {#        // Gérer la réponse du serveur (peut-être rediriger l'utilisateur, etc.)#}
-                    {#        console.log(response);#}
-                    {#    },#}
-                    {#    error: function (error) {#}
-                    {#        console.error(error);#}
-                    {#    }#}
-                    {#});#}
-                });
-
-                // Quand un produit du dropdown est sélectionné
-                produitDropdown.change(function () {
-                    var selectedOption = produitDropdown.find(":selected");
-
-                    if (selectedOption.val() !== "") {
-                        // Crée une div pour le produit sélectionné
-                        var produitDiv = $("<div>");
-                        produitDiv.text(selectedOption.text());
-                        produitDiv.data("id", selectedOption.val());
-                        produitDiv.data("nom", selectedOption.text());
-                        produitDiv.data("prix", selectedOption.data("prix"));
-
-                        // Ajoute le produit à la div des produits sélectionnés
-                        produitsSelectionnes.append(produitDiv);
-
-                        // Retire le produit du dropdown
-                        selectedOption.remove();
-
-                        // Calcule et affiche le total
-                        updateTotal();
-                    }
-                });
-
-                // Fonction pour mettre à jour le total
-                function updateTotal() {
-                    var total = 0;
-                    produitsSelectionnes.find("div").each(function () {
-                        total += parseFloat($(this).data("prix"));
-                    });
-                    totalDiv.text("Total: " + total + "€");
-                }
-
-                // ...
+            paiementDejaEffectue.addEventListener("change", function () {
+                datePaiementContainer.style.display = "block";
             });
         </script>
+
+        <!-- Script JavaScript pour gérer la sélection des produits -->
+        <script>
+            // Fonction pour valider le formulaire
+            function validerFormulaire() {
+                // Récupère les informations sur les produits sélectionnés
+                var produitsSelectionnes = document.querySelectorAll("#produitsSelectionnes div");
+                var quantites = document.querySelectorAll("#produitsSelectionnes select");
+
+                // Tableau qui contiendra, pour chaque ID de produit, une quantité dans la facture
+                var produitsEtQuantites = {};
+
+                // Parcours l'ensemble des divs créées dans produitsSelectionnes
+                for (var i = 0; i < produitsSelectionnes.length; i++) {
+                    var produitDiv = produitsSelectionnes[i];
+                    var quantiteDropdown = quantites[i];
+
+                    var idProduit = produitDiv.id.replace("produitDiv_", "");
+                    var quantite = quantiteDropdown.value;
+
+                    produitsEtQuantites[idProduit] = quantite;
+                }
+
+                // Soumet le formulaire
+                document.getElementById("commandeForm").submit();
+            }
+
+            // Gestion des événements lorsque le DOM est chargé
+            document.addEventListener("DOMContentLoaded", function () {
+                var produitDropdown = document.getElementById("produitDropdown");
+                var produitsSelectionnes = document.getElementById("produitsSelectionnes");
+                var nouvelleSectionDate = document.getElementById("nouvelle-section-date");
+                var nouvelleSectionProduits = document.getElementById("nouvelle-section-produits");
+                var btnSuivantInfos = document.getElementById("btn-suivant-infos");
+                var btnPrecedentDate = document.getElementById("btn-precedent-date");
+                var btnSuivantDate = document.getElementById("btn-suivant-date");
+                var btnPrecedentProduits = document.getElementById("btn-precedent-produits");
+                var btnSuivantProduits = document.getElementById("btn-suivant-produits");
+
+                // Gestion du bouton "Suivant" pour les infos utilisateur
+                btnSuivantInfos.addEventListener("click", function () {
+                    document.getElementById("infos-utilisateur").style.display = "none";
+                    nouvelleSectionDate.style.display = "block";
+                });
+
+                // Gestion du bouton "Précédent" pour la sélection de la date
+                btnPrecedentDate.addEventListener("click", function () {
+                    nouvelleSectionDate.style.display = "none";
+                    document.getElementById("infos-utilisateur").style.display = "block";
+                });
+
+                // Gestion du bouton "Suivant" pour la sélection de la date
+                btnSuivantDate.addEventListener("click", function () {
+                    nouvelleSectionDate.style.display = "none";
+                    nouvelleSectionProduits.style.display = "block";
+                });
+
+                // Gestion du bouton "Précédent" pour la sélection des produits
+                btnPrecedentProduits.addEventListener("click", function () {
+                    nouvelleSectionProduits.style.display = "none";
+                    nouvelleSectionDate.style.display = "block";
+                });
+            });
+        </script>
+    </div>
+
 {% endblock %}
