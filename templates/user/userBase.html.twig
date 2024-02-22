@@ -19,33 +19,38 @@
     {% endblock %}
 </head>
 <body>
-<header>
-    <div class="nav">
-        <a href="{{ path('commande_user') }}" class="accueil tooltip-container" data-tooltip="Retourner à l'accueil">
-            <div class="title">
-                <img src="/images/logo_moulin.png" alt="Logo MDPDV">
-                <h3>Le Moulin du Pont des Vents</h3>
-            </div>
-        </a>
-        <ul class="link">
-            <li>
-                <a href="{{ path('commande_user') }}" class="tooltip-container" data-tooltip="[...]">Commandes</a>
-            </li>
-            <li>
-                <a href="{{ path('profil') }}" class="tooltip-container" data-tooltip="[...]">Profil</a>
-            </li>
-            <li>
-                <a href="{{ path('app_logout') }}" class="tooltip-container" data-tooltip="Se déconnecter"><i class="fa-solid fa-right-from-bracket"></i></a>
-            </li>
-        </ul>
-    </div>
-</header>
-<main>
-    {% block body %}
-    {% endblock %}
+    <header>
+        <div class="nav">
+            <a href="{{ path('commande_user') }}" class="accueil tooltip-container" data-tooltip="Retourner à l'accueil">
+                <div class="title">
+                    <img src="/images/logo_moulin.png" alt="Logo MDPDV">
+                    <h3>Le Moulin du Pont des Vents</h3>
+                </div>
+            </a>
+            <ul class="link">
+                <li>
+                    <a href="{{ path('commande_user') }}" class="tooltip-container" data-tooltip="[...]">Commandes</a>
+                </li>
+                <li>
+                    <a href="{{ path('profil') }}" class="tooltip-container" data-tooltip="[...]">Profil</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_logout') }}" class="tooltip-container" data-tooltip="Se déconnecter"><i class="fa-solid fa-right-from-bracket"></i></a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <main style="margin-top: 80px;">
+        {% block body %}
+        {% endblock %}
 
-    {% block javascripts %}
-    {% endblock %}
-</main>
+        {% block javascripts %}
+        {% endblock %}
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('main').classList.add('loaded'); // for opacity body animation on load
+        });
+    </script>
 </body>
 </html>

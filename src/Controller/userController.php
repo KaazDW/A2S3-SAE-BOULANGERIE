@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Facture;
+use App\Entity\Ingredient;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class userController extends AbstractController
 {
     #[Route('/user/commande', name: 'commande_user')]
-    public function passerCommande(): Response
+    public function passerCommande(EntityManagerInterface $entityManager): Response
     {
         // Récupérez l'utilisateur connecté
         $user = $this->getUser();
@@ -20,9 +23,11 @@ class userController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+
         // Passez la variable user au template
         return $this->render('user/commande.html.twig', [
             'user' => $user,
+
         ]);
     }
 
@@ -30,8 +35,23 @@ class userController extends AbstractController
     public function profil(): Response
     {
         $user = $this->getUser();
+
         return $this->render('user/profil.html.twig', [
             'user' => $user,
+        ]);
+    }
+
+    public function factureUser(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $userId = $user->getId();
+
+        // Récupérer les factures liées à cet utilisateur depuis la base de données
+        $factures = $entityManager->getRepository(Facture::class)->findBy(['user' => $userId]);
+
+        return $this->render('components/facture-user.html.twig', [
+            'user' => $user,
+            'factures' => $factures,
         ]);
     }
 }

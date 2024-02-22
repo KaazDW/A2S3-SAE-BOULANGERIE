@@ -1,0 +1,235 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Factures{% endblock %}
+
+{% block body %}
+    <section class="factures">
+        <div class="container">
+            <h1>Liste des Factures</h1>
+
+            {# Afficher le formulaire #}
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button type="button" class="button" onclick="validerFormulaire()">Valider</button>
+            {{ form_end(form) }}
+
+            <div class="listeFactures" hx-target="this" hx-swap="outerHTML">
+                 {% include 'facture/factureParDate.html.twig' %}
+            </div>
+        </div>
+    </section>
+
+    {#    en haut à droite (récap factures selectionnées)#}
+    <section class="factures">
+        <div class="container" hx-target="this" hx-swap="outerHTML">
+            <h2>Factures Selectionnées :</h2>
+            <div id="factures-selectionnees">
+            </div>
+            <h2>Somme des produits :</h2>
+            <div id="sommes-produits">
+
+            </div>
+            <button onclick="gestionStock()" id="submit-form-btn">Démarrer la commande</button>
+        </div>
+    </section>
+
+    {#    en bas à gauche (aggrégation des commandes par ingrédients)#}
+    <section class="factures">
+        <div class="container"  hx-target="this" hx-swap="outerHTML">
+            <h2>Recette :</h2>
+            <div id="table-recette-body">
+            </div>
+        </div>
+    </section>
+
+    {#    en bas à droite (preview gestion des stocks avant/apres)#}
+    <section class="factures">
+        <div class="container"  hx-target="this" hx-swap="outerHTML">
+
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        let selectedFactures = [];
+        let operatedContentArray = [];
+
+        // Fonction pour mettre à jour l'affichage des sélections
+        function updateSelectionDisplay() {
+            var displayContent = '';
+            operatedContentArray = [];
+
+            console.log(selectedFactures);
+            if (selectedFactures.length === 0) {
+                displayContent = 'Aucune facture sélectionnée.';
+            } else {
+                selectedFactures.forEach(function (facture) {
+                    displayContent += "Facture ID: " + facture.id + "<br>";
+
+                    // Diviser les chaînes en tableaux
+                    var quantiteArray = facture.quantite.split(',');
+                    var nomProduitArray = facture.nomProduit.split(',');
+                    var idProduitArray = facture.idProduit.split(',');
+                    // Afficher chaque produit avec sa quantité successivement
+                    for (var i = 0; i < quantiteArray.length; i++) {
+                        displayContent +=  nomProduitArray[i].trim() +
+                            " : " + quantiteArray[i].trim() + idProduitArray[i].trim() +"<br>";
+                        operatedContentArray.push( nomProduitArray[i].trim() + ',' + quantiteArray[i].trim() + ',' +idProduitArray[i].trim());
+                    }
+                    // console.log('operatedContentArray', operatedContentArray);
+                    sommeQuantiteProduit(operatedContentArray);
+
+                    displayContent += "<hr>";
+                });
+            }
+
+            $('#factures-selectionnees').html(displayContent);
+        }
+
+        function updateSommesProduitsDisplay(quantitesParProduit) {
+            var displayContent = '';
+
+            for (var produit in quantitesParProduit) {
+                var quantite = quantitesParProduit[produit].quantite; // Récupère la quantité du produit
+                var idProduit = quantitesParProduit[produit].idProduit; // Récupère l'ID du produit
+                displayContent += "ID Produit: " + idProduit + ", " + produit + " : " + quantite + "<br>";
+            }
+
+            $('#sommes-produits').html(displayContent);
+        }
+
+
+        // Fonction pour réinitialiser les sélections
+        function resetSelections() {
+            selectedFactures = [];
+            updateSelectionDisplay();
+        }
+
+        function sommeQuantiteProduit(tab = []) {
+            const quantitesParProduit = {};
+
+            tab.forEach(element => {
+                const [nomProduit, quantite, idProduit] = element.split(',');
+
+                if (quantitesParProduit.hasOwnProperty(nomProduit)) {
+                    // Si le produit existe déjà, ajoutez la quantité à celle existante
+                    quantitesParProduit[nomProduit].quantite += parseInt(quantite, 10);
+                } else {
+                    // Si le produit n'existe pas, créez un nouvel objet avec l'ID et la quantité
+                    quantitesParProduit[nomProduit] = {
+                        idProduit: idProduit,
+                        quantite: parseInt(quantite, 10)
+                    };
+                }
+            });
+
+            console.log('Résultat :', quantitesParProduit); // Affiche les quantités par produit
+
+            // Mettre à jour l'affichage des sommes des produits
+            updateSommesProduitsDisplay(quantitesParProduit);
+        }
+
+
+        // Ajouter un gestionnaire d'événements au bouton de validation
+        $('#submit-form-btn').click(function () {
+            // Ajoutez votre logique ici pour traiter les factures sélectionnées
+            console.log("Factures sélectionnées : ", selectedFactures);
+        });
+
+        // Fonction pour gérer la sélection des factures
+        function handleFactureSelection(checkbox) {
+            var factureId = $(checkbox).data('facture-id');
+            var quantite = $(checkbox).data('quantite');
+            var nomProduit = $(checkbox).data('nom-produit');
+            var idProduit = $(checkbox).data('id-produit'); // Assurez-vous que cette ligne récupère correctement l'ID du produit
+
+            console.log("ID du produit:", idProduit); // Débogage
+
+            if ($(checkbox).prop('checked')) {
+                var processedQuantite = quantite.toString();
+                selectedFactures.push({
+                    id: factureId,
+                    quantite: processedQuantite,
+                    nomProduit: nomProduit,
+                    idProduit: idProduit
+                });
+                console.log("testtesttest:", idProduit);
+            } else {
+                selectedFactures = selectedFactures.filter(function (facture) {
+                    return facture.id !== factureId;
+                });
+            }
+
+            // Mettre à jour l'affichage des sélections
+            updateSelectionDisplay();
+        }
+
+        function afficherIngredientsParProduit(produits) {
+            // Sélectionnez l'élément de la table de recettes où vous voulez afficher les ingrédients
+            var tableRecetteBody = $('#table-recette-body');
+
+            // Videz d'abord le contenu existant de la table
+            tableRecetteBody.empty();
+
+            // Parcourez chaque produit dans l'objet produits
+            for (var produit in produits) {
+                // Récupérez l'idProduit et les ingrédients correspondants
+                var idProduit = produits[produit].idProduit;
+                var ingredients = produit.split(',');
+
+                // Créez une nouvelle ligne pour afficher les ingrédients dans la table
+                var newRow = $('<tr>');
+
+                // Ajoutez une colonne pour l'idProduit
+                var idProduitColumn = $('<td>').text(idProduit);
+                newRow.append(idProduitColumn);
+
+                // Ajoutez une colonne pour les ingrédients
+                var ingredientsColumn = $('<td>');
+                ingredients.forEach(function(ingredient) {
+                    ingredientsColumn.append($('<li>').text(ingredient));
+                });
+                newRow.append(ingredientsColumn);
+
+                // Ajoutez la nouvelle ligne à la table de recettes
+                tableRecetteBody.append(newRow);
+            }
+        }
+
+        var produits = {
+            "Amandes Raisin": { idProduit: '1', quantite: 5 },
+            "Lin Tournesol": { idProduit: '4', quantite: 5 },
+            "Noix": { idProduit: '3', quantite: 5 }
+        };
+
+        afficherIngredientsParProduit(produits);
+
+
+        function validerFormulaire() {
+            // RECUPERE LA VALEUR DE LA DATE
+            var dateValue = document.getElementById('{{ form.dateReservation.vars.id }}').value;
+
+            // Effectue une requête AJAX
+            fetch('/factures/' + dateValue, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(response => response.text())
+                .then(data => {
+                    // Mets à jour le contenu de la div listeFactures avec la réponse
+                    document.querySelector('.listeFactures').innerHTML = data;
+
+                    // Réinitialise les sélections après le changement de date
+                    resetOnDateChange();
+                })
+                .catch(error => console.error('Erreur lors de la requête:', error));
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+{% endblock %}
