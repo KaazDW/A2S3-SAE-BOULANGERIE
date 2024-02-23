@@ -102,6 +102,38 @@
         </div>
     </section>
 
+{#    Bouton Scroll to Top #}
+    <button onclick="scrollToTop()" id="scrollTopButton" title="Go to top"><i class="fa-solid fa-up-long"></i></button>
+    <script>
+        // Show or hide the scroll to top button based on scroll position
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            var button = document.getElementById("scrollTopButton");
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                button.style.display = "block";
+            } else {
+                button.style.display = "none";
+            }
+        }
+
+        function scrollToTop() {
+            // For modern browsers
+            if ('scrollBehavior' in document.documentElement.style) {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth' // Smooth scrolling
+                });
+            } else { // For legacy browsers
+                // Fallback to using scrollIntoView
+                var scrollToTop = document.querySelector("#content");
+                scrollToTop.scrollIntoView({
+                    behavior: 'smooth' // Smooth scrolling
+                });
+            }
+        }
+
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 {% endblock %}

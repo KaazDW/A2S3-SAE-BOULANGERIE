@@ -24,7 +24,7 @@
 
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary>Table of Contents</summary>
+  <summary>SOMMAIRE</summary>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
@@ -60,65 +60,57 @@ Liste des fonctionnalités :
 
 ### Technologies : 
 - Symfony 5.6.2 (c) 2021-2024
-- Php8.2
-- PhpUnit 9.6.*
-- Htmx </>
-- JS
 
+[//]: # (tableau markdown)
 
-- Font-awesome Free Licence
-- ApexCharts.js 
-
-
+| PHP 8.2 | PhpUnit 9.6 | Htmx </> | Javascript | Font-awesome Free Licence | ApexCharts.js |
+|---------|-------------|----------|------------|---------------------------|---------------|
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Instructions concernant l'installation d'une copy en local du projet
+Instructions concernant l'installation d'une copie local du projet
 
 ### Prérequis
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-  npm install apexcharts --save
+- PHP 8.2
+- SGDB MySQL
+- Symfony CLI
 
 ### Installation
 
-_Objectif : Initialiser et lancer le projet localement :_
-1. Cloner le projet
+_Objectif : Installer et démarrer le projet localement :_
+1. Cloner le projet et installer les dépendances
     ```sh
     git clone https://github.com/KaazDW/A3S5-SAE-Boulangerie.git
     ```
 2. ```sh
     cd .\A3S5-SAE-Boulangerie\
-    composer update
     composer install
-3. Créez une db et renseignez ces identifiants d'accès dans le fichier .env.local (l.30)
+3. Créez une nouvelle base de donnée et renseignez ses identifiants d'accès dans le fichier .env.local (ligne 30)
     ```php
     DATABASE_URL="mysql://root:@127.0.0.1:3306/sae-boulangerie?charset=utf8"
     ```
-3. ```sh
+3. Installer les migrations (avec jeu de test pour démo)
+    ```sh
    php bin/console doctrine:migrations:migrate
    ```
+4. Lancer le serveur local symfony
+    ```sh
+    symfony server:start
+    ```
    
-### Commandes supplémentaires pour le développement
-Compilation des feuilles de style SASS : 
-``` 
-sass public/style/scss/base.scss:public/style/css/base.css -w
-```
+
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 ### Tests fonctionnels
-> `tests/FunctionnelsTest.php`
+> `./tests/FunctionnelsTest.php`
 
 Dupliquer votre base de donnée initiale, en y ajoutant le suffixe `_test`.
 
-***exemple : bdd initiale -> sae-boulangerie, bdd de test -> sae-boulangerie_test***
+***exemple : bdd initiale -> "sae-boulangerie", bdd de test -> "sae-boulangerie_test"***
 
 Dans le fichier de test, modifier l'adresse email utilisé pour l'authentification.
 
@@ -127,11 +119,20 @@ Dans le fichier de test, modifier l'adresse email utilisé pour l'authentificati
 php bin/phpunit
 ```
 
+<br/>
+
+### Commandes supplémentaires pour le développement
+Compilation des feuilles de style SASS :
+``` 
+sass public/style/scss/base.scss:public/style/css/base.css -w
+```
 
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Code du projet sous License MIT. 
+<br>
+> Cf `LICENSE.txt` pour plus d'informations.
 
 
 <!-- Sources -->
