@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Ingredient;
 use App\Form\FactureFilterType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,60 +24,170 @@ use App\Form\FactureType;
 class FactureController extends AbstractController
 {
     #[Route('/facture', name: 'app_facture')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(FactureFilterType::class);
-        $form->handleRequest($request);
+        $factures = $entityManager->getRepository(Facture::class)->findAll();
+        $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
 
-        $dateReservation = $form->get('dateReservation')->getData();
 
-        // Convertir la date au format 'Y-m-d' si elle n'est pas vide
-        if ($dateReservation) {
-            $dateReservation = DateTime::createFromFormat('d/m/Y', $dateReservation)->format('Y-m-d');
+        // Initialisation des tableaux pour stocker les données
+        $produits = [];
+        $produitTotals = [];
+        $quantitesTotalesIngredients = [];
+
+        // Calcul de la quantité totale de chaque ingrédient et des autres données
+        foreach ($factures as $facture) {
+            foreach ($facture->getProduits() as $produitFacture) {
+                $produit = $produitFacture->getProduit();
+                $produitNom = $produit->getNom();
+                $quantiteProduit = $produitFacture->getQuantite();
+
+                // Ajout du produit s'il n'existe pas encore dans le tableau
+                if (!isset($produits[$produitNom])) {
+                    $produits[$produitNom] = $produit;
+                }
+
+                // Calcul du total de chaque produit
+                if (!isset($produitTotals[$produitNom])) {
+                    $produitTotals[$produitNom] = 0;
+                }
+                $produitTotals[$produitNom] += $quantiteProduit;
+
+                // Calcul de la quantité totale de chaque ingrédient
+                foreach ($produit->getIngredients() as $ingredientProduit) {
+                    $ingredientNom = $ingredientProduit->getIngredient()->getNom();
+                    $quantite = $ingredientProduit->getQuantite() * $quantiteProduit;
+
+                    // Ajout de la quantité à celle déjà existante pour cet ingrédient
+                    if (!isset($quantitesTotalesIngredients[$ingredientNom])) {
+                        $quantitesTotalesIngredients[$ingredientNom] = 0;
+                    }
+                    $quantitesTotalesIngredients[$ingredientNom] += $quantite;
+                }
+            }
         }
-
-        $date = DateTime::createFromFormat('d/m/Y', '01/01/2024')->format('Y-m-d');
-
-        $selectedDate = [
-            'type' => 'dateReservation',
-            'value' => $date,
-        ];
-
-        // Récupérer toutes les factures avec les détails de l'utilisateur et les produits
-        $factures = $entityManager->getRepository(Facture::class)->findAllFromDate($selectedDate);
 
         return $this->render('facture/index.html.twig', [
             'factures' => $factures,
-            'form' => $form->createView(),
+            'produits' => $produits,
+            'produitTotals' => $produitTotals,
+            'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
+            'ingredients' => $ingredients,
+        ]);
+    }
+
+    #[Route('/factureSelect', name: 'app_factureSelect')]
+    public function factureSelect(EntityManagerInterface $entityManager,Request $request): Response
+    {
+
+        // Récupérer les identifiants des factures sélectionnées
+        $formData = $request->request->all();
+        $factureIds = $formData['factures_selectionnees'];
+        $factures = $entityManager->getRepository(Facture::class)->findBy(['id' => $factureIds]);
+
+        $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
+
+
+        // Initialisation des tableaux pour stocker les données
+        $produits = [];
+        $produitTotals = [];
+        $quantitesTotalesIngredients = [];
+
+        // Calcul de la quantité totale de chaque ingrédient et des autres données
+        foreach ($factures as $facture) {
+            foreach ($facture->getProduits() as $produitFacture) {
+                $produit = $produitFacture->getProduit();
+                $produitNom = $produit->getNom();
+                $quantiteProduit = $produitFacture->getQuantite();
+
+                // Ajout du produit s'il n'existe pas encore dans le tableau
+                if (!isset($produits[$produitNom])) {
+                    $produits[$produitNom] = $produit;
+                }
+
+                // Calcul du total de chaque produit
+                if (!isset($produitTotals[$produitNom])) {
+                    $produitTotals[$produitNom] = 0;
+                }
+                $produitTotals[$produitNom] += $quantiteProduit;
+
+                // Calcul de la quantité totale de chaque ingrédient
+                foreach ($produit->getIngredients() as $ingredientProduit) {
+                    $ingredientNom = $ingredientProduit->getIngredient()->getNom();
+                    $quantite = $ingredientProduit->getQuantite() * $quantiteProduit;
+
+                    // Ajout de la quantité à celle déjà existante pour cet ingrédient
+                    if (!isset($quantitesTotalesIngredients[$ingredientNom])) {
+                        $quantitesTotalesIngredients[$ingredientNom] = 0;
+                    }
+                    $quantitesTotalesIngredients[$ingredientNom] += $quantite;
+                }
+            }
+        }
+
+        if ($request->isMethod('POST')) {
+            $formData = $request->request->all();
+            $factureIds = $formData['factures_selectionnees'];
+
+            // Mettre à jour l'état des factures sélectionnées
+            $factures = $entityManager->getRepository(Facture::class)->findBy(['id' => $factureIds]);
+            foreach ($factures as $facture) {
+                $facture->setEtat(true); // Mettre l'état à true
+                $entityManager->persist($facture);
+            }
+            $entityManager->flush();
+
+            // Mettre à jour le stock des ingrédients
+            foreach ($factures as $facture) {
+                foreach ($facture->getProduits() as $produitFacture) {
+                    foreach ($produitFacture->getProduit()->getIngredients() as $ingredientProduit) {
+                        $ingredient = $ingredientProduit->getIngredient();
+                        $quantiteUtilisee = $ingredientProduit->getQuantite() * $produitFacture->getQuantite();
+                        $nouveauStock = $ingredient->getStock() - $quantiteUtilisee;
+                        $ingredient->setStock($nouveauStock);
+                        $entityManager->persist($ingredient);
+                    }
+                }
+            }
+            $entityManager->flush();
+        }
+
+
+            return $this->render('facture/index.html.twig', [
+            'factures' => $factures,
+            'produits' => $produits,
+            'produitTotals' => $produitTotals,
+            'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
+            'ingredients' => $ingredients,
         ]);
     }
 
     // RECUPERE LES FACTURES QUI SONT COMMANDEES A LA DATE DONNEE EN PARAMETRE
-    #[Route('/factures/{date}', name: 'getFacturesParDate')]
-    public function getFacturesParDate(string $date, EntityManagerInterface $entityManager): Response {
-        //Modifie le format de la date
-        $dateObj = DateTime::createFromFormat('Y-m-d', $date);
-
-        //Cas ou la conversion échoue
-        if ($dateObj === false) {
-            return new Response('Format de date invalide.', Response::HTTP_BAD_REQUEST);
-        }
-        // Mets la date au bon format
-        $formattedDate = $dateObj->format('Y-m-d');
-
-        // TABLEAU QUI SERVIRA AU REPOSITORY
-        $selectedDate = [
-            'type' => 'dateReservation',
-            'value' => $formattedDate,
-        ];
-
-        // RECUPERE LES FACTURES A LA DATE $SELECTEDDATE
-        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
-    
-        return $this->render('facture/factureParDate.html.twig', [
-            'factures' => $factures,
-        ]);
-    }
+//    #[Route('/factures/{date}', name: 'getFacturesParDate')]
+//    public function getFacturesParDate(string $date, EntityManagerInterface $entityManager): Response {
+//        //Modifie le format de la date
+//        $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+//
+//        //Cas ou la conversion échoue
+//        if ($dateObj === false) {
+//            return new Response('Format de date invalide.', Response::HTTP_BAD_REQUEST);
+//        }
+//        // Mets la date au bon format
+//        $formattedDate = $dateObj->format('Y-m-d');
+//
+//        // TABLEAU QUI SERVIRA AU REPOSITORY
+//        $selectedDate = [
+//            'type' => 'dateReservation',
+//            'value' => $formattedDate,
+//        ];
+//
+//        // RECUPERE LES FACTURES A LA DATE $SELECTEDDATE
+//        $factures = $entityManager->getRepository(Facture::class)->findAllWithUserDetailsAndProducts($selectedDate);
+//
+//        return $this->render('facture/factureParDate.html.twig', [
+//            'factures' => $factures,
+//        ]);
+//    }
 
     #[Route('/visualiser_facture/{id}', name: 'visualiser_facture')]
     public function visualiserFacture(int $id, EntityManagerInterface $entityManager): Response
@@ -122,15 +233,15 @@ class FactureController extends AbstractController
         return $response;
     }
 
-        #[Route('/telecharger_facture/{id}', name: 'telecharger_facture')]
-        public function telechargerFacture(int $id, EntityManagerInterface $entityManager): Response
-        {
-            $facture = $this->getFactureById($id, $entityManager);
-            $pdfContent = $this->generatePdfContent($facture);
-            $response = $this->createPdfResponse($pdfContent, $facture);
+    #[Route('/telecharger_facture/{id}', name: 'telecharger_facture')]
+    public function telechargerFacture(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $facture = $this->getFactureById($id, $entityManager);
+        $pdfContent = $this->generatePdfContent($facture);
+        $response = $this->createPdfResponse($pdfContent, $facture);
 
-            return $response;
-        }
+        return $response;
+    }
 
     #[Route('/creation_commande', name: 'commande')]
     public function passerCommande( EntityManagerInterface $entityManager, Request $request): Response
@@ -138,7 +249,7 @@ class FactureController extends AbstractController
         {
             // Recupere les produits par nom croissant
             $produits = $entityManager->getRepository(Produit::class)->findBy([], ['nom' => 'ASC']);
-    
+
             // TRAITEMENT DE LA SOUMISSION DU FORMULAIRE
             if ($request->isMethod('POST')) {
 
@@ -167,6 +278,10 @@ class FactureController extends AbstractController
                 $dateObj = DateTime::createFromFormat('Y-m-d', $dateReservation);
                 $facture->setDateReservation($dateObj);
 
+                // set l'etat
+                $etat = false;
+                $facture->setEtat($etat);
+
                 // si le paiement est déjà effectué, recupere sa valeur, sinon ce sera la date et l'heure actuelle
                 if($request->request->get('typePaiement')=="dejaEffectue"){
                     $datePaiement = $request->request->get('datePaiement');
@@ -177,7 +292,8 @@ class FactureController extends AbstractController
                 else{
                     $facture->setDatePaiement(new DateTime());
                 }
-            
+
+                // $request->request->all() pour obtenir toutes les données du formulaire
                 $formData = $request->request->all();
                 // accede aux données du tableau associatif 'quantiteProduit'
                 $quantiteProduitArray = $formData['quantiteProduit'] ?? [];
@@ -189,7 +305,7 @@ class FactureController extends AbstractController
 
                     // Mets à jour la valeur totale
                     $montantFacture += $quantite * $produit->getPrixUnitaire();
-                    
+
                     if ($produit) {
                         // Créé une nouvelle instance de FactureProduit
                         $factureProduit = new FactureProduit();
@@ -212,12 +328,12 @@ class FactureController extends AbstractController
                 $entityManager->flush();
                 $this->addFlash('success', 'La commande a été passée avec succès.');
             }
-        
+
             return $this->render('facture/commande.html.twig', [
                 'produits' => $produits,
             ]);
         }
-    
+
     }
 
     // FONCTION PERMETTANT DE RECUPERE UNE CERTAINE QUANTITE DE PRODUIT QUI SONT LES PLUS ACHETEES D'UN CERTAIN MOIS 

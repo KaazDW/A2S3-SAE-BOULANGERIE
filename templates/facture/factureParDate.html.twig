@@ -1,56 +1,43 @@
 {% if factures is empty %}
     <p>Aucune facture n'a été trouvée.</p>
 {% else %}
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Selectionner</th>
-            <th>Nom Prenom</th>
-            <th>Produit Quantité</th>
-            <th>Montant</th>
-            <th>Date de livraison</th>
-            <th>Télécharger</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for facture in factures %}
+    <form action="{{ path('app_factureSelect') }}" method="post">
+        <table class="table">
+            <thead>
             <tr>
-                <td class="selection-checkbox">
-                    <label>
-                        <input
-                                onchange="handleFactureSelection(this)"
-                                type="checkbox"
-                                class="facture-checkbox"
-                                data-facture-id="{{ facture.id }}"
-                                data-quantite="{{ facture.produits|map(p => p.quantite)|join(',') }}"
-                                data-nom-produit="{{ facture.produits|map(p => p.produit.nom)|join(',') }}"
-                                data-debug="{{ facture.produits|map(p => p.quantite)|join(',') }}"
-                        >
-                    </label>
-                </td>
-                <td>{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</td>
-                <td>
-                    {% for factureProduit in facture.produits %}
-                        {{ factureProduit.quantite }} - {{ factureProduit.produit.nom }} <br/>
-                        {% if not loop.last %}{% endif %}
-                    {% endfor %}
-                </td>
-                <td>{{ facture.montant|number_format(2, ',', ' ') }}</td>
-                <td>{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('visualiser_facture', {'id': facture.id}) }}" class="btn btn-primary">Voir</a>
-                    <a href="{{ path('telecharger_facture', {'id': facture.id}) }}" class="btn btn-primary">Télécharger</a>
-                </td>
+                <th>Sélectionner</th>
+                <th>Nom Prénom</th>
+                <th>Produit Quantité</th>
+                <th>Montant</th>
+                <th>Date de livraison</th>
+                <th>Télécharger</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <br><br><br>
-    <div>
-{#        <h2>Factures Selectionnées :</h2>#}
-{#        <div id="factures-selectionnees">#}
-{#        </div>#}
-{#        <button onclick="gestionStock()" id="submit-form-btn">Démarrer la commande</button>#}
-    </div>
-
+            </thead>
+            <tbody>
+            {% for facture in factures %}
+                <tr>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="factures_selectionnees[]" value="{{ facture.id }}">
+                        </label>
+                    </td>
+                    <td>{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</td>
+                    <td>
+                        {% for factureProduit in facture.produits %}
+                            {{ factureProduit.quantite }} - {{ factureProduit.produit.nom }} <br/>
+                        {% endfor %}
+                    </td>
+                    <td>{{ facture.montant|number_format(2, ',', ' ') }}</td>
+                    <td>{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('visualiser_facture', {'id': facture.id}) }}" class="btn btn-primary">Voir</a>
+                        <a href="{{ path('telecharger_facture', {'id': facture.id}) }}" class="btn btn-primary">Télécharger</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <input type="hidden" name="start_production" value="true"> <!-- Champ caché pour démarrer la production -->
+        <button type="submit">Lancer la production</button>
+    </form>
 {% endif %}

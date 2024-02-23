@@ -2,14 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Facture;
+use App\Entity\Ingredient;
+use App\Entity\Produit;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class userController extends AbstractController
 {
-    #[Route('/commande_user', name: 'commande_user')]
-    public function passerCommande(): Response
+    #[Route('/user/commande', name: 'commande_user')]
+    public function passerCommande(EntityManagerInterface $entityManager): Response
     {
         // Récupérez l'utilisateur connecté
         $user = $this->getUser();
@@ -20,15 +24,40 @@ class userController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        // Recupere les produits par nom croissant
+        $produits = $entityManager->getRepository(Produit::class)->findBy([], ['nom' => 'ASC']);
+
+
+
         // Passez la variable user au template
         return $this->render('user/commande.html.twig', [
+            'user' => $user,
+            'produits' => $produits,
+
+        ]);
+    }
+
+    #[Route('/user/profil', name: 'profil')]
+    public function profil(): Response
+    {
+        $user = $this->getUser();
+
+        return $this->render('user/profil.html.twig', [
             'user' => $user,
         ]);
     }
 
-    #[Route('/profil', name: 'profil')]
-    public function profil(): Response
+    public function factureUser(EntityManagerInterface $entityManager): Response
     {
-        return $this->render('user/profil.html.twig');
+        $user = $this->getUser();
+        $userId = $user->getId();
+
+        // Récupérer les factures liées à cet utilisateur depuis la base de données
+        $factures = $entityManager->getRepository(Facture::class)->findBy(['user' => $userId]);
+
+        return $this->render('components/facture-user.html.twig', [
+            'user' => $user,
+            'factures' => $factures,
+        ]);
     }
 }

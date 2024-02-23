@@ -40,6 +40,9 @@ class Facture
     #[ORM\Column]
     private ?string $nom = null;
 
+    #[ORM\Column]
+    private ?bool $etat = null;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
@@ -158,6 +161,18 @@ class Facture
     public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function isEtat(): ?bool
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(bool $etat): static
+    {
+        $this->etat = $etat;
 
         return $this;
     }
