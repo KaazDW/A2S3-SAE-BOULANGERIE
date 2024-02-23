@@ -2,27 +2,31 @@
     <p>Aucune facture n'a été trouvée.</p>
 {% else %}
     <form action="{{ path('app_factureSelect') }}" method="post" class="grid-container">
-        {% for facture in factures %}
-            <div class="grid-item checkbox">
-                <label>
-                    <input type="checkbox" name="factures_selectionnees[]" value="{{ facture.id }}">
-                </label>
-            </div>
-            <div class="grid-item nom-prenom">{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</div>
-            <div class="grid-item produits">
-                {% for factureProduit in facture.produits %}
-                    <p><span>{{ factureProduit.quantite }}</span> {{ factureProduit.produit.nom }}</p>
-                {% endfor %}
-            </div>
-            <div class="grid-item montant">{{ facture.montant|number_format(2, ',', ' ') }}€</div>
-{#            <div class="grid-item">{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d H:i:s') : '' }}</div>#}
-            <div class="grid-item date">{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d') : '' }}</div>
-            <div class="grid-item actions">
-                <a href="{{ path('visualiser_facture', {'id': facture.id}) }}"><i class="fa-solid fa-eye"></i></a>
-                <a href="{{ path('telecharger_facture', {'id': facture.id}) }}"><i class="fa-solid fa-download"></i></a>
-            </div>
-        {% endfor %}
-        <input type="hidden" name="start_production" value="true"> <!-- Champ caché pour démarrer la production -->
-        <button type="submit" class="button submit-button">Lancer la production</button>
+        <div class="for">
+            {% for facture in factures %}
+                <div class="grid-item checkbox">
+                    <label>
+                        <input type="checkbox" name="factures_selectionnees[]" value="{{ facture.id }}">
+                    </label>
+                </div>
+                <div class="grid-item nom-prenom">{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</div>
+                <div class="grid-item produits">
+                    {% for factureProduit in facture.produits %}
+                        <p><span>{{ factureProduit.quantite }}</span> {{ factureProduit.produit.nom }}</p>
+                    {% endfor %}
+                </div>
+                <div class="grid-item montant"><b>{{ facture.montant|number_format(2, ',', ' ') }}€</b></div>
+    {#            <div class="grid-item">{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d H:i:s') : '' }}</div>#}
+                <div class="grid-item date">{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d') : '' }}</div>
+                <div class="grid-item actions">
+                    <a href="{{ path('visualiser_facture', {'id': facture.id}) }}"><i class="fa-solid fa-eye"></i></a>
+                    <a href="{{ path('telecharger_facture', {'id': facture.id}) }}"><i class="fa-solid fa-download"></i></a>
+                </div>
+            {% endfor %}
+        </div>
+        <input type="hidden" name="start_production" value="true"> <!-- Champ caché pour valider le démarrage de la production -->
+        <div class="submit-div">
+            <button type="submit" class="button"><i class="fa-solid fa-play"></i>Lancer la production</button>
+        </div>
     </form>
 {% endif %}

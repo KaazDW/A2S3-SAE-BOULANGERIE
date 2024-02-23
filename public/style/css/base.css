@@ -437,34 +437,38 @@ section.facture .first-line {
   grid-template-columns: 65% 35%;
 }
 section.facture .first-line form {
+  display: flex;
+  flex-direction: column;
+}
+section.facture .first-line form .for {
   margin-right: 20px;
   display: grid;
   grid-template-columns: 40px auto auto 80px 150px 100px;
 }
-section.facture .first-line form .btns {
+section.facture .first-line form .for .actions {
   display: flex;
   align-items: center;
 }
-section.facture .first-line form .btns a {
+section.facture .first-line form .for .actions a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50%;
+  width: 100%;
   height: 35px;
   text-align: center;
   border-radius: 5px;
-  margin-right: 15px;
+  margin-right: 3px;
   border: 2px solid var(--color-lightgrey);
   background-color: var(--color-subgrey);
 }
-section.facture .first-line form .grid-item {
+section.facture .first-line form .for .grid-item {
   padding: 10px 5px 15px;
   border-bottom: 1px solid #ccc;
 }
-section.facture .first-line form .grid-item p {
+section.facture .first-line form .for .grid-item p {
   margin-bottom: 4px;
 }
-section.facture .first-line form .grid-item p span {
+section.facture .first-line form .for .grid-item p span {
   padding: 0 13px;
   margin-bottom: 5px;
   border-radius: 5px;
@@ -472,14 +476,21 @@ section.facture .first-line form .grid-item p span {
   border: 2px solid var(--color-lightgrey);
   background-color: var(--color-subgrey);
 }
-section.facture .first-line form .grid-item:nth-child(-n+6) {
+section.facture .first-line form .for .grid-item:nth-child(-n+6) {
   border-top: 1px solid #ccc;
 }
-section.facture .first-line form .submit-button {
-  grid-column: 1/-1;
-}
-section.facture .first-line form i {
+section.facture .first-line form .for i {
   font-size: 17px;
+}
+section.facture .first-line form .submit-div {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  margin-right: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+section.facture .first-line form .submit-div button i {
+  margin-right: 10px;
 }
 
 /*# sourceMappingURL=base.css.map */
