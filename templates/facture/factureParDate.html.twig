@@ -1,43 +1,28 @@
 {% if factures is empty %}
     <p>Aucune facture n'a été trouvée.</p>
 {% else %}
-    <form action="{{ path('app_factureSelect') }}" method="post">
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Sélectionner</th>
-                <th>Nom Prénom</th>
-                <th>Produit Quantité</th>
-                <th>Montant</th>
-                <th>Date de livraison</th>
-                <th>Télécharger</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for facture in factures %}
-                <tr>
-                    <td>
-                        <label>
-                            <input type="checkbox" name="factures_selectionnees[]" value="{{ facture.id }}">
-                        </label>
-                    </td>
-                    <td>{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</td>
-                    <td>
-                        {% for factureProduit in facture.produits %}
-                            {{ factureProduit.quantite }} - {{ factureProduit.produit.nom }} <br/>
-                        {% endfor %}
-                    </td>
-                    <td>{{ facture.montant|number_format(2, ',', ' ') }}</td>
-                    <td>{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>
-                        <a href="{{ path('visualiser_facture', {'id': facture.id}) }}" class="btn btn-primary">Voir</a>
-                        <a href="{{ path('telecharger_facture', {'id': facture.id}) }}" class="btn btn-primary">Télécharger</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <form action="{{ path('app_factureSelect') }}" method="post" class="grid-container">
+        {% for facture in factures %}
+            <div class="grid-item checkbox">
+                <label>
+                    <input type="checkbox" name="factures_selectionnees[]" value="{{ facture.id }}">
+                </label>
+            </div>
+            <div class="grid-item nom-prenom">{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</div>
+            <div class="grid-item produits">
+                {% for factureProduit in facture.produits %}
+                    <p><span>{{ factureProduit.quantite }}</span> {{ factureProduit.produit.nom }}</p>
+                {% endfor %}
+            </div>
+            <div class="grid-item montant">{{ facture.montant|number_format(2, ',', ' ') }}€</div>
+{#            <div class="grid-item">{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d H:i:s') : '' }}</div>#}
+            <div class="grid-item date">{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d') : '' }}</div>
+            <div class="grid-item actions">
+                <a href="{{ path('visualiser_facture', {'id': facture.id}) }}"><i class="fa-solid fa-eye"></i></a>
+                <a href="{{ path('telecharger_facture', {'id': facture.id}) }}"><i class="fa-solid fa-download"></i></a>
+            </div>
+        {% endfor %}
         <input type="hidden" name="start_production" value="true"> <!-- Champ caché pour démarrer la production -->
-        <button type="submit">Lancer la production</button>
+        <button type="submit" class="button submit-button">Lancer la production</button>
     </form>
 {% endif %}

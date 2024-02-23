@@ -431,4 +431,55 @@ section.home .bottom .case #divTopProduits {
   display: inline-block;
 }
 
+section.facture .first-line {
+  display: grid;
+  margin-left: 2%;
+  grid-template-columns: 65% 35%;
+}
+section.facture .first-line form {
+  margin-right: 20px;
+  display: grid;
+  grid-template-columns: 40px auto auto 80px 150px 100px;
+}
+section.facture .first-line form .btns {
+  display: flex;
+  align-items: center;
+}
+section.facture .first-line form .btns a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 35px;
+  text-align: center;
+  border-radius: 5px;
+  margin-right: 15px;
+  border: 2px solid var(--color-lightgrey);
+  background-color: var(--color-subgrey);
+}
+section.facture .first-line form .grid-item {
+  padding: 10px 5px 15px;
+  border-bottom: 1px solid #ccc;
+}
+section.facture .first-line form .grid-item p {
+  margin-bottom: 4px;
+}
+section.facture .first-line form .grid-item p span {
+  padding: 0 13px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  margin-right: 10px;
+  border: 2px solid var(--color-lightgrey);
+  background-color: var(--color-subgrey);
+}
+section.facture .first-line form .grid-item:nth-child(-n+6) {
+  border-top: 1px solid #ccc;
+}
+section.facture .first-line form .submit-button {
+  grid-column: 1/-1;
+}
+section.facture .first-line form i {
+  font-size: 17px;
+}
+
 /*# sourceMappingURL=base.css.map */

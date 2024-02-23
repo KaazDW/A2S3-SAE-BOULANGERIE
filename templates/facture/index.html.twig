@@ -7,23 +7,12 @@
         <div class="title">
             <h1>Liste des Factures</h1>
         </div>
-        <div class="el">
-            <div class="case">
-
-            </div>
-            <div class="case">
-
-            </div>
-            <div class="case">
-
-            </div>
-        </div>
     </section>
-    <section class="home">
-        <div class="bottom">
-                <div class="listeFactures" hx-target="this" hx-swap="outerHTML">
-                    {% include 'facture/factureParDate.html.twig' %}
-                </div>
+    <section class="facture">
+        <div class="first-line">
+            <div class="listeFactures" hx-target="this" hx-swap="outerHTML">
+                {% include 'facture/factureParDate.html.twig' %}
+            </div>
             <div class="case">
                 <h2>Récapitulatif des Produits Selectionnés</h2>
                 <ul>
@@ -35,7 +24,7 @@
                 </ul>
             </div>
         </div>
-        <div class="bottom">
+        <div class="second-line">
             <div class="case">
             <h2>Aggrégation des commandes par ingrédients</h2>
             <ul>
