@@ -13,15 +13,18 @@
             <div class="listeFactures" hx-target="this" hx-swap="outerHTML">
                 {% include 'facture/factureParDate.html.twig' %}
             </div>
-            <div class="case">
+            <div class="recap-selection">
                 <h2>Récapitulatif des Produits Selectionnés</h2>
-                <ul>
+                <p class="grid" style="padding-bottom: 20px; margin-top: 15px;">
+                    <span class="quantite"><b>Quantité Totale</b></span><span class="nom"><b class="nom">Nom du produit</b></span>
+                </p>
+                <div>
                     {% for produitNom, totalProduit in produitTotals %}
-                    <li>
-                        {{ produitNom }} - Quantité totale: {{ totalProduit }}
-                    </li>
+                    <p class="grid">
+                        <span class="quantite"><b>{{ totalProduit }}</b></span><span class="nom"><i class="nom">{{ produitNom }}</i></span>
+                    </p>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
         </div>
         <div class="second-line">

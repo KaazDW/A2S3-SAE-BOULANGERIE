@@ -541,6 +541,22 @@ section.facture{
         }
       }
     }
+    .recap-selection{
+      background-color: var(--color-subgrey);
+      border: 2px solid var(--color-lightgrey);
+      border-radius: 10px;
+      margin-right: 20px;
+      padding: 10px;
+      .grid{
+        display: grid;
+        padding: 5px 0;
+        grid-template-columns: 30% 50%;
+        border-bottom: 1px solid var(--color-lightgrey);
+        .quantite{
+          text-align: center;
+        }
+      }
+    }
   }
   .second-line{
 
