@@ -26,7 +26,24 @@
         </div>
         <input type="hidden" name="start_production" value="true"> <!-- Champ caché pour valider le démarrage de la production -->
         <div class="submit-div">
+            <p class="case">Factures sélectionnées : x<span id="selected">0</span></p>
             <button type="submit" class="button"><i class="fa-solid fa-play"></i>Lancer la production</button>
         </div>
     </form>
+    <script>
+        // Compte le nombre de factures sélectionnées et l'afficher
+        let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        let selected = document.getElementById('selected');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                let count = 0;
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        count++;
+                    }
+                });
+                selected.textContent = count;
+            });
+        });
+    </script>
 {% endif %}

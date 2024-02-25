@@ -488,8 +488,7 @@ section.facture{
       .for{
         margin-right: 20px;
         display: grid;
-        grid-template-columns: 40px auto auto 80px 150px 100px;
-        //le dernier grid-item nth
+        grid-template-columns: 40px 300px auto 100px 150px 100px;
         .actions {
           display: flex;
           align-items: center;
@@ -533,7 +532,14 @@ section.facture{
         margin-bottom: 15px;
         margin-right: 15px;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+        .case{
+          padding: 0 10px;
+          #selected{
+            font-weight: 700;
+            font-size: 18px;
+          }
+        }
         button{
           i{
             margin-right: 10px;
@@ -560,6 +566,23 @@ section.facture{
   }
   .second-line{
     margin-top: 10px;
+    display: grid;
+    margin-left: 2%;
+    grid-template-columns: 40% 60%;
+    .agregation, .stock{
+      background-color: var(--color-subgrey);
+      border: 2px solid var(--color-lightgrey);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 30px;
+    }
+    .agregation{
+      margin-right: 15px;
+    }
+    .stock{
+      margin-right: 20px;
+
+    }
   }
 }
 
@@ -581,6 +604,27 @@ section.facture{
  }
 
  #scrollTopButton:hover {
+   background-color: #555;
+ }
+
+ // Bouton Scroll to Top
+ #scrollToAgregationButton {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  font-size: 25px;
+  width: 50px;
+  height: 50px  ;
+  border: none;
+  border-radius: 50px;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+ }
+
+ #scrollToAgregationButton:hover {
    background-color: #555;
  }
 

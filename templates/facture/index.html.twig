@@ -28,103 +28,109 @@
             </div>
         </div>
         <div class="second-line">
-            <div class="case">
-            <h2>Aggrégation des commandes par ingrédients</h2>
-            <ul>
-                {% for produitNom, totalProduit in produitTotals %}
-                    <li>
-                        {{ produitNom }} - Quantité totale: {{ totalProduit }}
-                        <ul>
-                            {% for produit in produits %}
-                                {% if produit.nom == produitNom %}
-                                    {% for ingredientProduit in produit.ingredients %}
-                                        {% set quantiteProduit = totalProduit %}
-                                        {% set quantiteUtilisee = ingredientProduit.quantite * quantiteProduit %}
-{#                                        {% set stockRestant = ingredientProduit.ingredient.stock - quantiteUtilisee %}#}
-                                        <li>{{ ingredientProduit.ingredient.nom }} - Quantité: {{ (ingredientProduit.quantite * quantiteProduit)|number_format(0, '.', ' ') }}g</li>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endfor %}
-                            <p>--------------------------</p>
-                        </ul>
-                    </li>
-                {% endfor %}
-            </ul>
-            </div>
-            <div class="case">
-            <h2>Gestions des stocks</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>Nom du produit</th>
-                    <th>Quantité totale utilisé</th>
-                    <th>Stock Avant (kg)</th>
-                    <th>Stock Après</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for ingredientNom, quantiteTotale in quantitesTotalesIngredients %}
-                    <tr>
-                        <td>{{ ingredientNom }}</td>
-                        <td>{{ quantiteTotale }}</td>
-                        <td>
-                            {% for ingredient in ingredients %}
-                                {% if ingredient.nom == ingredientNom %}
-                                    {{ ingredient.stock }} kg = {{ ingredient.stock * 1000 }} g
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-
-                        <td>
-                            {% for ingredient in ingredients %}
-                                {% if ingredient.nom == ingredientNom %}
-                                    {% if ingredient.nom != "Eau" %}
-                                        {% set stockGrammes = ingredient.stock * 1000 - quantiteTotale %}
-                                        {% if stockGrammes <= 0 %}
-                                            <span style="color: red;">{{ stockGrammes | number_format(0, '.', ' ') }} g</span>
-                                        {% else %}
-                                            {{ stockGrammes | number_format(0, '.', ' ') }} g
-                                        {% endif %}
-                                    {% else %}
-                                        EAU ILLIMITE
+            <div class="agregation" id="agregation">
+                <h2>Aggrégation des commandes par ingrédients</h2>
+                <ul>
+                    {% for produitNom, totalProduit in produitTotals %}
+                        <li>
+                            {{ produitNom }} - Quantité totale: {{ totalProduit }}
+                            <ul>
+                                {% for produit in produits %}
+                                    {% if produit.nom == produitNom %}
+                                        {% for ingredientProduit in produit.ingredients %}
+                                            {% set quantiteProduit = totalProduit %}
+                                            {% set quantiteUtilisee = ingredientProduit.quantite * quantiteProduit %}
+    {#                                        {% set stockRestant = ingredientProduit.ingredient.stock - quantiteUtilisee %}#}
+                                            <li>{{ ingredientProduit.ingredient.nom }} - Quantité: {{ (ingredientProduit.quantite * quantiteProduit)|number_format(0, '.', ' ') }}g</li>
+                                        {% endfor %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-
-
+                                {% endfor %}
+                                <p>--------------------------</p>
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="stock">
+                <h2>Gestions des stocks</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Nom du produit</th>
+                        <th>Quantité totale utilisé</th>
+                        <th>Stock Avant (kg)</th>
+                        <th>Stock Après</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for ingredientNom, quantiteTotale in quantitesTotalesIngredients %}
+                        <tr>
+                            <td>{{ ingredientNom }}</td>
+                            <td>{{ quantiteTotale }}</td>
+                            <td>
+                                {% for ingredient in ingredients %}
+                                    {% if ingredient.nom == ingredientNom %}
+                                        {{ ingredient.stock }} kg = {{ ingredient.stock * 1000 }} g
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
 
-        </div>
+                            <td>
+                                {% for ingredient in ingredients %}
+                                    {% if ingredient.nom == ingredientNom %}
+                                        {% if ingredient.nom != "Eau" %}
+                                            {% set stockGrammes = ingredient.stock * 1000 - quantiteTotale %}
+                                            {% if stockGrammes <= 0 %}
+                                                <span style="color: red;">{{ stockGrammes | number_format(0, '.', ' ') }} g</span>
+                                            {% else %}
+                                                {{ stockGrammes | number_format(0, '.', ' ') }} g
+                                            {% endif %}
+                                        {% else %}
+                                            EAU ILLIMITE
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
-{#    Bouton Scroll to Top #}
+{#    Bouton d'action de scroll, le premier scroll au top de la page, le second scroll jusqu'a la partie 'agregation des commandes #}
+{#    Objectif: Ergonomie, principalement utile si on commence à avoir beaucoup de factures sur le site #}
     <button onclick="scrollToTop()" id="scrollTopButton" title="Go to top"><i class="fa-solid fa-up-long"></i></button>
+    <button onclick="scrollToAgregation()" id="scrollToAgregationButton" title="Go to agregation"><i class="fa-solid fa-down-long"></i></button>
     <script>
-        // Show or hide the scroll to top button based on scroll position
+        // Montrer ou cacher le bouton de retour en haut de page en fonction de la position du scroll
         window.onscroll = function() {scrollFunction()};
 
         function scrollFunction() {
-            var button = document.getElementById("scrollTopButton");
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                button.style.display = "block";
+            var buttonTop = document.getElementById("scrollTopButton");
+            var buttonAgregation = document.getElementById("scrollToAgregationButton");
+            var agregationDiv = document.getElementById("agregation");
+            var scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+            if (scrollPosition > 20) {
+                buttonTop.style.display = "block";
             } else {
-                button.style.display = "none";
+                buttonTop.style.display = "none";
+            }
+            if (scrollPosition < agregationDiv.offsetTop - 150) {
+                buttonAgregation.style.display = "block";
+            } else {
+                buttonAgregation.style.display = "none";
             }
         }
 
         function scrollToTop() {
-            // For modern browsers
             if ('scrollBehavior' in document.documentElement.style) {
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth' // Smooth scrolling
                 });
-            } else { // For legacy browsers
+            } else {
                 // Fallback to using scrollIntoView
                 var scrollToTop = document.querySelector("#content");
                 scrollToTop.scrollIntoView({
@@ -133,7 +139,25 @@
             }
         }
 
+        function scrollToAgregation() {
+            var headerHeight = document.querySelector('header').offsetHeight + 10;
+            if ('scrollBehavior' in document.documentElement.style) {
+                var agregationDiv = document.querySelector("#agregation");
+                window.scrollTo({
+                    top: agregationDiv.offsetTop - headerHeight,
+                    behavior: 'smooth' // Smooth scrolling
+                });
+            } else {
+                var scrollToAgregation = document.querySelector("#agregation");
+                window.scroll({
+                    top: scrollToAgregation.getBoundingClientRect().top + window.pageYOffset - headerHeight,
+                    behavior: 'smooth' // Smooth scrolling
+                });
+            }
+        }
     </script>
+
+{#    On utilise pas JQuery ici nan ? Si c'est pas le cas suppr la ligne suivante #}
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 {% endblock %}
