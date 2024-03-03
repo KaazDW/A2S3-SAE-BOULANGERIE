@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{# CSS Pour les graphs #}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('js/bibliotheques/ApexChartsJS/dist/apexcharts.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="content">
+        <img src="/images/low-poly-mill-removebg-preview.png" alt="rr">
+        <div>
+            <h3>Bienvenue</h3>
+            <p>Vous avez <span id="nbrNotif" class="case" style="padding: 1px 5px;">0</span> notifications en attentes ! </p>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

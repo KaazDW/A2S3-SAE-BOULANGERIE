@@ -22,7 +22,7 @@ class FonctionnelsTest extends WebTestCase
 
         // now you can interact with your app as an authenticated user
         $client->request('GET', '/');
-        $this->assertResponseRedirects('/accueil');
+        $this->assertResponseRedirects('/home');
     }
 
     public function testProduitPage()

@@ -586,49 +586,57 @@ section.facture{
   }
 }
 
- // Bouton Scroll to Top
- #scrollTopButton {
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 99;
-  font-size: 25px;
-  width: 50px;
-  height: 50px  ;
-  border: none;
-  border-radius: 50px;
-  background-color: #333;
-  color: white;
-  cursor: pointer;
- }
+// Bouton Scroll to Top
+#scrollTopButton {
+display: none;
+position: fixed;
+bottom: 20px;
+right: 20px;
+z-index: 99;
+font-size: 25px;
+width: 50px;
+height: 50px  ;
+border: none;
+border-radius: 50px;
+background-color: #333;
+color: white;
+cursor: pointer;
+}
 
- #scrollTopButton:hover {
-   background-color: #555;
- }
+#scrollTopButton:hover {
+ background-color: #555;
+}
 
- // Bouton Scroll to Top
- #scrollToAgregationButton {
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 99;
-  font-size: 25px;
-  width: 50px;
-  height: 50px  ;
-  border: none;
-  border-radius: 50px;
-  background-color: #333;
-  color: white;
-  cursor: pointer;
- }
+// Bouton Scroll to Top
+#scrollToAgregationButton {
+display: none;
+position: fixed;
+bottom: 20px;
+right: 20px;
+z-index: 99;
+font-size: 25px;
+width: 50px;
+height: 50px  ;
+border: none;
+border-radius: 50px;
+background-color: #333;
+color: white;
+cursor: pointer;
+}
 
- #scrollToAgregationButton:hover {
-   background-color: #555;
- }
+#scrollToAgregationButton:hover {
+ background-color: #555;
+}
 
-
+.content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img{
+    width: 500px;
+    margin-bottom: 20px;
+  }
+}
 
 
 

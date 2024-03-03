@@ -51,6 +51,7 @@ security:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profil, roles: ROLE_USER }
          - { path: ^/accueil, roles: ROLE_ADMIN }
+         - { path: ^/home, roles: ROLE_ADMIN }
          - { path: ^/facture, roles: ROLE_ADMIN }
          - { path: ^/création_commande, roles: ROLE_ADMIN }
          - { path: ^/ingredient, roles: ROLE_ADMIN }

@@ -575,4 +575,14 @@ section.facture .second-line .stock {
   background-color: #555;
 }
 
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.content img {
+  width: 500px;
+  margin-bottom: 20px;
+}
+
 /*# sourceMappingURL=base.css.map */
