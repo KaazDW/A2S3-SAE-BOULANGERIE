@@ -322,6 +322,7 @@ section.factures {
   }
 }
 
+
 // Page erreur 404
 section.error404{
   width: 80%;
@@ -521,7 +522,8 @@ section.facture{
           }
         }
         .grid-item:nth-child(-n+6) {
-            border-top: 1px solid #ccc;
+          border-top: 1px solid #ccc;
+          margin-top: 15px;
         }
         i{
           font-size: 17px;
@@ -578,29 +580,82 @@ section.facture{
     }
     .agregation{
       margin-right: 15px;
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: start;
+        padding: 10px;
+        text-align: left;
+        .title{
+          display: flex;
+          justify-content: space-between;
+          span.case{
+            padding: 0 10px;
+            border-radius: 5px;
+            margin-right: 10px;
+            border: 2px solid var(--color-lightgrey);
+            background-color: var(--color-subgrey);
+          }
+        }
+        .grid-item {
+          padding: 10px;
+          text-align: right;
+          p{
+            display: flex;
+            justify-content: space-between;
+            span.qty{
+              font-weight: 700;
+              i{
+                font-weight: 400;
+                font-style: normal;
+              }
+            }
+          }
+        }
+      }
+
+
     }
     .stock{
       margin-right: 20px;
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        align-items: start;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        .grid-item {
+          padding: 10px;
+          border-top: 1px solid #ccc;
+          text-align: right;
 
+        }
+        .left{
+          text-align: left;
+        }
+        .title{
+          font-weight: 700;
+        }
+      }
     }
   }
 }
 
 // Bouton Scroll to Top
 #scrollTopButton {
-display: none;
-position: fixed;
-bottom: 20px;
-right: 20px;
-z-index: 99;
-font-size: 25px;
-width: 50px;
-height: 50px  ;
-border: none;
-border-radius: 50px;
-background-color: #333;
-color: white;
-cursor: pointer;
+  display: none;
+  position: fixed;
+  top: 64px;
+  right: 20px;
+  z-index: 99;
+  font-size: 25px;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 13px;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
 }
 
 #scrollTopButton:hover {
@@ -609,19 +664,19 @@ cursor: pointer;
 
 // Bouton Scroll to Top
 #scrollToAgregationButton {
-display: none;
-position: fixed;
-bottom: 20px;
-right: 20px;
-z-index: 99;
-font-size: 25px;
-width: 50px;
-height: 50px  ;
-border: none;
-border-radius: 50px;
-background-color: #333;
-color: white;
-cursor: pointer;
+  display: block;
+  position: fixed;
+  top: 64px;
+  right: 20px;
+  z-index: 99;
+  font-size: 25px;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 13px;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
 }
 
 #scrollToAgregationButton:hover {

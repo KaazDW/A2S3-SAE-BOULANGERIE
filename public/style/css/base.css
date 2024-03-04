@@ -478,6 +478,7 @@ section.facture .first-line form .for .grid-item p span {
 }
 section.facture .first-line form .for .grid-item:nth-child(-n+6) {
   border-top: 1px solid #ccc;
+  margin-top: 15px;
 }
 section.facture .first-line form .for i {
   font-size: 17px;
@@ -531,21 +532,72 @@ section.facture .second-line .agregation, section.facture .second-line .stock {
 section.facture .second-line .agregation {
   margin-right: 15px;
 }
+section.facture .second-line .agregation .grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: start;
+  padding: 10px;
+  text-align: left;
+}
+section.facture .second-line .agregation .grid-container .title {
+  display: flex;
+  justify-content: space-between;
+}
+section.facture .second-line .agregation .grid-container .title span.case {
+  padding: 0 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  border: 2px solid var(--color-lightgrey);
+  background-color: var(--color-subgrey);
+}
+section.facture .second-line .agregation .grid-container .grid-item {
+  padding: 10px;
+  text-align: right;
+}
+section.facture .second-line .agregation .grid-container .grid-item p {
+  display: flex;
+  justify-content: space-between;
+}
+section.facture .second-line .agregation .grid-container .grid-item p span.qty {
+  font-weight: 700;
+}
+section.facture .second-line .agregation .grid-container .grid-item p span.qty i {
+  font-weight: 400;
+  font-style: normal;
+}
 section.facture .second-line .stock {
   margin-right: 20px;
+}
+section.facture .second-line .stock .grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: start;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+section.facture .second-line .stock .grid-container .grid-item {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  text-align: right;
+}
+section.facture .second-line .stock .grid-container .left {
+  text-align: left;
+}
+section.facture .second-line .stock .grid-container .title {
+  font-weight: 700;
 }
 
 #scrollTopButton {
   display: none;
   position: fixed;
-  bottom: 20px;
+  top: 64px;
   right: 20px;
   z-index: 99;
   font-size: 25px;
   width: 50px;
   height: 50px;
   border: none;
-  border-radius: 50px;
+  border-radius: 13px;
   background-color: #333;
   color: white;
   cursor: pointer;
@@ -556,16 +608,16 @@ section.facture .second-line .stock {
 }
 
 #scrollToAgregationButton {
-  display: none;
+  display: block;
   position: fixed;
-  bottom: 20px;
+  top: 64px;
   right: 20px;
   z-index: 99;
   font-size: 25px;
   width: 50px;
   height: 50px;
   border: none;
-  border-radius: 50px;
+  border-radius: 13px;
   background-color: #333;
   color: white;
   cursor: pointer;
