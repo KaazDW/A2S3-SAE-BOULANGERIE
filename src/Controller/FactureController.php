@@ -331,6 +331,7 @@ class FactureController extends AbstractController
 
             return $this->render('facture/commande.html.twig', [
                 'produits' => $produits,
+                'admin' => 1,
             ]);
         }
 

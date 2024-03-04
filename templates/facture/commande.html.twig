@@ -1,8 +1,10 @@
 {# templates/facture/nouvelle_facture.html.twig #}
-
-{% extends 'base.html.twig' %}
-
-{% block title %}Nouvelle Facture{% endblock %}
+{# templates/facture/commande.html.twig #}
+{% extends
+    admin != 0
+    ? 'base.html.twig'
+    : 'user/userBase.html.twig'
+%}
 
 {% block body %}
 <section class="container">
@@ -44,6 +46,7 @@
                 <input type="radio" id="paiementJourMeme" name="typePaiement" style="margin-right: 10px;" value="jourMeme" checked>
                 <label for="paiementJourMeme">Paiera le jour-même</label>
                 <br>
+                {% if (admin!=0) %}
                 <input type="radio" id="paiementDejaEffectue" name="typePaiement" style="margin-right: 10px;" value="dejaEffectue">
                 <label for="paiementDejaEffectue">A déjà payé</label>
                 <br>
@@ -51,6 +54,7 @@
                     <label for="datePaiement">Date de paiement</label>
                     <input type="datetime-local" class="element" id="datePaiement" name="datePaiement">
                 </div>
+                {% endif %}
 
                 <button type="submit" class="button" style="margin-top: 15px;" onclick="validerFormulaire()">Valider</button>
             </div>

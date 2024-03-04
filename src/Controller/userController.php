@@ -30,10 +30,10 @@ class userController extends AbstractController
 
 
         // Passez la variable user au template
-        return $this->render('user/commande.html.twig', [
+        return $this->render('facture/commande.html.twig', [
             'user' => $user,
             'produits' => $produits,
-
+            'admin' => 0,
         ]);
     }
 
