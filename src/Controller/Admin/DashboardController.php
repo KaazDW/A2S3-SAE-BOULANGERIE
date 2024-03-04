@@ -57,8 +57,8 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Utilisateurs', 'fas fa-user-group', User::class),
             MenuItem::linkToCrud('Ingredients', 'fas fa-bread-slice', Ingredient::class),
             MenuItem::linkToCrud('Produits', 'fas fa-jar', Produit::class),
-            MenuItem::linkToCrud('Recettes', 'fas fa-clipboard-list', Recette::class),
-            MenuItem::linkToCrud('Factures', 'fas fa-file-lines', Facture::class),
+//            MenuItem::linkToCrud('Recettes', 'fas fa-clipboard-list', Recette::class),
+//            MenuItem::linkToCrud('Factures', 'fas fa-file-lines', Facture::class),
 //            MenuItem::linkToCrud('Événements', 'fas fa-calendar-days', Evenement::class),
 
             MenuItem::section('Datas'),
