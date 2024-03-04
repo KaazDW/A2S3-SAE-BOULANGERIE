@@ -37,4 +37,13 @@ class IngredientController extends AbstractController
             'alertIngredients' => $alertIngredients,
         ]);
     }
+
+//    public function countAlert(EntityManagerInterface $entityManager): Response
+//    {
+//        $alertCount = $this->stockAlert($entityManager);
+//
+//        return $this->render('pages/home.html.twig', [
+//            'alertCount' => $alertCount,
+//        ]);
+//    }
 }

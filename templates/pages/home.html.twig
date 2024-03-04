@@ -12,7 +12,7 @@
         <div>
             <h3>Bienvenue</h3>
             <p class="date case"><span id="hour"></span><span id="date"></span></p>
-            <p>Vous avez <span id="nbrNotif" class="case" style="padding: 1px 5px; font-weight: 700">0</span> notifications en attentes ! </p>
+            <p>Vous avez <span id="nbrNotif" class="case" style="padding: 1px 5px; font-weight: 700">{{ alertCount }}</span> notifications en attentes ! </p>
         </div>
     </section>
 
@@ -33,5 +33,14 @@
 
         // Then update every second (1000 milliseconds)
         setInterval(updateTime, 1000);
+    </script>
+    {# JavaScript pour la gestion des alertes de stock #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var alertList = document.querySelectorAll('.alert-danger li');
+            var alertCount = alertList.length;
+            var alertButton = document.getElementById('nbrNotif');
+            alertButton.textContent = alertCount;
+        });
     </script>
 {% endblock %}
