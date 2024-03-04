@@ -684,12 +684,24 @@ section.facture{
 }
 
 .content{
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  h3{
+    text-decoration: underline;
+  }
   img{
     width: 500px;
     margin-bottom: 20px;
+  }
+  p.date{
+    margin: 10px 0 20px;
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 0;
+    font-weight: 700;
   }
 }
 
