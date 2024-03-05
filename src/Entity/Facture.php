@@ -176,4 +176,11 @@ class Facture
 
         return $this;
     }
+
+    public function getEtat(): ?bool
+    {
+        return $this->etat;
+    }
+
+
 }

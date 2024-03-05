@@ -57,6 +57,11 @@ class FactureController extends AbstractController
             $factures = $entityManager->getRepository(Facture::class)->findAll();
         }
 
+        // Filtrer les factures avec l'état égal à 1
+        $factures = array_filter($factures, function($facture) {
+            return $facture->getEtat() == 0;
+        });
+
         // Récupération des ingrédients
         $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
 
@@ -66,9 +71,6 @@ class FactureController extends AbstractController
         $quantitesTotalesIngredients = [];
 
         // Calcul des données pour les factures
-        foreach ($factures as $facture) {
-            // Logique de calcul des produits, produitTotals, quantitesTotalesIngredients
-        }
 
         return $this->render('facture/index.html.twig', [
             'factures' => $factures,
@@ -77,6 +79,7 @@ class FactureController extends AbstractController
             'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
             'ingredients' => $ingredients,
             'form' => $form->createView(),
+            'affichage' => $affichage,
 
         ]);
     }
@@ -110,32 +113,32 @@ class FactureController extends AbstractController
         // Calcul de la quantité totale de chaque ingrédient et des autres données
         foreach ($factures as $facture) {
             foreach ($facture->getProduits() as $produitFacture) {
-                $produit = $produitFacture->getProduit();
-                $produitNom = $produit->getNom();
-                $quantiteProduit = $produitFacture->getQuantite();
+                    $produit = $produitFacture->getProduit();
+                    $produitNom = $produit->getNom();
+                    $quantiteProduit = $produitFacture->getQuantite();
 
-                // Ajout du produit s'il n'existe pas encore dans le tableau
-                if (!isset($produits[$produitNom])) {
-                    $produits[$produitNom] = $produit;
-                }
-
-                // Calcul du total de chaque produit
-                if (!isset($produitTotals[$produitNom])) {
-                    $produitTotals[$produitNom] = 0;
-                }
-                $produitTotals[$produitNom] += $quantiteProduit;
-
-                // Calcul de la quantité totale de chaque ingrédient
-                foreach ($produit->getIngredients() as $ingredientProduit) {
-                    $ingredientNom = $ingredientProduit->getIngredient()->getNom();
-                    $quantite = $ingredientProduit->getQuantite() * $quantiteProduit;
-
-                    // Ajout de la quantité à celle déjà existante pour cet ingrédient
-                    if (!isset($quantitesTotalesIngredients[$ingredientNom])) {
-                        $quantitesTotalesIngredients[$ingredientNom] = 0;
+                    // Ajout du produit s'il n'existe pas encore dans le tableau
+                    if (!isset($produits[$produitNom])) {
+                        $produits[$produitNom] = $produit;
                     }
-                    $quantitesTotalesIngredients[$ingredientNom] += $quantite;
-                }
+
+                    // Calcul du total de chaque produit
+                    if (!isset($produitTotals[$produitNom])) {
+                        $produitTotals[$produitNom] = 0;
+                    }
+                    $produitTotals[$produitNom] += $quantiteProduit;
+
+                    // Calcul de la quantité totale de chaque ingrédient
+                    foreach ($produit->getIngredients() as $ingredientProduit) {
+                        $ingredientNom = $ingredientProduit->getIngredient()->getNom();
+                        $quantite = $ingredientProduit->getQuantite() * $quantiteProduit;
+
+                        // Ajout de la quantité à celle déjà existante pour cet ingrédient
+                        if (!isset($quantitesTotalesIngredients[$ingredientNom])) {
+                            $quantitesTotalesIngredients[$ingredientNom] = 0;
+                        }
+                        $quantitesTotalesIngredients[$ingredientNom] += $quantite;
+                    }
             }
         }
 
