@@ -11,7 +11,10 @@
             <b>Alert de stock !</b>
             <ul>
                 {% for ingredient in alertIngredients %}
-                <li style="display: flex; align-items:center"><i class="fa-solid fa-triangle-exclamation" style="margin-right: 15px;"></i>{{ ingredient.nom }} à atteint sa quantité minimale dans le stock !</li><br/>
+                    <li style="display: flex; align-items:center">
+                        <i class="fa-solid fa-triangle-exclamation" style="margin-right: 15px;"></i>
+                        <a href="/admin?crudAction=edit&crudControllerFqcn=App%5CController%5CAdmin%5CIngredientCrudController&entityId={{ ingredient.id }}"> {{ ingredient.nom }} </a> à atteint sa quantité minimale dans le stock !
+                    </li><br/>
                 {% endfor %}
             </ul>
         </div>

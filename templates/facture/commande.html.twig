@@ -23,7 +23,9 @@
                     <option value="" disabled selected>Sélectionnez un produit</option>
 
                     {% for produit in produits %}
-                        <option value="{{ produit.id }}">{{ produit.nom }} {{produit.prixUnitaire}}€</option>
+                        {# <option value="{{ produit.id }}" >{{     .nom }} {{produit.prixUnitaire}}€</option> #}
+                        <option value="{{ produit.id }}" data-prix="{{ produit.prixUnitaire }}">{{ produit.nom }} {{produit.prixUnitaire}}€</option>
+
                     {% endfor %}
                 </select>
 
@@ -134,6 +136,9 @@
 
     // GESTIONNAIRE D'EVENEMENT POUR LE DROPDOWN
     document.addEventListener("DOMContentLoaded", function () {
+        var totalElement = document.getElementById("total");
+        var total = 0;
+
         var produitDropdown = document.getElementById("produitDropdown");
         var produitsSelectionnes = document.getElementById("produitsSelectionnes");
 
@@ -142,6 +147,9 @@
             var selectedOption = produitDropdown.options[produitDropdown.selectedIndex];
 
             if (selectedOption.value !== "") {
+                var prixProduit = parseFloat(selectedOption.dataset.prix); // Récupère le prix du produit
+                console.log(prixProduit);
+
                 // Créér une div pour le produit sélectionné
                 var produitDiv = document.createElement("div");
                 produitDiv.innerHTML = selectedOption.text;
@@ -161,6 +169,16 @@
 
                 produitDiv.appendChild(quantiteInput);
 
+                var ancienneQuantite = 1; // Initialiser l'ancienne quantité à 1
+
+                // Ajoute un gestionnaire d'événements pour surveiller les changements de quantité
+                quantiteInput.addEventListener("input", function () {
+                    var nouvelleQuantite = parseInt(quantiteInput.value);
+                    var differenceQuantite = nouvelleQuantite - ancienneQuantite; // Calculer la différence de quantité
+                    updateTotal(prixProduit * differenceQuantite); // Mettre à jour le total en fonction de la différence de quantité
+                    ancienneQuantite = nouvelleQuantite; // Mettre à jour l'ancienne quantité
+                });
+
                 selectedOption.remove();
 
                 // IMAGE POUR SUPPRIMER LE PRODUTI DE LA FACTURE
@@ -177,7 +195,10 @@
                         var newOption = document.createElement("option");
                         newOption.value = selectedOption.value;
                         newOption.text = selectedOption.text;
+                        newOption.dataset.prix = selectedOption.dataset.prix; // Ajoute l'attribut data-prix
                         produitDropdown.appendChild(newOption);
+                        updateTotal(-prixProduit); // Retire le prix du produit retiré du total
+
                 });
                 produitDiv.appendChild(deleteIcon);
 
@@ -187,8 +208,16 @@
                 // Réinitialise le dropdown pour sélectionner l'option vide
                 produitDropdown.selectedIndex = 0;
 
+                updateTotal(prixProduit); // Met à jour le total lors de l'ajout du produit
+
+
             }
         });
+        
+        function updateTotal(amount) {
+            total += amount;
+            totalElement.textContent = "Total: " + total.toFixed(2) + "€"; // Affiche le total avec 2 décimales
+        }
     });
 
     function checkSelectedDate(input) {
