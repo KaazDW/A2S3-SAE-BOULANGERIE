@@ -34,22 +34,24 @@
         <div class="second-line">
             <div class="agregation" id="agregation">
                 <h2>Aggrégation des commandes par ingrédients</h2>
-                <div class="grid-container">
-                    {% for produitNom, totalProduit in produitTotals %}
-                        <div class="grid-item title"><span class="name">{{ produitNom }}</span> <span class="case"> {{ totalProduit }}</span></div>
-                        <div class="grid-item">
-                            {% for produit in produits %}
-                                {% if produit.nom == produitNom %}
-                                    {% for ingredientProduit in produit.ingredients %}
-                                        {% set quantiteProduit = totalProduit %}
-                                        {% set quantiteUtilisee = ingredientProduit.quantite * quantiteProduit %}
-                                        <p>{{ ingredientProduit.ingredient.nom }} <span class="qty">{{ (ingredientProduit.quantite * quantiteProduit)|number_format(0, '.', ' ') }}<i>g</i></span></p>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-                </div>
+                {%if affichage == true %}
+                    <div class="grid-container">
+                        {% for produitNom, totalProduit in produitTotals %}
+                            <div class="grid-item title"><span class="name">{{ produitNom }}</span> <span class="case"> {{ totalProduit }}</span></div>
+                            <div class="grid-item">
+                                {% for produit in produits %}
+                                    {% if produit.nom == produitNom %}
+                                        {% for ingredientProduit in produit.ingredients %}
+                                            {% set quantiteProduit = totalProduit %}
+                                            {% set quantiteUtilisee = ingredientProduit.quantite * quantiteProduit %}
+                                            <p>{{ ingredientProduit.ingredient.nom }} <span class="qty">{{ (ingredientProduit.quantite * quantiteProduit)|number_format(0, '.', ' ') }}<i>g</i></span></p>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
             <div class="stock">
                 <h2>Gestions des stocks</h2>
@@ -58,34 +60,35 @@
                     <div class="grid-item title">Quantité totale utilisé</div>
                     <div class="grid-item title">Stock Avant (kg)</div>
                     <div class="grid-item title">Stock Après</div>
-
-                    {% for ingredientNom, quantiteTotale in quantitesTotalesIngredients %}
-                        <div class="grid-item left">{{ ingredientNom }}</div>
-                        <div class="grid-item">{{ quantiteTotale }}</div>
-                        <div class="grid-item">
-                            {% for ingredient in ingredients %}
-                                {% if ingredient.nom == ingredientNom %}
-                                    {{ ingredient.stock }} kg = {{ ingredient.stock * 1000 }} g
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div class="grid-item">
-                            {% for ingredient in ingredients %}
-                                {% if ingredient.nom == ingredientNom %}
-                                    {% if ingredient.nom != "Eau" %}
-                                        {% set stockGrammes = ingredient.stock * 1000 - quantiteTotale %}
-                                        {% if stockGrammes <= 0 %}
-                                            <span style="color: red;">{{ stockGrammes | number_format(0, '.', ' ') }} g</span>
-                                        {% else %}
-                                            {{ stockGrammes | number_format(0, '.', ' ') }} g
-                                        {% endif %}
-                                    {% else %}
-                                        EAU ILLIMITE
+                    {%if affichage == true %}
+                        {% for ingredientNom, quantiteTotale in quantitesTotalesIngredients %}
+                            <div class="grid-item left">{{ ingredientNom }}</div>
+                            <div class="grid-item">{{ quantiteTotale }}</div>
+                            <div class="grid-item">
+                                {% for ingredient in ingredients %}
+                                    {% if ingredient.nom == ingredientNom %}
+                                        {{ ingredient.stock }} kg = {{ ingredient.stock * 1000 }} g
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                            <div class="grid-item">
+                                {% for ingredient in ingredients %}
+                                    {% if ingredient.nom == ingredientNom %}
+                                        {% if ingredient.nom != "Eau" %}
+                                            {% set stockGrammes = ingredient.stock * 1000 - quantiteTotale %}
+                                            {% if stockGrammes <= 0 %}
+                                                <span style="color: red;">{{ stockGrammes | number_format(0, '.', ' ') }} g</span>
+                                            {% else %}
+                                                {{ stockGrammes | number_format(0, '.', ' ') }} g
+                                            {% endif %}
+                                        {% else %}
+                                            EAU ILLIMITE
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -29,6 +29,8 @@ class FactureController extends AbstractController
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
 
+        $affichage = false;
+
         $form = $this->createForm(FactureDateSelectionType::class);
 
         $form->handleRequest($request);
@@ -40,6 +42,7 @@ class FactureController extends AbstractController
             // Récupérer les factures en fonction de la date sélectionnée
             $factures = $entityManager->getRepository(Facture::class)->findBy(['dateReservation' => $selectedDate]);
 //            dd($factures);
+//            $affichage = true;
 
         } else {
             // Si le formulaire n'est pas encore soumis ou invalide, récupérer toutes les factures
@@ -94,13 +97,13 @@ class FactureController extends AbstractController
             'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
             'ingredients' => $ingredients,
             'form' => $form->createView(),
+
         ]);
     }
 
     #[Route('/factureSelect', name: 'app_factureSelect')]
     public function factureSelect(EntityManagerInterface $entityManager,Request $request): Response
     {
-
         // Récupérer les identifiants des factures sélectionnées
         $formData = $request->request->all();
         $factureIds = $formData['factures_selectionnees'];
@@ -108,6 +111,7 @@ class FactureController extends AbstractController
 
         $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
 
+        $affichage = true;
 
         // Initialisation des tableaux pour stocker les données
         $produits = [];
@@ -180,6 +184,7 @@ class FactureController extends AbstractController
             'produitTotals' => $produitTotals,
             'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
             'ingredients' => $ingredients,
+                'affichage' => $affichage,
         ]);
     }
 
