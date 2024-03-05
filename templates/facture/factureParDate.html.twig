@@ -6,7 +6,7 @@
             {% for facture in factures %}
                 <div class="grid-item checkbox">
                     <label>
-                        <input type="checkbox" name="factures_selectionnees[]" value="{{ facture.id }}">
+                        <input type="checkbox" class="case" style="padding: 10px;" name="factures_selectionnees[]" value="{{ facture.id }}">
                     </label>
                 </div>
                 <div class="grid-item nom-prenom">{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</div>

@@ -711,9 +711,7 @@ section.facture{
 }
 .historique{
   margin: 25px 30px;
-
   .for{
-
     margin-right: 20px;
     display: grid;
     grid-template-columns: repeat(5, auto);
@@ -754,3 +752,26 @@ section.facture{
 
 
 
+.FactureParDate{
+  margin: 25px 30px;
+  form{
+    display: flex;
+    margin: 15px 0;
+    align-items: center;
+  }
+  #facture_date_selection_submit{
+    background-color: var(--color-blue);
+    padding: 9px 23px;
+    border-radius: 7px;
+    color: white;
+    display: inline;
+    margin-left: 15px;
+  }
+  input{
+    background-color: var(--color-subgrey);
+    border: 2px solid var(--color-lightgrey);
+    border-radius: 10px;
+    padding: 7px;
+  }
+
+}

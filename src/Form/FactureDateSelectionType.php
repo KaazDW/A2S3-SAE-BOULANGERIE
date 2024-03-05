@@ -15,7 +15,7 @@ class FactureDateSelectionType extends AbstractType
         $builder
             ->add('selected_date', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Sélectionner une date',
+                'label' => 'SÃ©lectionner une date : ',
                 // Add any other options you need for the date picker
             ])
             ->add('submit', SubmitType::class, [
