@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Facture;
 use App\Entity\Produit;
 use App\Entity\FactureProduit;
+use App\Form\FactureDateSelectionType;
+
 
 use TCPDF;
 use App\Form\FactureType;
@@ -24,9 +26,27 @@ use App\Form\FactureType;
 class FactureController extends AbstractController
 {
     #[Route('/facture', name: 'app_facture')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $factures = $entityManager->getRepository(Facture::class)->findAll();
+
+        $form = $this->createForm(FactureDateSelectionType::class);
+
+        $form->handleRequest($request);
+
+        $factures = [];
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $selectedDate = $form->get('selected_date')->getData();
+            // Récupérer les factures en fonction de la date sélectionnée
+            $factures = $entityManager->getRepository(Facture::class)->findBy(['dateReservation' => $selectedDate]);
+//            dd($factures);
+
+        } else {
+            // Si le formulaire n'est pas encore soumis ou invalide, récupérer toutes les factures
+            $factures = $entityManager->getRepository(Facture::class)->findAll();
+        }
+
+//        $factures = $entityManager->getRepository(Facture::class)->findAll();
         $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
 
 
@@ -73,6 +93,7 @@ class FactureController extends AbstractController
             'produitTotals' => $produitTotals,
             'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
             'ingredients' => $ingredients,
+            'form' => $form->createView(),
         ]);
     }
 
