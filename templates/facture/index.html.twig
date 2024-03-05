@@ -1,19 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Factures{% endblock %}
+{% block title %}Aggrégation des factures par ingredients{% endblock %}
 
 {% block body %}
-    <div class="FactureParDate">
-        {{ render(controller(
-            'App\\Controller\\FactureController::factureParDate'
-        )) }}
-    </div>
-
     <section class="head">
         <div class="title">
             <h1>Liste des Factures</h1>
         </div>
     </section>
+    <div class="FactureParDate">
+        {{ render(controller(
+            'App\\Controller\\FactureController::factureParDate'
+        )) }}
+    </div>
     <section class="facture">
         <div class="first-line">
             <div class="listeFactures" hx-target="this" hx-swap="outerHTML">
