@@ -17,6 +17,10 @@
             padding: 10px;
             text-align: center;
         }
+        .textInfo{
+            font-size: 7pt;
+            font-style: italic;
+        }
     </style>
 {% endblock %}
 
@@ -35,12 +39,15 @@
                 </div>
             </td>
         </tr>
+        <br/>
+        <br/>
         <tr>
             <td>
                 <div >
                     Nom Prénom du boulanger<br/>
-                    [Adresse de la boulangerie] <br/>
-                    Tél: [Téléphone]<br/>
+                    7 route du Suran, 39320 Montfleur <br/>
+                    contact@moulindepontdesvents.fr <br/>
+                    Tél: 07 89 48 17 89<br/>
                     N° de siret: [....]<br/>
                     <br/><br/><br /><br/>
                 </div>
@@ -59,7 +66,7 @@
                 <div>
                     Facture N°  {{facture.id}}  <br>
                     Date de livraison : {{facture.dateReservation|date("d/m/Y")}}  <br>
-                    Date de la commande : a rajouter  <br><br/><br/>
+                    Date de la commande : {{facture.dateCreation|date("d/m/Y") }}  <br><br/><br/>
                 </div>
             </td>
             <td></td>
@@ -70,19 +77,19 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Désignation</th>
-                            <th>Quantité</th>
-                            <th>Prix unitaire</th>
-                            <th>Total</th>
+                            <th style="border: 1px solid black;">Désignation</th>
+                            <th style="border: 1px solid black;">Quantité</th>
+                            <th style="border: 1px solid black;">Prix unitaire</th>
+                            <th style="border: 1px solid black;">Total</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% for factureProduit in facture.produits %}
                       <tr>
-                                <td>{{ factureProduit.produit.nom }}</td>
-                                <td>{{ factureProduit.quantite }} </td>
-                                <td>{{ factureProduit.produit.prixUnitaire }}€</td>
-                                <td>{{ factureProduit.quantite * factureProduit.produit.prixUnitaire }}€ </td>
+                                <td style="border-right: 1px solid black;">{{ factureProduit.produit.nom }}</td>
+                                <td style="border-right: 1px solid black;">{{ factureProduit.quantite }} </td>
+                                <td style="border-right: 1px solid black;">{{ factureProduit.produit.prixUnitaire }}€</td>
+                                <td style="border-right: 1px solid black;">{{ factureProduit.quantite * factureProduit.produit.prixUnitaire }}€ </td>
                             </tr>
                     {% endfor %}
                     </tbody>
@@ -113,13 +120,10 @@
         </tr>
         <tr>
             <td colspan="2">
-                <p>La loi n°92/1442 du 31 décembre 1992 nous fait l'obligation de vous indiquer que le non-respect des conditions de paiement entraine des intérêts de
+                <p class="textInfo">La loi n°92/1442 du 31 décembre 1992 nous fait l'obligation de vous indiquer que le non-respect des conditions de paiement entraine des intérêts de
                 retard suivant modalités et taux défini par la loi. Une indemnité forfaitaire de 40€ sera due pour frais de recouvrement en cas de retard de paiement.
                 </p>
             </td>
-        </tr>
-        <tr>
-            <td colspan="2">nom et adresse</td>
         </tr>
     </table>
 {% endblock body %}
