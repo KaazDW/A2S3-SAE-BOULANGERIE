@@ -4,8 +4,11 @@
 
 {% block body %}
     <section class="head">
-        <div class="title">
+        <div class="title" style="display: flex; align-items: center;">
             <h1>Liste des Factures</h1>
+            <a href="{{ path('app_facture') }}" class="tooltip-container case" data-tooltip="Rafraichir la liste des factures" style="padding: 3px 10px; margin-left: 15px;">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </a>
         </div>
     </section>
     <div class="FactureParDate">
