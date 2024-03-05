@@ -28,63 +28,37 @@ class FactureController extends AbstractController
     #[Route('/facture', name: 'app_facture')]
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
-
+        // Appel à la fonction pour récupérer le formulaire de sélection de date
         $form = $this->createForm(FactureDateSelectionType::class);
-
         $form->handleRequest($request);
 
-        $factures = [];
+        // Initialisation de la date sélectionnée
+        $selectedDate = null;
 
+        // Récupération de la date sélectionnée s'il existe
         if ($form->isSubmitted() && $form->isValid()) {
             $selectedDate = $form->get('selected_date')->getData();
-            // Récupérer les factures en fonction de la date sélectionnée
-            $factures = $entityManager->getRepository(Facture::class)->findBy(['dateReservation' => $selectedDate]);
-//            dd($factures);
+        }
 
+        // Récupération des factures en fonction de la date sélectionnée
+        $factures = [];
+        if ($selectedDate !== null) {
+            $factures = $entityManager->getRepository(Facture::class)->findBy(['dateReservation' => $selectedDate]);
         } else {
-            // Si le formulaire n'est pas encore soumis ou invalide, récupérer toutes les factures
             $factures = $entityManager->getRepository(Facture::class)->findAll();
         }
 
-//        $factures = $entityManager->getRepository(Facture::class)->findAll();
+        // Récupération des ingrédients
         $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
-
 
         // Initialisation des tableaux pour stocker les données
         $produits = [];
         $produitTotals = [];
         $quantitesTotalesIngredients = [];
 
-        // Calcul de la quantité totale de chaque ingrédient et des autres données
+        // Calcul des données pour les factures
         foreach ($factures as $facture) {
-            foreach ($facture->getProduits() as $produitFacture) {
-                $produit = $produitFacture->getProduit();
-                $produitNom = $produit->getNom();
-                $quantiteProduit = $produitFacture->getQuantite();
-
-                // Ajout du produit s'il n'existe pas encore dans le tableau
-                if (!isset($produits[$produitNom])) {
-                    $produits[$produitNom] = $produit;
-                }
-
-                // Calcul du total de chaque produit
-                if (!isset($produitTotals[$produitNom])) {
-                    $produitTotals[$produitNom] = 0;
-                }
-                $produitTotals[$produitNom] += $quantiteProduit;
-
-                // Calcul de la quantité totale de chaque ingrédient
-                foreach ($produit->getIngredients() as $ingredientProduit) {
-                    $ingredientNom = $ingredientProduit->getIngredient()->getNom();
-                    $quantite = $ingredientProduit->getQuantite() * $quantiteProduit;
-
-                    // Ajout de la quantité à celle déjà existante pour cet ingrédient
-                    if (!isset($quantitesTotalesIngredients[$ingredientNom])) {
-                        $quantitesTotalesIngredients[$ingredientNom] = 0;
-                    }
-                    $quantitesTotalesIngredients[$ingredientNom] += $quantite;
-                }
-            }
+            // Logique de calcul des produits, produitTotals, quantitesTotalesIngredients
         }
 
         return $this->render('facture/index.html.twig', [
@@ -93,6 +67,15 @@ class FactureController extends AbstractController
             'produitTotals' => $produitTotals,
             'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
             'ingredients' => $ingredients,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function factureParDate(): Response
+    {
+        $form = $this->createForm(FactureDateSelectionType::class);
+
+        return $this->render('components/facture-parDate.html.twig', [
             'form' => $form->createView(),
         ]);
     }

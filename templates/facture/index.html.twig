@@ -3,10 +3,12 @@
 {% block title %}Liste des Factures{% endblock %}
 
 {% block body %}
-    {# Formulaire de sélection de date #}
-    {{ form_start(form) }}
-    {{ form_row(form.selected_date) }}
-    {{ form_end(form) }}
+    <div class="FactureParDate">
+        {{ render(controller(
+            'App\\Controller\\FactureController::factureParDate'
+        )) }}
+    </div>
+
     <section class="head">
         <div class="title">
             <h1>Liste des Factures</h1>
