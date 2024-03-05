@@ -375,4 +375,13 @@ class FactureController extends AbstractController
         return new response();
     }
 
+    #[Route('/historique', name: 'facture_histo')]
+    public function historiqueFacture(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        return $this->render('facture/historique.html.twig', [
+
+        ]);
+    }
+
+
 }

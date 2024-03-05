@@ -40,6 +40,9 @@
                     <li>
                         <a href="{{ path('app_facture') }}" class="tooltip-container" data-tooltip="Aggrégation des factures par ingredients">Aggrégation</a>
                     </li>
+                    <li>
+                        <a href="{{ path('facture_histo') }}" class="tooltip-container" data-tooltip="Historique des factures">Historique</a>
+                    </li>
                     <li class="tooltip-style-modal-container">
                         {{ render(controller(
                             'App\\Controller\\IngredientController::stockAlert'
