@@ -375,11 +375,24 @@ class FactureController extends AbstractController
         return new response();
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/historique', name: 'facture_histo')]
-    public function historiqueFacture(EntityManagerInterface $entityManager, Request $request): Response
+    public function historiqueFacture(Request $request, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('facture/historique.html.twig', [
+        $repositoryFacture = $entityManager->getRepository(Facture::class);
+        $selectedDate = $request->query->get('selected_date');
 
+        $factures = $repositoryFacture->findBy(['etat' => 1]);
+
+        if ($selectedDate) {
+            $selectedDateTime = new \DateTime($selectedDate);
+            $factures = $repositoryFacture->findBy(['dateReservation' => $selectedDateTime, 'etat' => 1]);
+        }
+
+        return $this->render('facture/historique.html.twig', [
+            'facturesParDate' => $factures,
         ]);
     }
 
