@@ -17,12 +17,12 @@
     <section class="filter">
         <form action="{{ path('facture_histo') }}" method="get">
             <label for="selected_date">Sélectionner une date :</label>
-            <input type="date" id="selected_date" name="selected_date">
-            <button type="submit">Filtrer</button>
+            <input type="date" id="selected_date" class="case" style="padding: 8px;" name="selected_date">
+            <button type="submit" class="button">Filtrer</button>
         </form>
     </section>
 
-    <section class="container">
+    <section class="historique">
         <div class="for">
             {% for facture in facturesParDate %}
                 <div class="grid-item nom-prenom">{{ facture.user.nom ?? 'N/A' }} {{ facture.user.prenom ?? 'N/A' }}</div>
