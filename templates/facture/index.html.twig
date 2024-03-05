@@ -62,7 +62,7 @@
                 <div class="grid-container">
                     <div class="grid-item title left">Nom du produit</div>
                     <div class="grid-item title">Quantité totale utilisé</div>
-                    <div class="grid-item title">Stock Avant (kg)</div>
+                    <div class="grid-item title">Stock Avant</div>
                     <div class="grid-item title">Stock Après</div>
                     {%if affichage == true %}
                         {% for ingredientNom, quantiteTotale in quantitesTotalesIngredients %}
@@ -71,7 +71,7 @@
                             <div class="grid-item">
                                 {% for ingredient in ingredients %}
                                     {% if ingredient.nom == ingredientNom %}
-                                        {{ ingredient.stock }} kg = {{ ingredient.stock * 1000 }} g
+                                        {{ stocksAvant[ingredient.getId()] }} g
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -79,11 +79,10 @@
                                 {% for ingredient in ingredients %}
                                     {% if ingredient.nom == ingredientNom %}
                                         {% if ingredient.nom != "Eau" %}
-                                            {% set stockGrammes = ingredient.stock * 1000 - quantiteTotale %}
-                                            {% if stockGrammes <= 0 %}
-                                                <span style="color: red;">{{ stockGrammes | number_format(0, '.', ' ') }} g</span>
+                                            {% if stocksApres[ingredient.getId()] <= 0 %}
+                                                <span style="color: red;">{{ stocksApres[ingredient.getId()] | number_format(0, '.', ' ') }} g</span>
                                             {% else %}
-                                                {{ stockGrammes | number_format(0, '.', ' ') }} g
+                                                {{ stocksApres[ingredient.getId()] | number_format(0, '.', ' ') }} g
                                             {% endif %}
                                         {% else %}
                                             EAU ILLIMITE
@@ -91,6 +90,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
+
                         {% endfor %}
                     {% endif %}
                 </div>

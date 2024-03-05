@@ -154,19 +154,39 @@ class FactureController extends AbstractController
             }
             $entityManager->flush();
 
+            // Récupérer le stock avant la mise à jour
+            $stocksAvant = [];
+            foreach ($ingredients as $ingredient) {
+                $stocksAvant[$ingredient->getId()] = $ingredient->getStock();
+            }
             // Mettre à jour le stock des ingrédients
             foreach ($factures as $facture) {
                 foreach ($facture->getProduits() as $produitFacture) {
                     foreach ($produitFacture->getProduit()->getIngredients() as $ingredientProduit) {
                         $ingredient = $ingredientProduit->getIngredient();
                         $quantiteUtilisee = $ingredientProduit->getQuantite() * $produitFacture->getQuantite();
-                        $nouveauStock = $ingredient->getStock() - $quantiteUtilisee;
+                        $nouveauStock = $stocksAvant[$ingredient->getId()] - $quantiteUtilisee;
+
+                        // Mettre à jour le stock après utilisation
                         $ingredient->setStock($nouveauStock);
+
+                        // Enregistrement de l'ingrédient mis à jour
                         $entityManager->persist($ingredient);
                     }
                 }
             }
+
+// Flush pour appliquer les modifications
             $entityManager->flush();
+
+// Récupérer le stock après la mise à jour
+            $stocksApres = [];
+            foreach ($ingredients as $ingredient) {
+                $stocksApres[$ingredient->getId()] = $ingredient->getStock();
+            }
+
+
+
         }
 
 
@@ -176,6 +196,8 @@ class FactureController extends AbstractController
             'produitTotals' => $produitTotals,
             'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
             'ingredients' => $ingredients,
+                'stocksAvant' => $stocksAvant,
+                'stocksApres' => $stocksApres,
                 'affichage' => $affichage,
         ]);
     }
