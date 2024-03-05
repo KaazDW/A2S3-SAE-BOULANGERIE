@@ -29,63 +29,48 @@ class FactureController extends AbstractController
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
 
-        $form = $this->createForm(FactureDateSelectionType::class);
 
+        $affichage = false;
+        // Appel à la fonction pour récupérer le formulaire de sélection de date
+        $form = $this->createForm(FactureDateSelectionType::class);
         $form->handleRequest($request);
 
-        $factures = [];
+        // Initialisation de la date sélectionnée
+        $selectedDate = null;
 
+        // Récupération de la date sélectionnée s'il existe
         if ($form->isSubmitted() && $form->isValid()) {
             $selectedDate = $form->get('selected_date')->getData();
+
             // Récupérer les factures en fonction de la date sélectionnée
             $factures = $entityManager->getRepository(Facture::class)->findBy(['dateReservation' => $selectedDate]);
 //            dd($factures);
+//            $affichage = true;
 
+        }
+
+        // Récupération des factures en fonction de la date sélectionnée
+        $factures = [];
+        if ($selectedDate !== null) {
+            $factures = $entityManager->getRepository(Facture::class)->findBy(['dateReservation' => $selectedDate]);
         } else {
-            // Si le formulaire n'est pas encore soumis ou invalide, récupérer toutes les factures
             $factures = $entityManager->getRepository(Facture::class)->findAll();
         }
 
-//        $factures = $entityManager->getRepository(Facture::class)->findAll();
-        $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
+        // Filtrer les factures avec l'état égal à 1
+        $factures = array_filter($factures, function($facture) {
+            return $facture->getEtat() == 0;
+        });
 
+        // Récupération des ingrédients
+        $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
 
         // Initialisation des tableaux pour stocker les données
         $produits = [];
         $produitTotals = [];
         $quantitesTotalesIngredients = [];
 
-        // Calcul de la quantité totale de chaque ingrédient et des autres données
-        foreach ($factures as $facture) {
-            foreach ($facture->getProduits() as $produitFacture) {
-                $produit = $produitFacture->getProduit();
-                $produitNom = $produit->getNom();
-                $quantiteProduit = $produitFacture->getQuantite();
-
-                // Ajout du produit s'il n'existe pas encore dans le tableau
-                if (!isset($produits[$produitNom])) {
-                    $produits[$produitNom] = $produit;
-                }
-
-                // Calcul du total de chaque produit
-                if (!isset($produitTotals[$produitNom])) {
-                    $produitTotals[$produitNom] = 0;
-                }
-                $produitTotals[$produitNom] += $quantiteProduit;
-
-                // Calcul de la quantité totale de chaque ingrédient
-                foreach ($produit->getIngredients() as $ingredientProduit) {
-                    $ingredientNom = $ingredientProduit->getIngredient()->getNom();
-                    $quantite = $ingredientProduit->getQuantite() * $quantiteProduit;
-
-                    // Ajout de la quantité à celle déjà existante pour cet ingrédient
-                    if (!isset($quantitesTotalesIngredients[$ingredientNom])) {
-                        $quantitesTotalesIngredients[$ingredientNom] = 0;
-                    }
-                    $quantitesTotalesIngredients[$ingredientNom] += $quantite;
-                }
-            }
-        }
+        // Calcul des données pour les factures
 
         return $this->render('facture/index.html.twig', [
             'factures' => $factures,
@@ -94,13 +79,23 @@ class FactureController extends AbstractController
             'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
             'ingredients' => $ingredients,
             'form' => $form->createView(),
+            'affichage' => $affichage,
+
+        ]);
+    }
+
+    public function factureParDate(): Response
+    {
+        $form = $this->createForm(FactureDateSelectionType::class);
+
+        return $this->render('components/facture-parDate.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/factureSelect', name: 'app_factureSelect')]
     public function factureSelect(EntityManagerInterface $entityManager,Request $request): Response
     {
-
         // Récupérer les identifiants des factures sélectionnées
         $formData = $request->request->all();
         $factureIds = $formData['factures_selectionnees'];
@@ -108,6 +103,7 @@ class FactureController extends AbstractController
 
         $ingredients = $entityManager->getRepository(Ingredient::class)->findAll();
 
+        $affichage = true;
 
         // Initialisation des tableaux pour stocker les données
         $produits = [];
@@ -117,32 +113,32 @@ class FactureController extends AbstractController
         // Calcul de la quantité totale de chaque ingrédient et des autres données
         foreach ($factures as $facture) {
             foreach ($facture->getProduits() as $produitFacture) {
-                $produit = $produitFacture->getProduit();
-                $produitNom = $produit->getNom();
-                $quantiteProduit = $produitFacture->getQuantite();
+                    $produit = $produitFacture->getProduit();
+                    $produitNom = $produit->getNom();
+                    $quantiteProduit = $produitFacture->getQuantite();
 
-                // Ajout du produit s'il n'existe pas encore dans le tableau
-                if (!isset($produits[$produitNom])) {
-                    $produits[$produitNom] = $produit;
-                }
-
-                // Calcul du total de chaque produit
-                if (!isset($produitTotals[$produitNom])) {
-                    $produitTotals[$produitNom] = 0;
-                }
-                $produitTotals[$produitNom] += $quantiteProduit;
-
-                // Calcul de la quantité totale de chaque ingrédient
-                foreach ($produit->getIngredients() as $ingredientProduit) {
-                    $ingredientNom = $ingredientProduit->getIngredient()->getNom();
-                    $quantite = $ingredientProduit->getQuantite() * $quantiteProduit;
-
-                    // Ajout de la quantité à celle déjà existante pour cet ingrédient
-                    if (!isset($quantitesTotalesIngredients[$ingredientNom])) {
-                        $quantitesTotalesIngredients[$ingredientNom] = 0;
+                    // Ajout du produit s'il n'existe pas encore dans le tableau
+                    if (!isset($produits[$produitNom])) {
+                        $produits[$produitNom] = $produit;
                     }
-                    $quantitesTotalesIngredients[$ingredientNom] += $quantite;
-                }
+
+                    // Calcul du total de chaque produit
+                    if (!isset($produitTotals[$produitNom])) {
+                        $produitTotals[$produitNom] = 0;
+                    }
+                    $produitTotals[$produitNom] += $quantiteProduit;
+
+                    // Calcul de la quantité totale de chaque ingrédient
+                    foreach ($produit->getIngredients() as $ingredientProduit) {
+                        $ingredientNom = $ingredientProduit->getIngredient()->getNom();
+                        $quantite = $ingredientProduit->getQuantite() * $quantiteProduit;
+
+                        // Ajout de la quantité à celle déjà existante pour cet ingrédient
+                        if (!isset($quantitesTotalesIngredients[$ingredientNom])) {
+                            $quantitesTotalesIngredients[$ingredientNom] = 0;
+                        }
+                        $quantitesTotalesIngredients[$ingredientNom] += $quantite;
+                    }
             }
         }
 
@@ -180,6 +176,7 @@ class FactureController extends AbstractController
             'produitTotals' => $produitTotals,
             'quantitesTotalesIngredients' => $quantitesTotalesIngredients,
             'ingredients' => $ingredients,
+                'affichage' => $affichage,
         ]);
     }
 
@@ -377,5 +374,27 @@ class FactureController extends AbstractController
 
         return new response();
     }
+
+    /**
+     * @throws \Exception
+     */
+    #[Route('/historique', name: 'facture_histo')]
+    public function historiqueFacture(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $repositoryFacture = $entityManager->getRepository(Facture::class);
+        $selectedDate = $request->query->get('selected_date');
+
+        $factures = $repositoryFacture->findBy(['etat' => 1]);
+
+        if ($selectedDate) {
+            $selectedDateTime = new \DateTime($selectedDate);
+            $factures = $repositoryFacture->findBy(['dateReservation' => $selectedDateTime, 'etat' => 1]);
+        }
+
+        return $this->render('facture/historique.html.twig', [
+            'facturesParDate' => $factures,
+        ]);
+    }
+
 
 }
