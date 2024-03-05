@@ -7,3 +7,4 @@ COPY . /var/www/html/
 WORKDIR /var/www/html
 
 RUN composer install
+RUN doctrine migrations:migrate
