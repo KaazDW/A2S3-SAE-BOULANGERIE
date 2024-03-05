@@ -19,46 +19,49 @@ final class Version20240119163614 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql("INSERT INTO produit (`nom`,`prix_unitaire`) VALUES ( 'Amandes Raisin','1.00');");
-        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ('Chanvre Amande','1.50');");
-        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ('Noix','2.00');");
-        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ('Lin Tournesol','1.45');");
-        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Sésame','4.70');");
-        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( '5 Céréales','3.00');");
-        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Blanc','1.00');");
-        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Demi complet','1.50');");
-        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Complet','2.00');");
-        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Intégral','3.00');");
-        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Campagne','4.00');");
+        $this->addSql("INSERT INTO produit (`nom`,`prix_unitaire`) VALUES ( 'Amandes Raisin','7.00');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ('Chanvre Amande','8.50');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ('Noix','7.50');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ('Lin Tournesol','7.00');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Sésame','7.00');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( '5 Céréales','6.00');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Blanc','5.00');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Demi complet','6.00');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Complet','6.00');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Intégral','6.00');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Campagne','6.00');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Farine de gaudes','3.20');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Farine de blé T65','2.30');");
+        $this->addSql("INSERT INTO produit ( `nom`,`prix_unitaire`) VALUES ( 'Farine de blé T80','2.30');");
 
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines T80','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines T65','15','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines T80','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines T65','30','5');");
         $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines T110','20','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines Seigle','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines Epautre','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines Petit Epautre','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines T150','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines Khorasan','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines 5 Céréales','10','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines Seigle','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines Epautre','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines Petit Epautre','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines T150','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines Khorasan','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Farines 5 Céréales','30','5');");
 
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Levain Normal','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Levain Sarrasin','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Levain Petit épautre','10','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Levain Normal','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Levain Sarrasin','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Levain Petit épautre','30','5');");
 
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Chataîgne','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Quinoa','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Tournesol','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Lin','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Courge','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Noix','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Sesame','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Raisin','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Mais','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Amande','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Riz','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Sarrasin','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Sésame','10','5');");
-        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Chanvre','10','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Chataîgne','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Quinoa','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Tournesol','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Lin','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Courge','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Noix','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Sesame','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Raisin','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Mais','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Amande','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Riz','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Sarrasin','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Sésame','30','5');");
+        $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Graines Chanvre','30','5');");
 
         $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Olives','10','5');");
         $this->addSql("INSERT INTO ingredient ( `nom`,`stock`,`min_stock`) VALUES ( 'Sel','10','5');");
