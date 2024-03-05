@@ -23,7 +23,7 @@
                 <td>{{ facture.dateReservation ? facture.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     {% if facture.datePaiement is not null %}
-                        <span style="color: green;">Payer</span>
+                        <span style="color: green;">Payé</span>
                     {% else %}
                         <span style="color: red;">Non reglé</span>
                     {% endif %}
