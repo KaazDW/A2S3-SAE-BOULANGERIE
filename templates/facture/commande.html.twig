@@ -190,5 +190,24 @@
             }
         });
     });
+
+    function checkSelectedDate(input) {
+        var selectedDate = new Date(input.value);
+        var dayOfWeek = selectedDate.getDay(); // 0 pour dimanche, 1 pour lundi, 2 pour mardi, ..., 6 pour samedi
+
+        // Vérifier si le jour de la semaine est mercredi (3) ou vendredi (5)
+        if (dayOfWeek !== 3 && dayOfWeek !== 5) {
+            alert('Veuillez sélectionner un mercredi ou un vendredi.');
+            input.value = ''; // Effacer la valeur si la date sélectionnée n'est pas un mercredi ou un vendredi
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var dateReservationInput = document.getElementById("dateReservation");
+
+        dateReservationInput.addEventListener("change", function () {
+            checkSelectedDate(this);
+        });
+    });
 </script>
 {% endblock %}
