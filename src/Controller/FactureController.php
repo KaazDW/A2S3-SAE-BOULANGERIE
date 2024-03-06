@@ -159,26 +159,41 @@ class FactureController extends AbstractController
             foreach ($ingredients as $ingredient) {
                 $stocksAvant[$ingredient->getId()] = $ingredient->getStock();
             }
-            // Mettre à jour le stock des ingrédients
+
+
+            $quantitesTotalesUtilisees = [];
+
+// Calcul des quantités totales utilisées de chaque ingrédient
             foreach ($factures as $facture) {
                 foreach ($facture->getProduits() as $produitFacture) {
                     foreach ($produitFacture->getProduit()->getIngredients() as $ingredientProduit) {
                         $ingredient = $ingredientProduit->getIngredient();
                         $quantiteUtilisee = $ingredientProduit->getQuantite() * $produitFacture->getQuantite();
-                        $nouveauStock = $stocksAvant[$ingredient->getId()] - $quantiteUtilisee;
 
-                        // Mettre à jour le stock après utilisation
-                        $ingredient->setStock($nouveauStock);
-
-                        // Enregistrement de l'ingrédient mis à jour
-                        $entityManager->persist($ingredient);
+                        // Ajoute la quantité utilisée à celle déjà existante pour cet ingrédient
+                        if (!isset($quantitesTotalesUtilisees[$ingredient->getId()])) {
+                            $quantitesTotalesUtilisees[$ingredient->getId()] = 0;
+                        }
+                        $quantitesTotalesUtilisees[$ingredient->getId()] += $quantiteUtilisee;
                     }
                 }
             }
 
-// Flush pour appliquer les modifications
-            $entityManager->flush();
+// Calcul du stock après utilisation pour chaque ingrédient
+            foreach ($ingredients as $ingredient) {
+                $ingredientId = $ingredient->getId();
+                $quantiteTotaleUtilisee = isset($quantitesTotalesUtilisees[$ingredientId]) ? $quantitesTotalesUtilisees[$ingredientId] : 0;
+                $nouveauStock = $stocksAvant[$ingredientId] - $quantiteTotaleUtilisee;
 
+                // Mettre à jour le stock après utilisation
+                $ingredient->setStock($nouveauStock);
+
+                // Enregistrement de l'ingrédient mis à jour
+                $entityManager->persist($ingredient);
+            }
+
+// Exécute les requêtes d'update dans la base de données
+            $entityManager->flush();
 // Récupérer le stock après la mise à jour
             $stocksApres = [];
             foreach ($ingredients as $ingredient) {
